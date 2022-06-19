@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
-    public TMP_InputField levelText;
-    public TMP_InputField NickName;
-
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -77,34 +74,10 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         Debug.Log("OnJoinedRoom");
         if (ConnectMethod == ConnectMethod.Online_Fast)
         {
-            if (NickName != null && !string.IsNullOrEmpty(NickName.text))
-            {
-                string name = NickName.text;
-                if (NickName.text.Length > 10)
-                {
-                    name = NickName.text.Substring(0, 10);
-                }
+            PhotonNetwork.NickName = PhotonNetwork.IsMasterClient ? "Host" : "Client";
+        }
 
-                PhotonNetwork.NickName = name.TrimEnd();
-
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    PhotonNetwork.NickName = PhotonNetwork.NickName + " (host)";
-                }
-            }
-            else
-            {
-                PhotonNetwork.NickName = PhotonNetwork.IsMasterClient ? "Host" : "Client";
-            }
-        }
-        if (levelText != null && !string.IsNullOrEmpty(levelText.text))
-        {
-            PhotonNetwork.LoadLevel(levelText.text);
-        }
-        else
-        {
-            PhotonNetwork.LoadLevel(Statics.SCENE_LEVEL1);
-        }
+        PhotonNetwork.LoadLevel(Statics.SCENE_LEVEL1);
     }
 }
 

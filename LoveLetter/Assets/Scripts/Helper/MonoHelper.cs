@@ -9,7 +9,13 @@ public class MonoHelper : MonoBehaviour
     {
         Instance = this;
         mainCam = Camera.main;
-    }  
+    }
+
+    public Vector2 GetTopRightOfMainCam()
+    {
+        Vector2 topRight = mainCam.ScreenToWorldPoint(new Vector3(mainCam.pixelWidth, mainCam.pixelHeight, mainCam.nearClipPlane));
+        return topRight;
+    }
 
     public GameObject GetPlayerGo(GameObject goPartOfPlayer)
     {
