@@ -1,9 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MonoHelper : MonoBehaviour
 {
     private Camera mainCam;
     public static MonoHelper Instance;
+
+    public List<CharacterSprite> CharacterSprites;
 
     void Awake()
     {
@@ -46,10 +52,14 @@ public class MonoHelper : MonoBehaviour
 
     }
 
-    public bool IsPartOfPlayerGo(GameObject go) => GetPlayerGo(go) != null;
+    public Sprite GetCharacterSprite(CharacterType characterType) => CharacterSprites.Single(x => x.CharacterType == characterType).Sprite;
 
-    public int GenerateNewId()
-    {
-        return Random.Range(int.MinValue, int.MaxValue);
-    }
+    public bool IsPartOfPlayerGo(GameObject go) => GetPlayerGo(go) != null;
+}
+
+[Serializable]
+public class CharacterSprite
+{
+    public CharacterType CharacterType;
+    public Sprite Sprite;
 }
