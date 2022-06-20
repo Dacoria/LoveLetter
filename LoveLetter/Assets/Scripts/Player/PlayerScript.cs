@@ -1,20 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using System.Linq;
 
 public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
-    [ComponentInject] private TMP_Text PlayerText;
-    public string PlayerName;
+    [ComponentInject] 
+    private TMP_Text PlayerText;
 
-    public Card CurrentCard1;
-    public Card CurrentCard2;
+    public string PlayerName;
+    public PlayerStatus PlayerStatus;
+
+    public Card CurrentCard1() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 1);
+    public Card CurrentCard2() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 2);
+    public Card CurrentCard3() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 3);
+    public Card CurrentCard4() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 4);
 
     private void Awake()
     {
         this.ComponentInject();
+        PlayerStatus = PlayerStatus.Normal;
         //PlayerText.text = PhotonNetwork.NickName;
         // PlayerName = PhotonNetwork.NickName;
     }
@@ -26,46 +31,11 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         PlayerText.text = name;
         PlayerName = name;
     }
+}
 
-    public void DrawCard()
-    {
-        var card = DeckManager.instance.PlayerDrawsCardFromPile(this);
-        Debug.Log(PlayerName + " DrawCard: " + card.Character.CharacterType);
-
-        if(CurrentCard1 == null)
-        {
-            CurrentCard1 = card;
-        }
-        else if (CurrentCard2 == null)
-        {
-            CurrentCard2 = card;
-        }
-        else
-        {
-            throw new System.Exception(PlayerName + " ==> DrawCard");
-        }
-    }
-
-    public void CardPlayed(CharacterType characterType)
-    {
-        Debug.Log("Card played for " + PlayerName + ": " + characterType);
-        if (CurrentCard2?.Character?.CharacterType == characterType)
-        {
-            CurrentCard2 = null;
-        }
-        else if (CurrentCard1?.Character?.CharacterType == characterType)
-        {
-            CurrentCard1 = null;
-
-            if(CurrentCard2 != null)
-            {
-                CurrentCard1 = CurrentCard2;
-                CurrentCard2 = null;
-            }
-        }
-        else
-        {
-            throw new System.Exception(PlayerName = " ==> CardPlayed");
-        }
-    }    
+public enum PlayerStatus
+{
+    Normal,
+    Protected,
+    Intercepted
 }

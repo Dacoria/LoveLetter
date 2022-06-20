@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -41,6 +42,16 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
 
 
     public Player[] GetPlayerList() => PlayerList;
+
+    public List<PlayerScript> GetPlayers()
+    {
+        return GameObject.FindGameObjectsWithTag(Statics.TAG_PLAYER).Select(x => x.GetComponent<PlayerScript>()).ToList();
+    }
+
+    public List<PlayerScript> GetOtherPlayers(PlayerScript self)
+    {
+        return GetPlayers().Where(x => x != self).ToList();
+    }
 
     public GameObject GetMyPlayerGo() => GetPlayerGo(PhotonNetwork.LocalPlayer.ActorNumber);
 

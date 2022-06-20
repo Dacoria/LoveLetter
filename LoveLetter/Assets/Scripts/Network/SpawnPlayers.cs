@@ -14,8 +14,8 @@ public class SpawnPlayers : MonoBehaviour
     {
         Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
 
-        SpawnPlayer("P1", topRight.x / 3 * 2 * -1, topRight.y / 2 * 1);
-        SpawnPlayer("P2", 0, topRight.y / 2 * 1);
+        SpawnPlayer("P1", topRight.x / 3 * 2 * -1, topRight.y / 3 * 1);
+        SpawnPlayer("P2", 0, topRight.y / 3 * 1);
     }
 
     public void SpawnPlayer(string name, float xDir, float yDir)

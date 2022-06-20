@@ -7,7 +7,32 @@ using UnityEngine.UI;
 public class MonoHelper : MonoBehaviour
 {
     private Camera mainCam;
+    private ActionText ActionText;
+    private ModalScript ModalScript;
+
     public static MonoHelper Instance;
+
+    public ModalScript GetModal()
+    {
+        return ModalScript;
+    }
+
+    public void SetActionText(string actionText)
+    {
+        ActionText.SetTextFade(actionText);
+    }
+
+    public List<CharacterType> GetCharacterTypes()
+    {
+        var result = new List<CharacterType>();
+
+        foreach(CharacterType charType in Enum.GetValues(typeof(CharacterType)))
+        {
+            result.Add(charType);
+        }
+
+        return result;
+    }
 
     public List<CharacterSprite> CharacterSprites;
 
@@ -15,6 +40,8 @@ public class MonoHelper : MonoBehaviour
     {
         Instance = this;
         mainCam = Camera.main;
+        ActionText = FindObjectOfType<ActionText>();
+        ModalScript = FindObjectOfType<ModalScript>();
     }
 
     public Vector2 GetTopRightOfMainCam()

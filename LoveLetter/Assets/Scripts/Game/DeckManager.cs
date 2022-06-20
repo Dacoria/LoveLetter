@@ -14,6 +14,7 @@ public class DeckManager : MonoBehaviour
 
         cardToDeal.Status = CardStatus.InPlayerHand;
         cardToDeal.Player = player;
+        cardToDeal.IndexOfCardInHand = instance.Deck.Cards.Count(x => x.Player == player);
 
         return cardToDeal;
     }
@@ -31,6 +32,7 @@ public class DeckManager : MonoBehaviour
 
 public class Card
 {
+    public int Id;
     public Character Character;
     public DateTime StatusChangeTime { get; private set; }
     private CardStatus _status;
@@ -41,8 +43,14 @@ public class Card
         {
             if (_status != value)
             {
+
                 if(_status == CardStatus.InPlayerHand)
                 {
+                    if(Character.CharacterType == CharacterType.Spy)
+                    {
+                        GameManager.instance.PlayersWhoDiscardedSpies.Add(Player);
+                    }
+
                     Player = null;
                 }
                 _status = value;
@@ -50,7 +58,9 @@ public class Card
             }
         }
     }
-    public PlayerScript Player;
+    public PlayerScript Player; // alleen gevuld als een player deze kaart in de hand heeft
+    public bool IsBeingPlayed;
+    public int IndexOfCardInHand; // player kan meerdere kaarten in hand hebben --> dit bepaalt de index daarvan (0, 1, 2)
 }
 
 public enum CardStatus
@@ -68,6 +78,13 @@ public class Deck
 
 public static class DeckSettings
 {
+    public static List<ICharacterEffect> GetCharacterEffects()
+    {
+        var result = new List<ICharacterEffect>();
+
+        return result;
+    }
+
     public static Deck CreateNewDeck()
     {
         var characters = new List<Character>();
@@ -87,6 +104,12 @@ public static class DeckSettings
         {
             Cards = characters.Select(character => new Card { Character = character, Status = CardStatus.InDeck }).ToList(),
         };
+
+        for(int i = 0; i < deck.Cards.Count;i++)
+        {
+            deck.Cards[i].Id = i;
+        }
+
         deck.Cards[0].Status = CardStatus.Excluded;
 
         return deck;
@@ -138,16 +161,16 @@ public static class DeckSettings
 
     public static Dictionary<CharacterType, CharacterSettings> CharacterCountInDeck = new Dictionary<CharacterType, CharacterSettings>()
     {
-        { CharacterType.Spy,        new CharacterSettings { CountInDeck = 5, Points = 0 } },
-        { CharacterType.Guard,      new CharacterSettings { CountInDeck = 5, Points = 1 } },
-        { CharacterType.Priest,     new CharacterSettings { CountInDeck = 2, Points = 2 } },
-        { CharacterType.Baron,      new CharacterSettings { CountInDeck = 2, Points = 3 } },
-        { CharacterType.Handmaid,   new CharacterSettings { CountInDeck = 2, Points = 4 } },
-        { CharacterType.Prince,     new CharacterSettings { CountInDeck = 2, Points = 5 } },
-        { CharacterType.Chancellor, new CharacterSettings { CountInDeck = 2, Points = 6 } },
-        { CharacterType.King,       new CharacterSettings { CountInDeck = 1, Points = 7 } },
-        { CharacterType.Countess,   new CharacterSettings { CountInDeck = 1, Points = 8 } },
-        { CharacterType.Princess,   new CharacterSettings { CountInDeck = 1, Points = 9 } }
+        { CharacterType.Spy,        new CharacterSettings { CountInDeck = 2, Points = 0, CharacterEffect = new SpyEffect()          } },
+        { CharacterType.Guard,      new CharacterSettings { CountInDeck = 6, Points = 1, CharacterEffect = new GuardEffect()        } },
+        { CharacterType.Priest,     new CharacterSettings { CountInDeck = 2, Points = 2, CharacterEffect = new PriestEffect()       } },
+        { CharacterType.Baron,      new CharacterSettings { CountInDeck = 2, Points = 3, CharacterEffect = new BaronEffect()        } },
+        { CharacterType.Handmaid,   new CharacterSettings { CountInDeck = 2, Points = 4, CharacterEffect = new HandmaidEffect()     } },
+        { CharacterType.Prince,     new CharacterSettings { CountInDeck = 2, Points = 5, CharacterEffect = new PrinceEffect()       } },
+        { CharacterType.Chancellor, new CharacterSettings { CountInDeck = 2, Points = 6, CharacterEffect = new ChancellorEffect()   } },
+        { CharacterType.King,       new CharacterSettings { CountInDeck = 1, Points = 7, CharacterEffect = new KingEffect()         } },
+        { CharacterType.Countess,   new CharacterSettings { CountInDeck = 1, Points = 8, CharacterEffect = new CountessEffect()     } },
+        { CharacterType.Princess,   new CharacterSettings { CountInDeck = 1, Points = 9, CharacterEffect = new PrincessEffect()     } }
     };
 
     public static CharacterSettings GetCharacterSettings(CharacterType characterType)
@@ -172,6 +195,7 @@ public class CharacterSettings
 {
     public int Points;
     public int CountInDeck;
+    public ICharacterEffect CharacterEffect;
 }
 
 public enum CharacterType

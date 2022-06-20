@@ -3,6 +3,7 @@
 public static class Statics
 {
     public static string TAG_PLAYER = "Player";
+    public static string TAG_MODAL = "Modal";
 
     public static string SCENE_LEVEL1 = "Level1";
     public static string SCENE_LOADING = "Loading";

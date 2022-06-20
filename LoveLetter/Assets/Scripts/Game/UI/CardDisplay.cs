@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CardDisplay : MonoBehaviour
 {    
@@ -20,6 +17,6 @@ public class CardDisplay : MonoBehaviour
 
     public void PlayCard()
     {
-        GameManager.instance.PlayCard(Card.Character.CharacterType, playerScript);
+        GameManager.instance.PlayCard(Card.Id, playerScript);
     }
 }
