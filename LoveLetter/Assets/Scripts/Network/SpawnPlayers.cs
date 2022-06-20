@@ -2,6 +2,8 @@ using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 using UnityEditor;
+using TMPro;
+using System.Collections.Generic;
 
 public class SpawnPlayers : MonoBehaviour
 {
@@ -10,10 +12,13 @@ public class SpawnPlayers : MonoBehaviour
 
     private void Start()
     {
-        SpawnPlayer();
+        Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
+
+        SpawnPlayer("P1", topRight.x / 3 * 2 * -1, topRight.y / 2 * 1);
+        SpawnPlayer("P2", 0, topRight.y / 2 * 1);
     }
 
-    public void SpawnPlayer()
+    public void SpawnPlayer(string name, float xDir, float yDir)
     {
         if (!PhotonNetwork.IsConnected)
         {
@@ -22,12 +27,7 @@ public class SpawnPlayers : MonoBehaviour
 
         Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
 
-        var maxX = topRight.x - BufferSizeforCameraRange;
-        var minX = -maxX;
-
-        var y = -4f;
-
-        var randomPos = new Vector2(Random.Range(minX, maxX), y);
-        var player = PhotonNetwork.Instantiate(PlayerPrefab.name, randomPos, Quaternion.identity);
+        object[] myCustomInitData = new List<object> { name }.ToArray();
+        var player = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(xDir, yDir), Quaternion.identity, 0, myCustomInitData);        
     }
 }

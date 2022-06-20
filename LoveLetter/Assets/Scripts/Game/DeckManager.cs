@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,15 @@ public class DeckManager : MonoBehaviour
     public static DeckManager instance;
     public Deck Deck;
 
+    public Card PlayerDrawsCardFromPile(PlayerScript player)
+    {
+        var cardToDeal = instance.Deck.Cards.First(x => x.Status == CardStatus.InDeck);
+
+        cardToDeal.Status = CardStatus.InPlayerHand;
+        cardToDeal.Player = player;
+
+        return cardToDeal;
+    }
 
     public void Awake()
     {
@@ -19,36 +29,67 @@ public class DeckManager : MonoBehaviour
     }
 }
 
+public class Card
+{
+    public Character Character;
+    public DateTime StatusChangeTime { get; private set; }
+    private CardStatus _status;
+    public CardStatus Status
+    {
+        get => _status;
+        set
+        {
+            if (_status != value)
+            {
+                if(_status == CardStatus.InPlayerHand)
+                {
+                    Player = null;
+                }
+                _status = value;
+                StatusChangeTime = DateTime.Now;
+            }
+        }
+    }
+    public PlayerScript Player;
+}
+
+public enum CardStatus
+{
+    InDeck,
+    InPlayerHand,
+    InDiscard,
+    Excluded
+}
+
 public class Deck
 {
-    public List<Character> Characters;
-    public Character RemovedCharacter;
+    public List<Card> Cards;
 }
 
 public static class DeckSettings
 {
     public static Deck CreateNewDeck()
     {
-        var result = new List<Character>();
+        var characters = new List<Character>();
         foreach(CharacterType characterType in Enum.GetValues(typeof(CharacterType)))
         {
             var charSettings = GetCharacterSettings(characterType);
             for(int i = 0; i < charSettings.CountInDeck; i++)
             {
                 var newChar = CreateNewCharacter(characterType);
-                result.Add(newChar);
+                characters.Add(newChar);
             }
         }
 
-        result.Shuffle();
-        var removedChar = result[0];
-        result.Remove(removedChar);
+        characters.Shuffle();
 
-        return new Deck
+        var deck = new Deck
         {
-            Characters = result,
-            RemovedCharacter = removedChar
+            Cards = characters.Select(character => new Card { Character = character, Status = CardStatus.InDeck }).ToList(),
         };
+        deck.Cards[0].Status = CardStatus.Excluded;
+
+        return deck;
     }
 
     public static Character CreateNewCharacter(CharacterType characterType)    
