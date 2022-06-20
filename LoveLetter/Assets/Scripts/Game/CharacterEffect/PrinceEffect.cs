@@ -18,9 +18,17 @@ public class PrinceEffect : ICharacterEffect
         currentCardId = cardId;
         var modalGo = MonoHelper.Instance.GetModal();
 
+        var players = NetworkHelper.Instance.GetPlayers().Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
 
-        var players = NetworkHelper.Instance.GetPlayers().Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();        
-        modalGo.SetOptions(ChoosePlayer, "Choose who should discard his/her card", players);        
+        if (players.Any())
+        {
+            modalGo.SetOptions(ChoosePlayer, "Choose who should discard his/her card", players);
+        }
+        else
+        {
+            MonoHelper.Instance.SetActionText("Noone to select");
+            GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
+        }
 
         return true;
     }
@@ -32,11 +40,7 @@ public class PrinceEffect : ICharacterEffect
         if (otherCardOfCurrentPlayer.Character.CharacterType == CharacterType.Countess)
         {
             return false;
-        }
-        if (otherCardOfCurrentPlayer.Character.CharacterType == CharacterType.Princess)
-        {
-            return false;
-        }
+        }        
 
         return true;
     }

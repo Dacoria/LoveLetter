@@ -41,11 +41,7 @@ public class KingEffect: ICharacterEffect
         if (otherCardOfCurrentPlayer.Character.CharacterType == CharacterType.Countess)
         {
             return false;
-        }
-        if (otherCardOfCurrentPlayer.Character.CharacterType == CharacterType.Princess)
-        {
-            return false;
-        }
+        }       
 
         return true;
     }

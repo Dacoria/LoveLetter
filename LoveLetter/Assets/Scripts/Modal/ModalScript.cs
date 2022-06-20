@@ -48,8 +48,11 @@ public class ModalScript : MonoBehaviour
         ShowHideDirectChildren(false);
     }
 
+    public bool IsActive;
+
     private void ShowHideDirectChildren(bool active)
     {
+        IsActive = active;
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             transform.GetChild(i).gameObject.SetActive(active);

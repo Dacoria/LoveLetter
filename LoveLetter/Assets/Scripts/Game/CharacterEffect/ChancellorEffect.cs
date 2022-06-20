@@ -21,9 +21,9 @@ public class ChancellorEffect : ICharacterEffect
             DeckManager.instance.PlayerDrawsCardFromPile(player);
             DeckManager.instance.PlayerDrawsCardFromPile(player);
         }
-        else if (cardsInDeck.Count() >= 1)
+        else if (cardsInDeck.Count() == 1)
         {
-
+            DeckManager.instance.PlayerDrawsCardFromPile(player);
         }
         else
         {

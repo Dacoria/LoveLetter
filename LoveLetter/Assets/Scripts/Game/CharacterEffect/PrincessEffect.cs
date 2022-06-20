@@ -5,7 +5,7 @@ public class PrincessEffect : ICharacterEffect
 
     public bool DoEffect(PlayerScript player, int cardId)
     {
-        MonoHelper.Instance.SetActionText(player.PlayerName + " discarded the princes - instant lose");
+        MonoHelper.Instance.SetActionText(player.PlayerName + " discarded the princess - instant lose");
         player.PlayerStatus = PlayerStatus.Intercepted;
 
         GameManager.instance.CardEffectPlayed(cardId, player);

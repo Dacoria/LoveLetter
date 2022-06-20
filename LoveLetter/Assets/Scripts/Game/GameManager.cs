@@ -45,19 +45,12 @@ public class GameManager : MonoBehaviour
         DealCardToPlayer(CurrentPlayer());
     }
 
-    private bool EffectBeingPlayed;
-
     public void PlayCard(int cardId, PlayerScript player)
     {
-        if(!GameEnded && player == CurrentPlayer() && !EffectBeingPlayed)
-        {
-            EffectBeingPlayed = true;
+        if(!GameEnded && player == CurrentPlayer() && !MonoHelper.Instance.GetModal().IsActive)
+        {            
             DoCardEffect(cardId, player);         
-        }
-        else if (EffectBeingPlayed)
-        {
-            Debug.Log(player.PlayerName + " wants to do a move, but is already doing another move");
-        }
+        }       
         else if(GameEnded)
         {
             Debug.Log(player.PlayerName + " wants to do a move, but the game has already ended");
@@ -70,7 +63,6 @@ public class GameManager : MonoBehaviour
 
     public void CardEffectPlayed(int cardId, PlayerScript player)
     {
-        EffectBeingPlayed = false;
         RemoveCard(cardId, player);
         if (!EndOfGame())
         {
@@ -154,6 +146,8 @@ public class GameManager : MonoBehaviour
     {
         var card = DeckManager.instance.Deck.Cards.Single(x => x.Id == cardId);
         var charSettings = DeckSettings.GetCharacterSettings(card.Character.CharacterType);
+
+        Debug.Log(player.PlayerName + " - DoCardEffect -> " + card.Character.CharacterType);
         charSettings.CharacterEffect.DoEffect(player, cardId);
     }
 
