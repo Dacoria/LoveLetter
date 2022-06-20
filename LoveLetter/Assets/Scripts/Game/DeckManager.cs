@@ -78,13 +78,6 @@ public class Deck
 
 public static class DeckSettings
 {
-    public static List<ICharacterEffect> GetCharacterEffects()
-    {
-        var result = new List<ICharacterEffect>();
-
-        return result;
-    }
-
     public static Deck CreateNewDeck()
     {
         var characters = new List<Character>();
