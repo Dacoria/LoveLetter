@@ -56,5 +56,4 @@ public class ModalScript : MonoBehaviour
         }
         ModalOptions.SetActive(active);
     }
-
 }
