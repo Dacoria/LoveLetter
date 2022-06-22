@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,41 +8,44 @@ public class ExcludedPileScript : MonoBehaviour
     public SpriteRenderer Card1Sprite;
     public TMP_Text Text;
 
-
-
-    private void Awake()
+    private void Start()
     {
-        this.ComponentInject();
+        UpdateCardDisplay();
+        ActionEvents.NewGameStarted += UpdateCardDisplay;
+        ActionEvents.NewPlayerTurn += UpdateCardDisplay;
+        ActionEvents.GameEnded += UpdateCardDisplay;
     }
 
-
-    private int previousDeckCount;
-
-    void Update()
+    private void OnDestroy()
     {
-        if (DeckManager.instance.Deck != null)
+        ActionEvents.NewGameStarted -= UpdateCardDisplay;
+        ActionEvents.NewPlayerTurn -= UpdateCardDisplay;
+        ActionEvents.GameEnded -= UpdateCardDisplay;
+    }
+
+    void UpdateCardDisplay(List<PlayerScript> playersWon)
+    {
+        UpdateCardDisplay();
+    }
+
+    void UpdateCardDisplay()
+    {
+        if (Deck.instance.Cards != null)
         {
-            var deckExclusions = DeckManager.instance.Deck.Cards.Where(x => x.Status == CardStatus.Excluded);
+            var deckExclusions = Deck.instance.Cards.Where(x => x.Status == CardStatus.Excluded);
             var exclusionCount = deckExclusions.Count();
 
             if (GameManager.instance.GameEnded)
             {
                 Card1Sprite.sprite = deckExclusions.First().Character.Sprite;
             }
-
-            if (exclusionCount != previousDeckCount)
-            {
-                Text.text = "Excluded pile (" + exclusionCount + ")";
-
-                Card1Sprite.gameObject.SetActive(exclusionCount >= 1);
-
-                previousDeckCount = exclusionCount;
-            }
+            
+            Text.text = "Excluded pile (" + exclusionCount + ")";
+            Card1Sprite.gameObject.SetActive(exclusionCount >= 1);
         }
         else
         {
             Text.text = "";
-
             Card1Sprite.gameObject.SetActive(false);
         }
     }

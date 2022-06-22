@@ -15,26 +15,27 @@ public class ChancellorEffect : ICharacterEffect
 
         var modalGo = MonoHelper.Instance.GetModal();
 
-        var cardsInDeck = DeckManager.instance.Deck.Cards.Where(x => x.Status == CardStatus.InDeck).ToList();
+        var cardsInDeck = Deck.instance.Cards.Where(x => x.Status == CardStatus.InDeck).ToList();
         if (cardsInDeck.Count() >= 2)
         {
-            DeckManager.instance.PlayerDrawsCardFromPile(player);
-            DeckManager.instance.PlayerDrawsCardFromPile(player);
+            Deck.instance.PlayerDrawsCardFromPile(player);
+            Deck.instance.PlayerDrawsCardFromPile(player);
         }
         else if (cardsInDeck.Count() == 1)
         {
-            DeckManager.instance.PlayerDrawsCardFromPile(player);
+            Deck.instance.PlayerDrawsCardFromPile(player);
         }
         else
         {
-            MonoHelper.Instance.SetActionText("Chancellor has no cards to get from the deck");
+            Text.ActionSync("Chancellor has no cards to get from the deck");
             GameManager.instance.CardEffectPlayed(cardId, player);
             return true;
         }
 
-        cardOptions = DeckManager.instance.Deck.Cards.Where(x => x?.Player == player && x.Id != currentCardId).Select(x => x.Character.CharacterType.ToString()).ToList();
+        cardOptions = Deck.instance.Cards.Where(x => x?.Player == player && x.Id != currentCardId).Select(x => x.Character.Type.ToString()).ToList();
         modalGo.SetOptions(ChooseCardAtBottom, "Choose card to put at bottom of pile", cardOptions);
-
+        
+        Text.ActionSync("Chancellor played...");
         return true;
     }
 
@@ -42,11 +43,11 @@ public class ChancellorEffect : ICharacterEffect
 
     public void ChooseCardAtBottom(string optionCardAtBottom)
     {
-        var cardToPutAtBottom = DeckManager.instance.Deck.Cards.First(x => x?.Player == currentPlayer && x.Id != currentCardId && x.Character.CharacterType.ToString() == optionCardAtBottom);
+        var cardToPutAtBottom = Deck.instance.Cards.First(x => x?.Player == currentPlayer && x.Id != currentCardId && x.Character.Type.ToString() == optionCardAtBottom);
 
         cardToPutAtBottom.Status = CardStatus.InDeck;
-        DeckManager.instance.Deck.Cards.Remove(cardToPutAtBottom);
-        DeckManager.instance.Deck.Cards.Add(cardToPutAtBottom);
+        Deck.instance.Cards.Remove(cardToPutAtBottom);
+        Deck.instance.Cards.Add(cardToPutAtBottom);
 
         cardOptions.Remove(cardOptions.First(x => x == optionCardAtBottom));
 
@@ -57,7 +58,7 @@ public class ChancellorEffect : ICharacterEffect
             return;
         }
 
-        MonoHelper.Instance.SetActionText("Chancellor has placed card(s) at the bottom of the pile");
+        Text.ActionSync("Chancellor has placed card(s) at the bottom of the pile");
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
     }
 }

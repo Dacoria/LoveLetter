@@ -23,11 +23,12 @@ public class KingEffect: ICharacterEffect
         var otherPlayers = NetworkHelper.Instance.GetOtherPlayers(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
+            Text.ActionSync("King played...");
             modalGo.SetOptions(ChoosePlayer, "Choose who to trade cards with", otherPlayers);
         }
         else
         {
-            MonoHelper.Instance.SetActionText("No player to select");
+            Text.ActionSync("King played, noone to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
         }
 
@@ -38,7 +39,7 @@ public class KingEffect: ICharacterEffect
     {
         var otherCardOfCurrentPlayer = GetOtherCard(player, cardId);
 
-        if (otherCardOfCurrentPlayer.Character.CharacterType == CharacterType.Countess)
+        if (otherCardOfCurrentPlayer.Character.Type == CharacterType.Countess)
         {
             return false;
         }       
@@ -48,18 +49,18 @@ public class KingEffect: ICharacterEffect
 
     private Card GetOtherCard(PlayerScript player, int cardId)
     {
-        return DeckManager.instance.Deck.Cards.First(x => x?.Player == player && x.Id != cardId);
+        return Deck.instance.Cards.First(x => x?.Player == player && x.Id != cardId);
     }
 
     public void ChoosePlayer(string optionSelectedPlayer)
     {
-        var currentCardOtherPlayer = DeckManager.instance.Deck.Cards.Single(x => x?.Player?.PlayerName == optionSelectedPlayer);
+        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.Player?.PlayerName == optionSelectedPlayer);
         var yourOtherCard = GetOtherCard(currentPlayer, currentCardId);
 
         yourOtherCard.Player = currentCardOtherPlayer.Player;
         currentCardOtherPlayer.Player = currentPlayer;
 
-        MonoHelper.Instance.SetActionText(currentPlayer.PlayerName + " swapped cards with " + optionSelectedPlayer);
+        Text.ActionSync(currentPlayer.PlayerName + " swapped cards with " + optionSelectedPlayer);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
     }
 }

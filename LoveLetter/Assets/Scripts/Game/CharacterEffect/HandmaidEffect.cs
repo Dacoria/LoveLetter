@@ -6,7 +6,7 @@ public class HandmaidEffect : ICharacterEffect
     public bool DoEffect(PlayerScript player, int cardId)
     {
         player.PlayerStatus = PlayerStatus.Protected;
-        MonoHelper.Instance.SetActionText(player.PlayerName + " is protected till his next turn");
+        Text.ActionSync("Handmaiden protects " + player.PlayerName + " till his/her next turn");
 
         GameManager.instance.CardEffectPlayed(cardId, player);
 

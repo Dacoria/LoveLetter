@@ -5,7 +5,7 @@ public class CountessEffect : ICharacterEffect
 
     public bool DoEffect(PlayerScript player, int cardId)
     {
-        MonoHelper.Instance.SetActionText("Countess has no special effect");
+        Text.ActionSync("Countess played, no special effect");
         GameManager.instance.CardEffectPlayed(cardId, player);
         return true;
     }

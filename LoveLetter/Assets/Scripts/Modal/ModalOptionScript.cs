@@ -5,8 +5,7 @@ using TMPro;
 public class ModalOptionScript : MonoBehaviour
 {
     public TMP_Text Text;
-    [HideInInspector] public ModalScript ModalScript;
-        
+    [HideInInspector] public ModalScript ModalScript;        
 
     public void ClickOnModalOption()
     {

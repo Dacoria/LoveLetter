@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using System.Linq;
+using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
@@ -9,12 +10,32 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     private TMP_Text PlayerText;
 
     public string PlayerName;
-    public PlayerStatus PlayerStatus;
+    public PlayerStatus _playerStatus;
+    public PlayerStatus PlayerStatus
+    {
+        get => _playerStatus;
+        set
+        {
+            if (_playerStatus != value)
+            {
+                var oldValue = _playerStatus;
+                _playerStatus = value;
+                ActionEvents.PlayerStatusChange?.Invoke(this, oldValue);
 
-    public Card CurrentCard1() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 1);
-    public Card CurrentCard2() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 2);
-    public Card CurrentCard3() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 3);
-    public Card CurrentCard4() => DeckManager.instance.Deck.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 4);
+                if(_playerStatus == PlayerStatus.Intercepted)
+                {
+                    var cardsOfPlayer = Deck.instance.Cards.Where(x => x.Player == this).ToList();
+                    for(int i = 0; i < cardsOfPlayer.Count; i++)
+                    {
+                        cardsOfPlayer[i].Status = CardStatus.InDiscard;
+                    }    
+                }
+            }
+        }
+    }
+
+    public Card CurrentCard1() => Deck.instance.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 1);
+    public Card CurrentCard2() => Deck.instance.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 2);
 
     private void Awake()
     {
@@ -31,11 +52,33 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         PlayerText.text = name;
         PlayerName = name;
     }
-}
 
-public enum PlayerStatus
-{
-    Normal,
-    Protected,
-    Intercepted
+    private void Start()
+    {
+        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+        ActionEvents.GameEnded += OnGameEnded;
+    }
+
+    private void OnNewGameStarted()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    private void OnNewPlayerTurn()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    private void OnGameEnded(List<PlayerScript> playersWon)
+    {
+        //throw new System.NotImplementedException();
+    }   
+
+    private void OnDestroy()
+    {
+        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
+        ActionEvents.GameEnded -= OnGameEnded;
+    }
 }

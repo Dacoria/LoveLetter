@@ -2,34 +2,46 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class DeckManager : MonoBehaviour
+public class Deck : MonoBehaviour
 {
-    public static DeckManager instance;
-    public Deck Deck;
+    public static Deck instance;
+    public List<Card> Cards;
 
-    public Card PlayerDrawsCardFromPile(PlayerScript player)
-    {
-        var cardToDeal = instance.Deck.Cards.First(x => x.Status == CardStatus.InDeck);
-
-        cardToDeal.Status = CardStatus.InPlayerHand;
-        cardToDeal.Player = player;
-        cardToDeal.IndexOfCardInHand = instance.Deck.Cards.Count(x => x.Player == player);
-
-        return cardToDeal;
-    }
+    [ComponentInject] private PhotonView photonView;
 
     public void Awake()
     {
         instance = this;
+        this.ComponentInject();
+    }
+
+    public Card PlayerDrawsCardFromPile(PlayerScript player)
+    {
+        var cardToDeal = instance.Cards.First(x => x.Status == CardStatus.InDeck);
+
+        cardToDeal.Status = CardStatus.InPlayerHand;
+        cardToDeal.Player = player;
+        cardToDeal.IndexOfCardInHand = instance.Cards.Count(x => x.Player == player);
+
+        return cardToDeal;
     }
 
     public void CreateDeck()
     {
-        Deck = DeckSettings.CreateNewDeck();
+        Cards = DeckSettings.CreateNewDeck();
+        photonView.RPC("SyncDeck", RpcTarget.All, Cards);
+    }
+
+    [PunRPC]
+    public void SyncDeck(List<Card> cards)
+    {
+        Cards = cards;
     }
 }
 
+[SerializeField]
 public class Card
 {
     public int Id;
@@ -46,7 +58,7 @@ public class Card
 
                 if(_status == CardStatus.InPlayerHand)
                 {
-                    if(Character.CharacterType == CharacterType.Spy)
+                    if(Character.Type == CharacterType.Spy)
                     {
                         GameManager.instance.PlayersWhoDiscardedSpies.Add(Player);
                     }
@@ -71,14 +83,9 @@ public enum CardStatus
     Excluded
 }
 
-public class Deck
-{
-    public List<Card> Cards;
-}
-
 public static class DeckSettings
 {
-    public static Deck CreateNewDeck()
+    public static List<Card> CreateNewDeck()
     {
         var characters = new List<Character>();
         foreach(CharacterType characterType in Enum.GetValues(typeof(CharacterType)))
@@ -92,27 +99,22 @@ public static class DeckSettings
         }
 
         characters.Shuffle();
-
-        var deck = new Deck
+        var cards = characters.Select(character => new Card { Character = character, Status = CardStatus.InDeck }).ToList();
+        
+        for(int i = 0; i < cards.Count;i++)
         {
-            Cards = characters.Select(character => new Card { Character = character, Status = CardStatus.InDeck }).ToList(),
-        };
-
-        for(int i = 0; i < deck.Cards.Count;i++)
-        {
-            deck.Cards[i].Id = i;
+            cards[i].Id = i;
         }
 
-        deck.Cards[0].Status = CardStatus.Excluded;
-
-        return deck;
+        cards[0].Status = CardStatus.Excluded;
+        return cards;
     }
 
     public static Character CreateNewCharacter(CharacterType characterType)    
     {
         var result = new Character
         {
-            CharacterType = characterType,
+            Type = characterType,
             Sprite = MonoHelper.Instance.GetCharacterSprite(characterType),
             Description = GetCharacterDescription(characterType)
         };
@@ -179,7 +181,7 @@ public static class DeckSettings
 
 public class Character
 {
-    public CharacterType CharacterType;
+    public CharacterType Type;
     public string Description;
     public Sprite Sprite;
 }

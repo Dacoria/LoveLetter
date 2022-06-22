@@ -22,11 +22,12 @@ public class PrinceEffect : ICharacterEffect
 
         if (players.Any())
         {
+            Text.ActionSync("Prince played...");
             modalGo.SetOptions(ChoosePlayer, "Choose who should discard his/her card", players);
         }
         else
         {
-            MonoHelper.Instance.SetActionText("Noone to select");
+            Text.ActionSync("Priest played, noone to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
         }
 
@@ -37,7 +38,7 @@ public class PrinceEffect : ICharacterEffect
     {
         var otherCardOfCurrentPlayer = GetOtherCard(player, cardId);
 
-        if (otherCardOfCurrentPlayer.Character.CharacterType == CharacterType.Countess)
+        if (otherCardOfCurrentPlayer.Character.Type == CharacterType.Countess)
         {
             return false;
         }        
@@ -47,24 +48,24 @@ public class PrinceEffect : ICharacterEffect
 
     private Card GetOtherCard(PlayerScript player, int cardId)
     {
-        return DeckManager.instance.Deck.Cards.First(x => x?.Player == player && x.Id != cardId);
+        return Deck.instance.Cards.First(x => x?.Player == player && x.Id != cardId);
     }
 
     public void ChoosePlayer(string optionSelectedPlayer)
     {
-        var currentCardPlayer = DeckManager.instance.Deck.Cards.Single(x => x?.Player?.PlayerName == optionSelectedPlayer && x.Id != currentCardId);
+        var currentCardPlayer = Deck.instance.Cards.Single(x => x?.Player?.PlayerName == optionSelectedPlayer && x.Id != currentCardId);
         var playerOfCard = currentCardPlayer.Player;
 
         currentCardPlayer.Status = CardStatus.InDiscard;
 
-        if(DeckManager.instance.Deck.Cards.Any(x => x.Status == CardStatus.InDeck))
+        if(Deck.instance.Cards.Any(x => x.Status == CardStatus.InDeck))
         {
-            DeckManager.instance.PlayerDrawsCardFromPile(playerOfCard);
-            MonoHelper.Instance.SetActionText(optionSelectedPlayer + " discarded his/her hand & got a new card");
+            Deck.instance.PlayerDrawsCardFromPile(playerOfCard);
+            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + " & Got a new card");
         }
         else
         {
-            MonoHelper.Instance.SetActionText(optionSelectedPlayer + " discarded his/her hand. No other cards left");
+            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". No other cards left");
         }
         
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);

@@ -5,7 +5,7 @@ public class SpyEffect : ICharacterEffect
 
     public bool DoEffect(PlayerScript player, int cardId)
     {
-        MonoHelper.Instance.SetActionText(player.PlayerName + " played a spy");
+        Text.ActionSync(player.PlayerName + " played a spy");
         GameManager.instance.CardEffectPlayed(cardId, player);
         return true;
     }

@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class MonoHelper : MonoBehaviour
 {
     private Camera mainCam;
-    private ActionText ActionText;
     private ModalScript ModalScript;
 
     public static MonoHelper Instance;
@@ -15,11 +14,6 @@ public class MonoHelper : MonoBehaviour
     public ModalScript GetModal()
     {
         return ModalScript;
-    }
-
-    public void SetActionText(string actionText)
-    {
-        ActionText.SetTextFade(actionText);
     }
 
     public List<CharacterType> GetCharacterTypes()
@@ -40,7 +34,6 @@ public class MonoHelper : MonoBehaviour
     {
         Instance = this;
         mainCam = Camera.main;
-        ActionText = FindObjectOfType<ActionText>();
         ModalScript = FindObjectOfType<ModalScript>();
     }
 

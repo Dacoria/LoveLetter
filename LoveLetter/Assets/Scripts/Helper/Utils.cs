@@ -38,6 +38,9 @@ public static class Utils
         }
     }
 
+    public static Card GetCard(this int cardId) => Deck.instance.Cards.Single(x => x.Id == cardId);
+    
+
     private static object getValueToInject(Type type, ComponentInject componentInject, MonoBehaviour monoBehaviour)
     {
         if (type.GetInterfaces().Contains(typeof(IEnumerable)))

@@ -20,11 +20,12 @@ public class GuardEffect: ICharacterEffect
         var otherPlayers = NetworkHelper.Instance.GetOtherPlayers(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if(otherPlayers.Any())
         {
+            Text.ActionSync("Guard played...");
             modalGo.SetOptions(ChoosePlayer, "Choose who to intercept", otherPlayers);
         }
         else
         {
-            MonoHelper.Instance.SetActionText("Noone to select");
+            Text.ActionSync("Guard played, noone to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
         }
 
@@ -47,16 +48,16 @@ public class GuardEffect: ICharacterEffect
     public void ChooseCharacterType(string optionSelectedCharacterType)
     {
         var selectedCharacterType = Enum.Parse<CharacterType>(optionSelectedCharacterType);
-        var currentCardPlayer = DeckManager.instance.Deck.Cards.Single(x => x?.Player?.PlayerName == selectedPlayerName);
+        var currentCardPlayer = Deck.instance.Cards.Single(x => x?.Player?.PlayerName == selectedPlayerName);
 
-        if(currentCardPlayer.Character.CharacterType == selectedCharacterType)
+        if(currentCardPlayer.Character.Type == selectedCharacterType)
         {
-            currentCardPlayer.Player.PlayerStatus = PlayerStatus.Intercepted;
-            MonoHelper.Instance.SetActionText("Guard chose right! " + currentCardPlayer.Player.PlayerName + " has a " + optionSelectedCharacterType + " and is now intercepted");
+            Text.ActionSync("Guard chose right! " + currentCardPlayer.Player.PlayerName + " has a " + optionSelectedCharacterType + " and is now intercepted");
+            currentCardPlayer.Player.PlayerStatus = PlayerStatus.Intercepted;            
         }
         else
         {
-            MonoHelper.Instance.SetActionText("Guard chose wrong! " + currentCardPlayer.Player.PlayerName + " does not have a " + optionSelectedCharacterType);
+            Text.ActionSync("Guard chose wrong! " + currentCardPlayer.Player.PlayerName + " does not have a " + optionSelectedCharacterType);
         }
 
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);

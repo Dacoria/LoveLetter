@@ -9,6 +9,7 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
 {
     public static NetworkHelper Instance;
     private Player[] PlayerList;
+    private GameTexts GameTexts;
 
     [ComponentInject] private PhotonView photonView;
 
@@ -16,6 +17,43 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
     {
         Instance = this;
         this.ComponentInject();
+        GameTexts = FindObjectOfType<GameTexts>();
+    }
+
+    public void SetGameText(string gameText, bool network)
+    {
+        if (network)
+        {
+            photonView.RPC("RPC_SetGameText", RpcTarget.All, gameText);
+        }
+        else
+        {
+            GameTexts.GameText.text = gameText;
+        }        
+    }
+
+    [PunRPC]
+    public void RPC_SetGameText(string gameText)
+    {
+        GameTexts.GameText.text = gameText;
+    }
+
+    public void SetActionText(string actionText, bool network)
+    {
+        if(network)
+        {
+            photonView.RPC("RPC_SetActionText", RpcTarget.All, actionText);
+        }
+        else
+        {
+            GameTexts.ActionText.text = actionText;
+        }        
+    }
+
+    [PunRPC]
+    public void RPC_SetActionText(string actionText)
+    {
+        GameTexts.ActionText.text = actionText;
     }
 
     private void Start()

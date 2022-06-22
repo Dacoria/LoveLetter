@@ -1,6 +1,5 @@
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -12,31 +11,36 @@ public class DrawPileScript : MonoBehaviour
 
     public TMP_Text Text;
 
-
-
-    private void Awake()
+    private void Start()
     {
-        this.ComponentInject();
+        UpdateCardDisplay();
+        ActionEvents.NewGameStarted += UpdateCardDisplay;
+        ActionEvents.NewPlayerTurn += UpdateCardDisplay;
+        ActionEvents.GameEnded += UpdateCardDisplay;
     }
 
-
-    private int previousDeckCount = -1;
-
-    void Update()
+    private void OnDestroy()
     {
-       if(DeckManager.instance.Deck != null)
+        ActionEvents.NewGameStarted -= UpdateCardDisplay;
+        ActionEvents.NewPlayerTurn -= UpdateCardDisplay;
+        ActionEvents.GameEnded -= UpdateCardDisplay;
+    }
+
+    void UpdateCardDisplay(List<PlayerScript> playersWon)
+    {
+        UpdateCardDisplay();
+    }
+
+    void UpdateCardDisplay()
+    {
+        if (Deck.instance.Cards != null)
         {
-            var deckCount = DeckManager.instance.Deck.Cards.Count(x => x.Status == CardStatus.InDeck);
-            if (deckCount != previousDeckCount)
-            {
-                Text.text = "Draw pile (" + deckCount + ")";
+            var deckCount = Deck.instance.Cards.Count(x => x.Status == CardStatus.InDeck);
+            Text.text = "Draw pile (" + deckCount + ")";
 
-                Card1.SetActive(deckCount >= 1);
-                Card2.SetActive(deckCount >= 2);
-                Card3.SetActive(deckCount >= 3);
-
-                previousDeckCount = deckCount;
-            }
+            Card1.SetActive(deckCount >= 1);
+            Card2.SetActive(deckCount >= 2);
+            Card3.SetActive(deckCount >= 3);
         }
         else
         {

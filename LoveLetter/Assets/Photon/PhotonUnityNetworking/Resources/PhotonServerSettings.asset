@@ -39,6 +39,9 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - RPC_SetActionText
+  - RPC_SetGameText
+  - SyncDeck
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 0
