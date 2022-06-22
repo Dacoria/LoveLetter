@@ -28,7 +28,7 @@ public class DiscardPileScript : MonoBehaviour
         ActionEvents.GameEnded -= UpdateCardDisplay;
     }
 
-    void UpdateCardDisplay(List<PlayerScript> playersWon)
+    void UpdateCardDisplay(object o)
     {
         UpdateCardDisplay();
     }
@@ -54,7 +54,7 @@ public class DiscardPileScript : MonoBehaviour
             if (deckDiscardedCount > 0)
             {
                 var cardOnTop = deckDiscardedCount == 1 ? Card1Sprite : deckDiscardedCount == 2 ? Card2Sprite : Card3Sprite;
-                cardOnTop.sprite = deckDiscarded.OrderByDescending(x => x.StatusChangeTime).First().Character.Sprite;
+                cardOnTop.sprite = MonoHelper.Instance.GetCharacterSprite(deckDiscarded.OrderByDescending(x => x.StatusChangeTime).First().Character.Type);
             }
         }
         else

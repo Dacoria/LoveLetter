@@ -36,10 +36,7 @@ public static class Utils
             var valueToInject = getValueToInject(propertyType, componentInject, monoBehaviour);
             injectableProperty.SetValue(monoBehaviour, valueToInject);
         }
-    }
-
-    public static Card GetCard(this int cardId) => Deck.instance.Cards.Single(x => x.Id == cardId);
-    
+    }    
 
     private static object getValueToInject(Type type, ComponentInject componentInject, MonoBehaviour monoBehaviour)
     {

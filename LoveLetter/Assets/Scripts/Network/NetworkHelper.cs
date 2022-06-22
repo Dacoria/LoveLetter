@@ -93,7 +93,8 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
 
     public GameObject GetMyPlayerGo() => GetPlayerGo(PhotonNetwork.LocalPlayer.ActorNumber);
 
-    public Player GetPlayer(int actorNr)  =>PlayerList.FirstOrDefault(x => x.ActorNumber == actorNr);
+    public Player GetPlayerByActorNr(int actorNr) => PlayerList.FirstOrDefault(x => x.ActorNumber == actorNr);
+    public PlayerScript GetPlayerById(int id) => GetPlayers().FirstOrDefault(x => x.PlayerId == id);
 
     public GameObject GetPlayerGo(int actorNr)
     {

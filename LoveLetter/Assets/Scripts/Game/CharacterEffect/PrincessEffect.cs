@@ -1,9 +1,9 @@
 ﻿
-public class PrincessEffect : ICharacterEffect
+public class PrincessEffect : CharacterEffect
 {
-    public CharacterType CharacterType => CharacterType.Princess;
+    public override CharacterType CharacterType => CharacterType.Princess;
 
-    public bool DoEffect(PlayerScript player, int cardId)
+    public override bool DoEffect(PlayerScript player, int cardId)
     {
         Text.ActionSync(player.PlayerName + " discarded the princess - instant lose");
         player.PlayerStatus = PlayerStatus.Intercepted;

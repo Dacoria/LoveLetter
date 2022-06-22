@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 
-public class PrinceEffect : ICharacterEffect
+public class PrinceEffect : CharacterEffect
 {
-    public CharacterType CharacterType => CharacterType.Prince;
+    public override CharacterType CharacterType => CharacterType.Prince;
 
     private PlayerScript currentPlayer;
     private int currentCardId;
 
-    public bool DoEffect(PlayerScript player, int cardId)
+    public override bool DoEffect(PlayerScript player, int cardId)
     {
         if (!CanDoEffect(player, cardId))
         {
@@ -48,13 +48,13 @@ public class PrinceEffect : ICharacterEffect
 
     private Card GetOtherCard(PlayerScript player, int cardId)
     {
-        return Deck.instance.Cards.First(x => x?.Player == player && x.Id != cardId);
+        return Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == player && x.Id != cardId);
     }
 
     public void ChoosePlayer(string optionSelectedPlayer)
     {
-        var currentCardPlayer = Deck.instance.Cards.Single(x => x?.Player?.PlayerName == optionSelectedPlayer && x.Id != currentCardId);
-        var playerOfCard = currentCardPlayer.Player;
+        var currentCardPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer && x.Id != currentCardId);
+        var playerOfCard = currentCardPlayer.PlayerId.GetPlayer();
 
         currentCardPlayer.Status = CardStatus.InDiscard;
 

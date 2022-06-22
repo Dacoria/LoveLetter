@@ -28,7 +28,7 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: 
+  DevRegion: eu
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -42,6 +42,13 @@ MonoBehaviour:
   - RPC_SetActionText
   - RPC_SetGameText
   - SyncDeck
+  - RPC_AE_EndCharacterEffect
+  - RPC_AE_GameEnded
+  - RPC_AE_NewGameStarted
+  - RPC_AE_NewPlayerTurn
+  - RPC_AE_PlayerStatusChange
+  - RPC_AE_StartCharacterEffect
+  - RPC_SyncDeck
   DisableAutoOpenWizard: 1
   ShowSettings: 0
-  DevRegionSetOnce: 0
+  DevRegionSetOnce: 1

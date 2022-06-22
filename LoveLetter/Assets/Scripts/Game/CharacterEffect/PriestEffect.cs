@@ -1,14 +1,14 @@
 ﻿
 using System.Linq;
 
-public class PriestEffect : ICharacterEffect
+public class PriestEffect : CharacterEffect
 {
-    public CharacterType CharacterType => CharacterType.Priest;
+    public override CharacterType CharacterType => CharacterType.Priest;
 
     private PlayerScript currentPlayer;
     private int currentCardId;
 
-    public bool DoEffect(PlayerScript player, int cardId)
+    public override bool DoEffect(PlayerScript player, int cardId)
     {
         currentPlayer = player;
         currentCardId = cardId;
@@ -33,7 +33,7 @@ public class PriestEffect : ICharacterEffect
 
     public void ChoosePlayer(string optionSelectedPlayer)
     {
-        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.Player?.PlayerName == optionSelectedPlayer);
+        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
 
         Text.ActionSync("Priest watches the card of " + optionSelectedPlayer);
         Text.ActionLocal("Card in hand of " + optionSelectedPlayer + " is " + currentCardOtherPlayer.Character.Type);

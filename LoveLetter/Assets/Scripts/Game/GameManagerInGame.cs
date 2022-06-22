@@ -4,13 +4,7 @@ using UnityEngine;
 public partial class GameManager : MonoBehaviour
 {
     private int CurrentPlayerIndex;
-    private PlayerScript CurrentPlayer() => AllPlayers[CurrentPlayerIndex];
-
-
-    private void GiveCardToCurrentPlayer()
-    {
-        DealCardToPlayer(CurrentPlayer());
-    }
+    private PlayerScript CurrentPlayer() => AllPlayers[CurrentPlayerIndex];         
 
     public void PlayCard(int cardId, PlayerScript player)
     {
@@ -31,7 +25,9 @@ public partial class GameManager : MonoBehaviour
     public void CardEffectPlayed(int cardId, PlayerScript player)
     {
         RemoveCard(cardId, player);
-        ActionEvents.EndCharacterEffect?.Invoke(player, cardId.GetCard().Character.Type, cardId);
+        Deck.instance.SyncDeck();
+
+        NetworkActionEvents.instance.EndCharacterEffect(player, cardId.GetCard().Character.Type, cardId);
 
         if (!EndOfGame())
         {
@@ -41,7 +37,7 @@ public partial class GameManager : MonoBehaviour
         {
             GameEnded = true;
             var winners = CheckWinners();
-            ActionEvents.GameEnded?.Invoke(winners);
+            NetworkActionEvents.instance.GameEnded(winners);
             
         }
     }  
@@ -51,7 +47,7 @@ public partial class GameManager : MonoBehaviour
         var card = cardId.GetCard();
         card.Status = CardStatus.InDiscard;
         
-        var remainingCard = Deck.instance.Cards.FirstOrDefault(x => x.Player == player);
+        var remainingCard = Deck.instance.Cards.FirstOrDefault(x => x.PlayerId.GetPlayer() == player);
         if(remainingCard != null)
         {
             remainingCard.IndexOfCardInHand = 1;
@@ -67,8 +63,10 @@ public partial class GameManager : MonoBehaviour
         while (CurrentPlayer().PlayerStatus == PlayerStatus.Intercepted);
         
         CurrentPlayer().PlayerStatus = PlayerStatus.Normal;
-        GiveCardToCurrentPlayer();
-        ActionEvents.NewPlayerTurn?.Invoke();
+        DealCardToPlayer(CurrentPlayer());
+
+        Deck.instance.SyncDeck();
+        NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer());
     }
 
     private void DoCardEffect(int cardId, PlayerScript player)
@@ -78,12 +76,12 @@ public partial class GameManager : MonoBehaviour
 
         Debug.Log(player.PlayerName + " - DoCardEffect -> " + card.Character.Type);
         charSettings.CharacterEffect.DoEffect(player, cardId);
-        ActionEvents.StartCharacterEffect?.Invoke(player, card.Character.Type, cardId);
+        NetworkActionEvents.instance.StartCharacterEffect(player, card.Character.Type, cardId);
     }
 
     private void DealCardToPlayer(PlayerScript player)
     {
         Deck.instance.PlayerDrawsCardFromPile(player);
-        GameText.text = "Turn: " + player.PlayerName;
+        Text.GameSync("Turn: " + player.PlayerName);
     }
 }

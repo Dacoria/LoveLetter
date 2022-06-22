@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-public class ChancellorEffect : ICharacterEffect
+public class ChancellorEffect : CharacterEffect
 {
-    public CharacterType CharacterType => CharacterType.Chancellor;
+    public override CharacterType CharacterType => CharacterType.Chancellor;
 
     private PlayerScript currentPlayer;
     private int currentCardId;
 
-    public bool DoEffect(PlayerScript player, int cardId)
+    public override bool DoEffect(PlayerScript player, int cardId)
     {
         currentPlayer = player;
         currentCardId = cardId;
@@ -32,7 +32,7 @@ public class ChancellorEffect : ICharacterEffect
             return true;
         }
 
-        cardOptions = Deck.instance.Cards.Where(x => x?.Player == player && x.Id != currentCardId).Select(x => x.Character.Type.ToString()).ToList();
+        cardOptions = Deck.instance.Cards.Where(x => x?.PlayerId.GetPlayer() == player && x.Id != currentCardId).Select(x => x.Character.Type.ToString()).ToList();
         modalGo.SetOptions(ChooseCardAtBottom, "Choose card to put at bottom of pile", cardOptions);
         
         Text.ActionSync("Chancellor played...");
@@ -43,7 +43,7 @@ public class ChancellorEffect : ICharacterEffect
 
     public void ChooseCardAtBottom(string optionCardAtBottom)
     {
-        var cardToPutAtBottom = Deck.instance.Cards.First(x => x?.Player == currentPlayer && x.Id != currentCardId && x.Character.Type.ToString() == optionCardAtBottom);
+        var cardToPutAtBottom = Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == currentPlayer && x.Id != currentCardId && x.Character.Type.ToString() == optionCardAtBottom);
 
         cardToPutAtBottom.Status = CardStatus.InDeck;
         Deck.instance.Cards.Remove(cardToPutAtBottom);

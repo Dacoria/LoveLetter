@@ -23,7 +23,7 @@ public class ExcludedPileScript : MonoBehaviour
         ActionEvents.GameEnded -= UpdateCardDisplay;
     }
 
-    void UpdateCardDisplay(List<PlayerScript> playersWon)
+    void UpdateCardDisplay(object o)
     {
         UpdateCardDisplay();
     }
@@ -37,7 +37,7 @@ public class ExcludedPileScript : MonoBehaviour
 
             if (GameManager.instance.GameEnded)
             {
-                Card1Sprite.sprite = deckExclusions.First().Character.Sprite;
+                Card1Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(deckExclusions.First().Character.Type);
             }
             
             Text.text = "Excluded pile (" + exclusionCount + ")";

@@ -19,9 +19,10 @@ public partial class GameManager : MonoBehaviour
         Deck.instance.CreateDeck();
 
         StartNewGameForPlayers();
-        GiveCardToCurrentPlayer();
+        DealCardToPlayer(CurrentPlayer());
 
-        ActionEvents.NewGameStarted?.Invoke();
+        Deck.instance.SyncDeck();
+        NetworkActionEvents.instance.NewGameStarted();
     }
 
     private void ResetGame()
@@ -35,7 +36,7 @@ public partial class GameManager : MonoBehaviour
 
         CurrentPlayerIndex = 0;
         GameEnded = false;
-        PlayersWhoDiscardedSpies = new List<PlayerScript>();
+        PlayersWhoDiscardedSpies = new List<int>();
         Text.ActionSync(""); // clear actions
     }
 

@@ -1,9 +1,9 @@
 ﻿
-public class SpyEffect : ICharacterEffect
+public class SpyEffect : CharacterEffect
 {
-    public CharacterType CharacterType => CharacterType.Spy;
+    public override CharacterType CharacterType => CharacterType.Spy;
 
-    public bool DoEffect(PlayerScript player, int cardId)
+    public override bool DoEffect(PlayerScript player, int cardId)
     {
         Text.ActionSync(player.PlayerName + " played a spy");
         GameManager.instance.CardEffectPlayed(cardId, player);

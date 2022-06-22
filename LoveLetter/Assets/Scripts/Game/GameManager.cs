@@ -1,4 +1,5 @@
 
+using Photon.Pun;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,16 +7,14 @@ using UnityEngine;
 public partial class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
     
     private List<PlayerScript> AllPlayers;
-    public TMP_Text GameText;
-    public List<PlayerScript> PlayersWhoDiscardedSpies;
-
+    public List<int> PlayersWhoDiscardedSpies;
 
     private void Awake()
     {
         instance = this;
-        GameText.text = "Waiting for game to start";
+        Text.GameLocal("Waiting for game to start");
+        this.ComponentInject();
     }
 }

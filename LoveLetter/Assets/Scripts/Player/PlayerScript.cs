@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
+    public int PlayerId; // in offline mode een oplopend getal (voor dummies). voor normale games het actorNr vd player (natuurlijk... )
+
     [ComponentInject] 
     private TMP_Text PlayerText;
 
@@ -20,11 +22,11 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 var oldValue = _playerStatus;
                 _playerStatus = value;
-                ActionEvents.PlayerStatusChange?.Invoke(this, oldValue);
+                NetworkActionEvents.instance.PlayerStatusChange(this, oldValue);
 
                 if(_playerStatus == PlayerStatus.Intercepted)
                 {
-                    var cardsOfPlayer = Deck.instance.Cards.Where(x => x.Player == this).ToList();
+                    var cardsOfPlayer = Deck.instance.Cards.Where(x => x.PlayerId == PlayerId).ToList();
                     for(int i = 0; i < cardsOfPlayer.Count; i++)
                     {
                         cardsOfPlayer[i].Status = CardStatus.InDiscard;
@@ -34,8 +36,8 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         }
     }
 
-    public Card CurrentCard1() => Deck.instance.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 1);
-    public Card CurrentCard2() => Deck.instance.Cards.FirstOrDefault(x => x.Player == this && x.IndexOfCardInHand == 2);
+    public Card CurrentCard1() => Deck.instance.Cards.FirstOrDefault(x => x.PlayerId == PlayerId && x.IndexOfCardInHand == 1);
+    public Card CurrentCard2() => Deck.instance.Cards.FirstOrDefault(x => x.PlayerId == PlayerId && x.IndexOfCardInHand == 2);
 
     private void Awake()
     {
@@ -45,40 +47,40 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         // PlayerName = PhotonNetwork.NickName;
     }
 
+    private void Start()
+    {
+        ActionEvents.PlayerStatusChange += OnPlayerStatusChange;
+    }
+
+    private void OnPlayerStatusChange(PlayerScript ps, PlayerStatus oldPStatus)
+    {
+        if(ps == this)
+        {
+            // dit ping pongt wel terug met events -> maar op een gegeven moment verandert de status niet meer (en stopt de netwerk update loop)
+            ps.PlayerStatus = ps.PlayerStatus;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        ActionEvents.PlayerStatusChange -= OnPlayerStatusChange;
+    }
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instantiationData = info.photonView.InstantiationData;
         var name = instantiationData[0].ToString();
+
+        if(PhotonNetwork.OfflineMode)
+        {
+            PlayerId = int.Parse(instantiationData[1].ToString());
+        }
+        else
+        {
+            PlayerId = info.photonView.OwnerActorNr;
+        }
+
         PlayerText.text = name;
         PlayerName = name;
-    }
-
-    private void Start()
-    {
-        ActionEvents.NewGameStarted += OnNewGameStarted;
-        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
-        ActionEvents.GameEnded += OnGameEnded;
-    }
-
-    private void OnNewGameStarted()
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    private void OnNewPlayerTurn()
-    {
-        //throw new System.NotImplementedException();
-    }
-
-    private void OnGameEnded(List<PlayerScript> playersWon)
-    {
-        //throw new System.NotImplementedException();
-    }   
-
-    private void OnDestroy()
-    {
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
-        ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
-        ActionEvents.GameEnded -= OnGameEnded;
     }
 }

@@ -2,15 +2,15 @@
 using System;
 using System.Linq;
 
-public class GuardEffect: ICharacterEffect
+public class GuardEffect: CharacterEffect
 {
-    public CharacterType CharacterType => CharacterType.Guard;
+    public override CharacterType CharacterType => CharacterType.Guard;
 
 
     private PlayerScript currentPlayer;
     private int currentCardId;
 
-    public bool DoEffect(PlayerScript player, int cardId)
+    public override bool DoEffect(PlayerScript player, int cardId)
     {
         currentPlayer = player;
         currentCardId = cardId;
@@ -48,16 +48,16 @@ public class GuardEffect: ICharacterEffect
     public void ChooseCharacterType(string optionSelectedCharacterType)
     {
         var selectedCharacterType = Enum.Parse<CharacterType>(optionSelectedCharacterType);
-        var currentCardPlayer = Deck.instance.Cards.Single(x => x?.Player?.PlayerName == selectedPlayerName);
+        var currentCardPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == selectedPlayerName);
 
         if(currentCardPlayer.Character.Type == selectedCharacterType)
         {
-            Text.ActionSync("Guard chose right! " + currentCardPlayer.Player.PlayerName + " has a " + optionSelectedCharacterType + " and is now intercepted");
-            currentCardPlayer.Player.PlayerStatus = PlayerStatus.Intercepted;            
+            Text.ActionSync("Guard chose right! " + currentCardPlayer.PlayerId.GetPlayer().PlayerName + " has a " + optionSelectedCharacterType + " and is now intercepted");
+            currentCardPlayer.PlayerId.GetPlayer().PlayerStatus = PlayerStatus.Intercepted;            
         }
         else
         {
-            Text.ActionSync("Guard chose wrong! " + currentCardPlayer.Player.PlayerName + " does not have a " + optionSelectedCharacterType);
+            Text.ActionSync("Guard chose wrong! " + currentCardPlayer.PlayerId.GetPlayer().PlayerName + " does not have a " + optionSelectedCharacterType);
         }
 
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);

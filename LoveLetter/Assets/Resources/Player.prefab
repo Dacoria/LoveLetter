@@ -98,6 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3120c7f96e17bb848814deaa3050f67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Card:
+    Id: 0
+    PlayerId: 0
+    IndexOfCardInHand: 0
+    Character:
+      Type: 0
+      Description: 
 --- !u!61 &2242563915190439049
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -309,7 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265912d8dba699842a191b4e213a382c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerNameText: {fileID: 1941673923540032226}
 --- !u!1 &1941673923665311740
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,6 +418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d2152118e768043baae7a427a40b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerId: 0
   PlayerName: 
   _playerStatus: 0
 --- !u!114 &1941673923665311743
@@ -548,6 +555,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3120c7f96e17bb848814deaa3050f67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Card:
+    Id: 0
+    PlayerId: 0
+    IndexOfCardInHand: 0
+    Character:
+      Type: 0
+      Description: 
 --- !u!61 &491663244061924898
 BoxCollider2D:
   m_ObjectHideFlags: 0

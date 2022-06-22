@@ -29,13 +29,16 @@ public partial class GameManager : MonoBehaviour
             }
         }
 
-        GameText.text = "Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.PlayerName).ToList()) + " Wins!";
 
         var playersLeft = AllPlayers.Where(x => x.PlayerStatus != PlayerStatus.Intercepted).ToList();
-        if (playersLeft.Count() == 1 && PlayersWhoDiscardedSpies.Any(x => x == playersLeft[0]))
+        var extraSpyText = "";
+        if (playersLeft.Count() == 1 && PlayersWhoDiscardedSpies.Any(x => x == playersLeft[0].PlayerId))
         {
-            GameText.text = GameText.text + " + Spy bonus";
-        }
+            extraSpyText = " + Spy bonus";
+        }       
+
+        Text.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.PlayerName).ToList()) + " Wins!" + extraSpyText);
+
 
         return playersWithHighestScore;
     }

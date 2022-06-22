@@ -1,14 +1,14 @@
 ﻿
 using System.Linq;
 
-public class KingEffect: ICharacterEffect
+public class KingEffect: CharacterEffect
 {
-    public CharacterType CharacterType => CharacterType.King;
+    public override CharacterType CharacterType => CharacterType.King;
 
     private PlayerScript currentPlayer;
     private int currentCardId;
 
-    public bool DoEffect(PlayerScript player, int cardId)
+    public override bool DoEffect(PlayerScript player, int cardId)
     {
         if(!CanDoEffect(player, cardId))
         {
@@ -49,16 +49,16 @@ public class KingEffect: ICharacterEffect
 
     private Card GetOtherCard(PlayerScript player, int cardId)
     {
-        return Deck.instance.Cards.First(x => x?.Player == player && x.Id != cardId);
+        return Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == player && x.Id != cardId);
     }
 
     public void ChoosePlayer(string optionSelectedPlayer)
     {
-        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.Player?.PlayerName == optionSelectedPlayer);
+        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
         var yourOtherCard = GetOtherCard(currentPlayer, currentCardId);
 
-        yourOtherCard.Player = currentCardOtherPlayer.Player;
-        currentCardOtherPlayer.Player = currentPlayer;
+        yourOtherCard.PlayerId = currentCardOtherPlayer.PlayerId;
+        currentCardOtherPlayer.PlayerId = currentPlayer.PlayerId;
 
         Text.ActionSync(currentPlayer.PlayerName + " swapped cards with " + optionSelectedPlayer);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);

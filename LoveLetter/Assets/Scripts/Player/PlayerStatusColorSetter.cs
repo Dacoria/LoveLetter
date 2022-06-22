@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerStatusColorSetter : MonoBehaviour
 {
-    [ComponentInject] private TMPro.TMP_Text playerNameText;
+    [ComponentInject] private TMP_Text playerNameText;
     [ComponentInject] private PlayerScript player;
 
     private void Awake()
@@ -18,6 +19,11 @@ public class PlayerStatusColorSetter : MonoBehaviour
         ActionEvents.PlayerStatusChange += OnPlayerStatusChange;
         ActionEvents.NewGameStarted += OnNewGameStarted;
         ActionEvents.GameEnded += OnGameEnded;
+        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+    }
+    private void OnNewPlayerTurn(PlayerScript currentPlayer)
+    {
+        playerNameText.fontStyle = player == currentPlayer ? FontStyles.Underline : FontStyles.Normal;
     }
 
     private void OnNewGameStarted()
@@ -27,9 +33,14 @@ public class PlayerStatusColorSetter : MonoBehaviour
 
     private void OnGameEnded(List<PlayerScript> playersWon)
     {
-        if(playersWon.Any(x => x == player))
+        playerNameText.fontStyle = FontStyles.Normal;
+        if (playersWon.Any(x => x == player))
         {
             playerNameText.color = Color.green;
+        }
+        else if(playerNameText.color == Color.blue)
+        {
+            playerNameText.color = Color.white;
         }
     }
 
@@ -62,5 +73,6 @@ public class PlayerStatusColorSetter : MonoBehaviour
         ActionEvents.PlayerStatusChange -= OnPlayerStatusChange;
         ActionEvents.NewGameStarted -= OnNewGameStarted;
         ActionEvents.GameEnded -= OnGameEnded;
+        ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
     }
 }

@@ -32,7 +32,7 @@ public class ShowPlayerCards : MonoBehaviour
         ActionEvents.GameEnded -= UpdateCardDisplay;
     }
 
-    void UpdateCardDisplay(List<PlayerScript> playersWon)
+    void UpdateCardDisplay(object o)
     {
         UpdateCardDisplay();
     }
@@ -53,11 +53,11 @@ public class ShowPlayerCards : MonoBehaviour
 
             if (card1 != null)
             {
-                Card1Sprite.sprite = card1.Character.Sprite;
+                Card1Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(card1.Character.Type);
             }
             if (card2 != null)
             {
-                Card2Sprite.sprite = card2.Character.Sprite;
+                Card2Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(card2.Character.Type);
             }           
         }
         else

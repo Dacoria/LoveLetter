@@ -1,9 +1,15 @@
 ﻿using Photon.Pun;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public static  class Extensions
-{    public static object GetValue(this ExitGames.Client.Photon.Hashtable customProps, string key)
+{
+    public static Card GetCard(this int cardId) => Deck.instance.Cards.Single(x => x.Id == cardId);
+    public static PlayerScript GetPlayer(this int playerId) => NetworkHelper.Instance.GetPlayerById(playerId);
+
+
+    public static object GetValue(this ExitGames.Client.Photon.Hashtable customProps, string key)
     {
         if(customProps.TryGetValue(key, out object value))
         {

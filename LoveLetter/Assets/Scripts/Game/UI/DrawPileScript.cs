@@ -26,7 +26,7 @@ public class DrawPileScript : MonoBehaviour
         ActionEvents.GameEnded -= UpdateCardDisplay;
     }
 
-    void UpdateCardDisplay(List<PlayerScript> playersWon)
+    void UpdateCardDisplay(object o)
     {
         UpdateCardDisplay();
     }

@@ -3,10 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using ExitGames.Client.Photon;
 
 public class Deck : MonoBehaviour
 {
     public static Deck instance;
+
     public List<Card> Cards;
 
     [ComponentInject] private PhotonView photonView;
@@ -16,14 +18,14 @@ public class Deck : MonoBehaviour
         instance = this;
         this.ComponentInject();
     }
-
+      
     public Card PlayerDrawsCardFromPile(PlayerScript player)
     {
         var cardToDeal = instance.Cards.First(x => x.Status == CardStatus.InDeck);
 
         cardToDeal.Status = CardStatus.InPlayerHand;
-        cardToDeal.Player = player;
-        cardToDeal.IndexOfCardInHand = instance.Cards.Count(x => x.Player == player);
+        cardToDeal.PlayerId = player.PlayerId;
+        cardToDeal.IndexOfCardInHand = instance.Cards.Count(x => x.PlayerId.GetPlayer() == player);
 
         return cardToDeal;
     }
@@ -31,20 +33,36 @@ public class Deck : MonoBehaviour
     public void CreateDeck()
     {
         Cards = DeckSettings.CreateNewDeck();
-        photonView.RPC("SyncDeck", RpcTarget.All, Cards);
+        SyncDeck();
+    }
+
+    public void SyncDeck()
+    {
+        var cardsToSend = JsonUtility.ToJson(new CardWrapper { Cards = Cards});
+        photonView.RPC("RPC_SyncDeck", RpcTarget.Others, cardsToSend);
     }
 
     [PunRPC]
-    public void SyncDeck(List<Card> cards)
+    public void RPC_SyncDeck(string cardsJson)
     {
-        Cards = cards;
+        var cardWrapper = JsonUtility.FromJson<CardWrapper>(cardsJson);
+        Cards = cardWrapper.Cards;
     }
 }
 
-[SerializeField]
+[Serializable]
+public class CardWrapper
+{
+    public List<Card> Cards;
+}
+
+[Serializable]
 public class Card
 {
     public int Id;
+    public int PlayerId; // alleen gevuld als een player deze kaart in de hand heeft
+    public int IndexOfCardInHand; // player kan meerdere kaarten in hand hebben --> dit bepaalt de index daarvan (0, 1, 2)
+
     public Character Character;
     public DateTime StatusChangeTime { get; private set; }
     private CardStatus _status;
@@ -60,19 +78,16 @@ public class Card
                 {
                     if(Character.Type == CharacterType.Spy)
                     {
-                        GameManager.instance.PlayersWhoDiscardedSpies.Add(Player);
+                        GameManager.instance.PlayersWhoDiscardedSpies.Add(PlayerId);
                     }
 
-                    Player = null;
+                    PlayerId = -1;
                 }
                 _status = value;
                 StatusChangeTime = DateTime.Now;
             }
         }
-    }
-    public PlayerScript Player; // alleen gevuld als een player deze kaart in de hand heeft
-    public bool IsBeingPlayed;
-    public int IndexOfCardInHand; // player kan meerdere kaarten in hand hebben --> dit bepaalt de index daarvan (0, 1, 2)
+    }    
 }
 
 public enum CardStatus
@@ -115,7 +130,6 @@ public static class DeckSettings
         var result = new Character
         {
             Type = characterType,
-            Sprite = MonoHelper.Instance.GetCharacterSprite(characterType),
             Description = GetCharacterDescription(characterType)
         };
 
@@ -179,11 +193,11 @@ public static class DeckSettings
     }
 }
 
+[Serializable]
 public class Character
 {
     public CharacterType Type;
     public string Description;
-    public Sprite Sprite;
 }
 
 public class CharacterSettings
