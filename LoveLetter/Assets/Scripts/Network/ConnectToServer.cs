@@ -43,7 +43,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         if(ConnectMethod == ConnectMethod.Offline)
         {
             PhotonNetwork.JoinRandomRoom();
-            SceneManager.LoadScene(Statics.SCENE_LEVEL1);
+            LevelLoader.instance.LoadScene(Statics.SCENE_LEVEL1, false);
         }
         else
         {
@@ -65,7 +65,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         }
         else if (ConnectMethod == ConnectMethod.Online_Manual_Setup)
         {
-            SceneManager.LoadScene(Statics.SCENE_LOBBY);
+            LevelLoader.instance.LoadScene(Statics.SCENE_LOBBY, false);
         }
     }    
 
@@ -76,8 +76,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.NickName = PhotonNetwork.IsMasterClient ? "Host" : "Client";
         }
-
-        PhotonNetwork.LoadLevel(Statics.SCENE_LEVEL1);
+        LevelLoader.instance.LoadScene(Statics.SCENE_LOBBY, true);
     }
 }
 

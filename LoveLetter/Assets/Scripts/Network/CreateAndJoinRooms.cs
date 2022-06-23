@@ -13,7 +13,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         if(!PhotonNetwork.IsConnected)
         {
-            SceneManager.LoadScene(Statics.SCENE_LOADING);
+            LevelLoader.instance.LoadScene(Statics.SCENE_LOADING, false);
             return;
         }
 
@@ -21,7 +21,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.Disconnect();
             //PhotonNetwork.ConnectUsingSettings(PhotonNetwork.PhotonServerSettings.AppSettings, startInOfflineMode: false);
-            SceneManager.LoadScene(Statics.SCENE_LOADING);
+            LevelLoader.instance.LoadScene(Statics.SCENE_LOADING, false);
         }
     }
 
