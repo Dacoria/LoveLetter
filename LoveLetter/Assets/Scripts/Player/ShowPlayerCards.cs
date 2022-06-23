@@ -9,7 +9,6 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
 
     public CardDisplay Card1Display;
     public CardDisplay Card2Display;
-    public Sprite BackgroundCard;
 
     private SpriteRenderer Card1Sprite;
     private SpriteRenderer Card2Sprite;
@@ -42,11 +41,11 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
 
             if (card1 != null)
             {
-                Card1Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card1.Character.Type) : BackgroundCard;                                
+                Card1Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card1.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
             }
             if (card2 != null)
             {
-                Card2Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : BackgroundCard;
+                Card2Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
             }           
         }
         else

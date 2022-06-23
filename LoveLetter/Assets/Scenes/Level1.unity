@@ -2781,6 +2781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311cc533d0c233141929abafc615a9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BackgroundCardSprite: {fileID: 21300000, guid: 82e38a347ee1f094bb21eb9e14a42947, type: 3}
   CharacterSprites:
   - CharacterType: 0
     Sprite: {fileID: 21300000, guid: cd1d027f22ec19a4eaa183e6dd0ac13c, type: 3}

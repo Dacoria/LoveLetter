@@ -9,8 +9,6 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract
     public SpriteRenderer Card2Sprite;
     public SpriteRenderer Card3Sprite;
 
-    public Sprite BackgroundCard;
-
     public TMP_Text Text;
 
     private void Start()
@@ -32,9 +30,9 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract
             Card2Sprite.gameObject.SetActive(deckDiscardedCount >= 2);
             Card3Sprite.gameObject.SetActive(deckDiscardedCount >= 3);
 
-            Card1Sprite.sprite = BackgroundCard;
-            Card2Sprite.sprite = BackgroundCard;
-            Card3Sprite.sprite = BackgroundCard;
+            Card1Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;
+            Card2Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;
+            Card3Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;
 
             if (deckDiscardedCount > 0)
             {

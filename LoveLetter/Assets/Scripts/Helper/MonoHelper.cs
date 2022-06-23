@@ -11,6 +11,8 @@ public class MonoHelper : MonoBehaviour
 
     public static MonoHelper Instance;
 
+    public Sprite BackgroundCardSprite;
+
     public ModalScript GetModal()
     {
         return ModalScript;
