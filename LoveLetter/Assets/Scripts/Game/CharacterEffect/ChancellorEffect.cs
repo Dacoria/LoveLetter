@@ -18,17 +18,17 @@ public class ChancellorEffect : CharacterEffect
         var cardsInDeck = Deck.instance.Cards.Where(x => x.Status == CardStatus.InDeck).ToList();
         if (cardsInDeck.Count() >= 2)
         {
-            Deck.instance.PlayerDrawsCardFromPile(player);
-            Deck.instance.PlayerDrawsCardFromPile(player);
+            Deck.instance.PlayerDrawsCardFromPileSync(player.PlayerId);
+            Deck.instance.PlayerDrawsCardFromPileSync(player.PlayerId);
         }
         else if (cardsInDeck.Count() == 1)
         {
-            Deck.instance.PlayerDrawsCardFromPile(player);
+            Deck.instance.PlayerDrawsCardFromPileSync(player.PlayerId);
         }
         else
         {
             Text.ActionSync("Chancellor has no cards to get from the deck");
-            GameManager.instance.CardEffectPlayed(cardId, player);
+            GameManager.instance.CardEffectPlayed(cardId, player.PlayerId);
             return true;
         }
 
@@ -45,9 +45,7 @@ public class ChancellorEffect : CharacterEffect
     {
         var cardToPutAtBottom = Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == currentPlayer && x.Id != currentCardId && x.Character.Type.ToString() == optionCardAtBottom);
 
-        cardToPutAtBottom.Status = CardStatus.InDeck;
-        Deck.instance.Cards.Remove(cardToPutAtBottom);
-        Deck.instance.Cards.Add(cardToPutAtBottom);
+        Deck.instance.PutCardAtBottom(cardToPutAtBottom.Id);
 
         cardOptions.Remove(cardOptions.First(x => x == optionCardAtBottom));
 
@@ -59,7 +57,7 @@ public class ChancellorEffect : CharacterEffect
         }
 
         Text.ActionSync("Chancellor has placed card(s) at the bottom of the pile");
-        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
+        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
 

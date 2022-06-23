@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -14,18 +15,34 @@ public partial class GameManager : MonoBehaviour
             return;
         }
 
-        ResetGame();
+        ResetGameLocal();
 
-        Deck.instance.CreateDeck();
+        Deck.instance.CreateDeckSync();
+        DrawCardsForPlayersSync();
+        Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
 
-        StartNewGameForPlayers();
-        DealCardToPlayer(CurrentPlayer());
-
-        Deck.instance.SyncDeck();
-        NetworkActionEvents.instance.NewGameStarted();
+        NetworkActionEvents.instance.NewGameStarted(AllPlayers.Select(x => x.PlayerId).ToList(), CurrentPlayer().PlayerId);
     }
 
-    private void ResetGame()
+    private void OnNewGameStarted(List<int> playerIds, int currentPlayerId)
+    {
+        ResetGameLocal();
+
+        var playersMatch = playerIds.All(AllPlayers.Select(x => x.PlayerId).Contains);
+        var sameSize = playerIds.Count == AllPlayers.Count;
+
+        if(playersMatch && sameSize)
+        {
+            CurrentPlayerId = currentPlayerId;
+            return;
+        }
+        else
+        {
+            throw new Exception();
+        }
+    }
+
+    private void ResetGameLocal()
     {
         // bepaling wanneer alle spelers compleet zijn;
         AllPlayers = NetworkHelper.Instance.GetPlayers();
@@ -34,17 +51,17 @@ public partial class GameManager : MonoBehaviour
             player.PlayerStatus = PlayerStatus.Normal;
         }
 
-        CurrentPlayerIndex = 0;
+        CurrentPlayerId = AllPlayers[0].PlayerId;
         GameEnded = false;
         PlayersWhoDiscardedSpies = new List<int>();
         Text.ActionSync(""); // clear actions
     }
 
-    private void StartNewGameForPlayers()
+    private void DrawCardsForPlayersSync()
     {
         foreach (var player in AllPlayers)
         {
-            DealCardToPlayer(player);
+            Deck.instance.PlayerDrawsCardFromPileSync(player.PlayerId);
         }
     }
 }

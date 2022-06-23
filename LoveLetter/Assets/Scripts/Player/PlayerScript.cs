@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     private TMP_Text PlayerText;
 
     public string PlayerName;
-    public PlayerStatus _playerStatus;
+    private PlayerStatus _playerStatus;
     public PlayerStatus PlayerStatus
     {
         get => _playerStatus;
@@ -22,7 +22,8 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
             {
                 var oldValue = _playerStatus;
                 _playerStatus = value;
-                NetworkActionEvents.instance.PlayerStatusChange(this, oldValue);
+
+                NetworkActionEvents.instance.PlayerStatusChange(PlayerId, _playerStatus);
 
                 if(_playerStatus == PlayerStatus.Intercepted)
                 {
@@ -52,12 +53,12 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         ActionEvents.PlayerStatusChange += OnPlayerStatusChange;
     }
 
-    private void OnPlayerStatusChange(PlayerScript ps, PlayerStatus oldPStatus)
+    private void OnPlayerStatusChange(int playerId, PlayerStatus newPlayerStatus)
     {
-        if(ps == this)
+        if(playerId == PlayerId)
         {
             // dit ping pongt wel terug met events -> maar op een gegeven moment verandert de status niet meer (en stopt de netwerk update loop)
-            ps.PlayerStatus = ps.PlayerStatus;
+            PlayerStatus = newPlayerStatus;
         }
     }
 

@@ -1,112 +1,16 @@
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Photon.Pun;
-using ExitGames.Client.Photon;
-
-public class Deck : MonoBehaviour
-{
-    public static Deck instance;
-
-    public List<Card> Cards;
-
-    [ComponentInject] private PhotonView photonView;
-
-    public void Awake()
-    {
-        instance = this;
-        this.ComponentInject();
-    }
-      
-    public Card PlayerDrawsCardFromPile(PlayerScript player)
-    {
-        var cardToDeal = instance.Cards.First(x => x.Status == CardStatus.InDeck);
-
-        cardToDeal.Status = CardStatus.InPlayerHand;
-        cardToDeal.PlayerId = player.PlayerId;
-        cardToDeal.IndexOfCardInHand = instance.Cards.Count(x => x.PlayerId.GetPlayer() == player);
-
-        return cardToDeal;
-    }
-
-    public void CreateDeck()
-    {
-        Cards = DeckSettings.CreateNewDeck();
-        SyncDeck();
-    }
-
-    public void SyncDeck()
-    {
-        var cardsToSend = JsonUtility.ToJson(new CardWrapper { Cards = Cards});
-        photonView.RPC("RPC_SyncDeck", RpcTarget.Others, cardsToSend);
-    }
-
-    [PunRPC]
-    public void RPC_SyncDeck(string cardsJson)
-    {
-        var cardWrapper = JsonUtility.FromJson<CardWrapper>(cardsJson);
-        Cards = cardWrapper.Cards;
-    }
-}
-
-[Serializable]
-public class CardWrapper
-{
-    public List<Card> Cards;
-}
-
-[Serializable]
-public class Card
-{
-    public int Id;
-    public int PlayerId; // alleen gevuld als een player deze kaart in de hand heeft
-    public int IndexOfCardInHand; // player kan meerdere kaarten in hand hebben --> dit bepaalt de index daarvan (0, 1, 2)
-
-    public Character Character;
-    public DateTime StatusChangeTime { get; private set; }
-    private CardStatus _status;
-    public CardStatus Status
-    {
-        get => _status;
-        set
-        {
-            if (_status != value)
-            {
-
-                if(_status == CardStatus.InPlayerHand)
-                {
-                    if(Character.Type == CharacterType.Spy)
-                    {
-                        GameManager.instance.PlayersWhoDiscardedSpies.Add(PlayerId);
-                    }
-
-                    PlayerId = -1;
-                }
-                _status = value;
-                StatusChangeTime = DateTime.Now;
-            }
-        }
-    }    
-}
-
-public enum CardStatus
-{
-    InDeck,
-    InPlayerHand,
-    InDiscard,
-    Excluded
-}
+using System.Linq;
 
 public static class DeckSettings
 {
     public static List<Card> CreateNewDeck()
     {
         var characters = new List<Character>();
-        foreach(CharacterType characterType in Enum.GetValues(typeof(CharacterType)))
+        foreach (CharacterType characterType in Enum.GetValues(typeof(CharacterType)))
         {
             var charSettings = GetCharacterSettings(characterType);
-            for(int i = 0; i < charSettings.CountInDeck; i++)
+            for (int i = 0; i < charSettings.CountInDeck; i++)
             {
                 var newChar = CreateNewCharacter(characterType);
                 characters.Add(newChar);
@@ -115,17 +19,17 @@ public static class DeckSettings
 
         characters.Shuffle();
         var cards = characters.Select(character => new Card { Character = character, Status = CardStatus.InDeck }).ToList();
-        
-        for(int i = 0; i < cards.Count;i++)
+
+        for (int i = 0; i < cards.Count; i++)
         {
             cards[i].Id = i;
         }
-
         cards[0].Status = CardStatus.Excluded;
+
         return cards;
     }
 
-    public static Character CreateNewCharacter(CharacterType characterType)    
+    public static Character CreateNewCharacter(CharacterType characterType)
     {
         var result = new Character
         {
@@ -166,7 +70,7 @@ public static class DeckSettings
 
     }
 
-    
+
 
     public static Dictionary<CharacterType, CharacterSettings> CharacterCountInDeck = new Dictionary<CharacterType, CharacterSettings>()
     {
@@ -191,32 +95,4 @@ public static class DeckSettings
 
         return null;
     }
-}
-
-[Serializable]
-public class Character
-{
-    public CharacterType Type;
-    public string Description;
-}
-
-public class CharacterSettings
-{
-    public int Points;
-    public int CountInDeck;
-    public ICharacterEffect CharacterEffect;
-}
-
-public enum CharacterType
-{
-    Spy,
-    Guard,
-    Priest,
-    Baron,
-    Handmaid,
-    Prince,
-    Chancellor,
-    King,
-    Countess,
-    Princess
 }

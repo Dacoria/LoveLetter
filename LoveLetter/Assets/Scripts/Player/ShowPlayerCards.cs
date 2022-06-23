@@ -1,11 +1,15 @@
+using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShowPlayerCards : MonoBehaviour
+public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
 {
     [ComponentInject] private PlayerScript playerScript;
+    [ComponentInject] private PhotonView photonView;
+
     public CardDisplay Card1Display;
     public CardDisplay Card2Display;
+    public Sprite BackgroundCard;
 
     private SpriteRenderer Card1Sprite;
     private SpriteRenderer Card2Sprite;
@@ -19,25 +23,10 @@ public class ShowPlayerCards : MonoBehaviour
 
     private void Start()
     {
-        UpdateCardDisplay();
-        ActionEvents.NewGameStarted += UpdateCardDisplay;
-        ActionEvents.NewPlayerTurn += UpdateCardDisplay;
-        ActionEvents.GameEnded += UpdateCardDisplay;
+        UpdateCardDisplay();        
     }
 
-    private void OnDestroy()
-    {
-        ActionEvents.NewGameStarted -= UpdateCardDisplay;
-        ActionEvents.NewPlayerTurn -= UpdateCardDisplay;
-        ActionEvents.GameEnded -= UpdateCardDisplay;
-    }
-
-    void UpdateCardDisplay(object o)
-    {
-        UpdateCardDisplay();
-    }
-
-    private void UpdateCardDisplay()
+    public override void UpdateCardDisplay()
     {
         if (Deck.instance.Cards != null)
         {
@@ -53,11 +42,11 @@ public class ShowPlayerCards : MonoBehaviour
 
             if (card1 != null)
             {
-                Card1Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(card1.Character.Type);
+                Card1Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card1.Character.Type) : BackgroundCard;                                
             }
             if (card2 != null)
             {
-                Card2Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(card2.Character.Type);
+                Card2Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : BackgroundCard;
             }           
         }
         else

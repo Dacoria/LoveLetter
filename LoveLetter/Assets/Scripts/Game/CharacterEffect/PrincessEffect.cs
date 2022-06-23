@@ -8,7 +8,7 @@ public class PrincessEffect : CharacterEffect
         Text.ActionSync(player.PlayerName + " discarded the princess - instant lose");
         player.PlayerStatus = PlayerStatus.Intercepted;
 
-        GameManager.instance.CardEffectPlayed(cardId, player);
+        GameManager.instance.CardEffectPlayed(cardId, player.PlayerId);
         return true;
     }
 }

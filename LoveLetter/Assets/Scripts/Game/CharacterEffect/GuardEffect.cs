@@ -17,7 +17,7 @@ public class GuardEffect: CharacterEffect
 
         var modalGo = MonoHelper.Instance.GetModal();
 
-        var otherPlayers = NetworkHelper.Instance.GetOtherPlayers(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
+        var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if(otherPlayers.Any())
         {
             Text.ActionSync("Guard played...");
@@ -26,7 +26,7 @@ public class GuardEffect: CharacterEffect
         else
         {
             Text.ActionSync("Guard played, noone to select");
-            GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
+            GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
 
@@ -38,6 +38,7 @@ public class GuardEffect: CharacterEffect
     public void ChoosePlayer(string optionSelectedPlayer)
     {
         selectedPlayerName = optionSelectedPlayer;
+        Text.ActionSync("Guard selects " + selectedPlayerName + " to intercept...");
 
         var modalGo = MonoHelper.Instance.GetModal();
         var options = MonoHelper.Instance.GetCharacterTypes().Where(x => x != CharacterType).Select(x => x.ToString()).ToList();
@@ -60,7 +61,7 @@ public class GuardEffect: CharacterEffect
             Text.ActionSync("Guard chose wrong! " + currentCardPlayer.PlayerId.GetPlayer().PlayerName + " does not have a " + optionSelectedCharacterType);
         }
 
-        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
+        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
 

@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DestroyDummyPlayerScript : MonoBehaviour
@@ -14,7 +15,7 @@ public class DestroyDummyPlayerScript : MonoBehaviour
         ActionEvents.NewGameStarted += OnNewGameStarted;
     }
 
-    private void OnNewGameStarted()
+    private void OnNewGameStarted(List<int> p, int q)
     {
         Destroy(gameObject);
     }

@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class DiscardPileScript : MonoBehaviour
+public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract
 {
     public SpriteRenderer Card1Sprite;
     public SpriteRenderer Card2Sprite;
@@ -15,25 +15,10 @@ public class DiscardPileScript : MonoBehaviour
 
     private void Start()
     {
-        UpdateCardDisplay();
-        ActionEvents.NewGameStarted += UpdateCardDisplay;
-        ActionEvents.NewPlayerTurn += UpdateCardDisplay;
-        ActionEvents.GameEnded += UpdateCardDisplay;
+        UpdateCardDisplay();       
     }
 
-    private void OnDestroy()
-    {
-        ActionEvents.NewGameStarted -= UpdateCardDisplay;
-        ActionEvents.NewPlayerTurn -= UpdateCardDisplay;
-        ActionEvents.GameEnded -= UpdateCardDisplay;
-    }
-
-    void UpdateCardDisplay(object o)
-    {
-        UpdateCardDisplay();
-    }
-
-    void UpdateCardDisplay()
+    public override void UpdateCardDisplay()
     {
        if(Deck.instance.Cards != null)
         {

@@ -16,7 +16,7 @@ public class BaronEffect : CharacterEffect
         var modalGo = MonoHelper.Instance.GetModal();
 
 
-        var otherPlayers = NetworkHelper.Instance.GetOtherPlayers(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
+        var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
             Text.ActionSync("Baron played...");
@@ -25,7 +25,7 @@ public class BaronEffect : CharacterEffect
         else
         {
             Text.ActionSync("Baron played, but noone to select");
-            GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
+            GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
         return true;
@@ -54,6 +54,6 @@ public class BaronEffect : CharacterEffect
             currentPlayer.PlayerStatus = PlayerStatus.Intercepted;            
         }
 
-        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
+        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }

@@ -49,6 +49,8 @@ MonoBehaviour:
   - RPC_AE_PlayerStatusChange
   - RPC_AE_StartCharacterEffect
   - RPC_SyncDeck
+  - RPC_SyncCard
+  - RPC_SetGameText_PlayerTurn
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

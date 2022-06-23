@@ -8,7 +8,7 @@ public class HandmaidEffect : CharacterEffect
         player.PlayerStatus = PlayerStatus.Protected;
         Text.ActionSync("Handmaiden protects " + player.PlayerName + " till his/her next turn");
 
-        GameManager.instance.CardEffectPlayed(cardId, player);
+        GameManager.instance.CardEffectPlayed(cardId, player.PlayerId);
 
         return true;
     }

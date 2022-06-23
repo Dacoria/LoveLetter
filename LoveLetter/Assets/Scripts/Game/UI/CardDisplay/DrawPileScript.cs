@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class DrawPileScript : MonoBehaviour
+public class DrawPileScript : UpdateCardDisplayMonoBehaviourAbstract
 {
     public GameObject Card1;
     public GameObject Card2;
@@ -14,24 +14,9 @@ public class DrawPileScript : MonoBehaviour
     private void Start()
     {
         UpdateCardDisplay();
-        ActionEvents.NewGameStarted += UpdateCardDisplay;
-        ActionEvents.NewPlayerTurn += UpdateCardDisplay;
-        ActionEvents.GameEnded += UpdateCardDisplay;
     }
 
-    private void OnDestroy()
-    {
-        ActionEvents.NewGameStarted -= UpdateCardDisplay;
-        ActionEvents.NewPlayerTurn -= UpdateCardDisplay;
-        ActionEvents.GameEnded -= UpdateCardDisplay;
-    }
-
-    void UpdateCardDisplay(object o)
-    {
-        UpdateCardDisplay();
-    }
-
-    void UpdateCardDisplay()
+    public override void UpdateCardDisplay()
     {
         if (Deck.instance.Cards != null)
         {

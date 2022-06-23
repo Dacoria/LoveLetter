@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class NetworkActionEvents: MonoBehaviour
 {
@@ -13,69 +14,69 @@ public class NetworkActionEvents: MonoBehaviour
         this.ComponentInject();
     }
 
-    public void NewGameStarted()
+    public void NewGameStarted(List<int> playerIds, int currentPlayerId)
     {
-        photonView.RPC("RPC_AE_NewGameStarted", RpcTarget.All);
+        photonView.RPC("RPC_AE_NewGameStarted", RpcTarget.All, playerIds.ToArray(), currentPlayerId);
     }
 
     [PunRPC]
-    public void RPC_AE_NewGameStarted()
+    public void RPC_AE_NewGameStarted(int[] playerIds, int currentPlayerId)
     {
-        ActionEvents.NewGameStarted?.Invoke();
+        ActionEvents.NewGameStarted?.Invoke(playerIds.ToList(), currentPlayerId);
     }
 
-    public void NewPlayerTurn(PlayerScript ps)
+    public void NewPlayerTurn(int pId)
     {
-        photonView.RPC("RPC_AE_NewPlayerTurn", RpcTarget.All, ps);
-    }
-
-    [PunRPC]
-    public void RPC_AE_NewPlayerTurn(PlayerScript ps)
-    {
-        ActionEvents.NewPlayerTurn?.Invoke(ps);
-    }
-
-    public void StartCharacterEffect(PlayerScript ps, CharacterType ct, int cId)
-    {
-        photonView.RPC("RPC_AE_StartCharacterEffect", RpcTarget.All, ps, ct, cId);
+        photonView.RPC("RPC_AE_NewPlayerTurn", RpcTarget.All, pId);
     }
 
     [PunRPC]
-    public void RPC_AE_StartCharacterEffect(PlayerScript ps, CharacterType ct, int cId)
+    public void RPC_AE_NewPlayerTurn(int pId)
     {
-        ActionEvents.StartCharacterEffect?.Invoke(ps, ct, cId);
+        ActionEvents.NewPlayerTurn?.Invoke(pId);
     }
 
-    public void EndCharacterEffect(PlayerScript ps, CharacterType ct, int cId)
+    public void StartCharacterEffect(int pId, CharacterType ct, int cId)
     {
-        photonView.RPC("RPC_AE_EndCharacterEffect", RpcTarget.All, ps, ct, cId);
-    }
-
-    [PunRPC]
-    public void RPC_AE_EndCharacterEffect(PlayerScript ps, CharacterType ct, int cId)
-    {
-        ActionEvents.EndCharacterEffect?.Invoke(ps, ct, cId);
-    }
-
-    public void PlayerStatusChange(PlayerScript ps, PlayerStatus pStatus)
-    {
-        photonView.RPC("RPC_AE_PlayerStatusChange", RpcTarget.All, ps, pStatus);
+        photonView.RPC("RPC_AE_StartCharacterEffect", RpcTarget.All, pId, ct, cId);
     }
 
     [PunRPC]
-    public void RPC_AE_PlayerStatusChange(PlayerScript ps, PlayerStatus pStatus)
+    public void RPC_AE_StartCharacterEffect(int pId, CharacterType ct, int cId)
     {
-        ActionEvents.PlayerStatusChange?.Invoke(ps, pStatus);
+        ActionEvents.StartCharacterEffect?.Invoke(pId, ct, cId);
     }
 
-    public void GameEnded(List<PlayerScript> pWon)
+    public void EndCharacterEffect(int pId, CharacterType ct, int cId)
     {
-        photonView.RPC("RPC_AE_GameEnded", RpcTarget.All, pWon);
+        photonView.RPC("RPC_AE_EndCharacterEffect", RpcTarget.All, pId, ct, cId);
     }
 
     [PunRPC]
-    public void RPC_AE_GameEnded(List<PlayerScript> pWon)
+    public void RPC_AE_EndCharacterEffect(int pId, CharacterType ct, int cId)
     {
-        ActionEvents.GameEnded?.Invoke(pWon);
+        ActionEvents.EndCharacterEffect?.Invoke(pId, ct, cId);
+    }
+
+    public void PlayerStatusChange(int pId, PlayerStatus pStatus)
+    {
+        photonView.RPC("RPC_AE_PlayerStatusChange", RpcTarget.All, pId, pStatus);
+    }
+
+    [PunRPC]
+    public void RPC_AE_PlayerStatusChange(int pId, PlayerStatus pStatus)
+    {
+        ActionEvents.PlayerStatusChange?.Invoke(pId, pStatus);
+    }
+
+    public void GameEnded(List<int> pIdsWon)
+    {
+        photonView.RPC("RPC_AE_GameEnded", RpcTarget.All, pIdsWon.ToArray());
+    }
+
+    [PunRPC]
+    public void RPC_AE_GameEnded(int[] pIdsWon)
+    {
+        ActionEvents.GameEnded?.Invoke(pIdsWon.ToList());
     }
 }

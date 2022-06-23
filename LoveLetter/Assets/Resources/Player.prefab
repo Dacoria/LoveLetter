@@ -420,7 +420,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerId: 0
   PlayerName: 
-  _playerStatus: 0
 --- !u!114 &1941673923665311743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,6 +456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Card1Display: {fileID: 6152067581391571321}
   Card2Display: {fileID: 5730735942877683619}
+  BackgroundCard: {fileID: 21300000, guid: 82e38a347ee1f094bb21eb9e14a42947, type: 3}
 --- !u!1 &7407013605000277115
 GameObject:
   m_ObjectHideFlags: 0

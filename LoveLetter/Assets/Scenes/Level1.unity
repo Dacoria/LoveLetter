@@ -2749,6 +2749,7 @@ GameObject:
   - component: {fileID: 1225497079}
   - component: {fileID: 1225497080}
   - component: {fileID: 1225497081}
+  - component: {fileID: 1225497082}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2851,8 +2852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ca7361ce2219d46a611a5db3ccfb4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameText: {fileID: 58866304}
-  PlayersWhoDiscardedSpies: []
+  PlayersWhoDiscardedSpies: 
   GameEnded: 0
 --- !u!114 &1225497080
 MonoBehaviour:
@@ -2876,6 +2876,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c3feb4deded740459f80e8e786554c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1225497082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225497074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2576cc4554c18df4e87301b30f4edc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1230854326
@@ -4649,7 +4661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Test
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -16,7 +16,7 @@ public class PriestEffect : CharacterEffect
         var modalGo = MonoHelper.Instance.GetModal();
 
 
-        var otherPlayers = NetworkHelper.Instance.GetOtherPlayers(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
+        var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
             Text.ActionSync("Priest played...");
@@ -25,7 +25,7 @@ public class PriestEffect : CharacterEffect
         else
         {
             Text.ActionSync("Priest played, noone to select");
-            GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
+            GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
         return true;
@@ -37,7 +37,7 @@ public class PriestEffect : CharacterEffect
 
         Text.ActionSync("Priest watches the card of " + optionSelectedPlayer);
         Text.ActionLocal("Card in hand of " + optionSelectedPlayer + " is " + currentCardOtherPlayer.Character.Type);
-        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
+        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
 

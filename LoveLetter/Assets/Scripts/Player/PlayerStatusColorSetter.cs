@@ -21,20 +21,20 @@ public class PlayerStatusColorSetter : MonoBehaviour
         ActionEvents.GameEnded += OnGameEnded;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
     }
-    private void OnNewPlayerTurn(PlayerScript currentPlayer)
+    private void OnNewPlayerTurn(int currentPlayerId)
     {
-        playerNameText.fontStyle = player == currentPlayer ? FontStyles.Underline : FontStyles.Normal;
+        playerNameText.fontStyle = player.PlayerId == currentPlayerId ? FontStyles.Underline : FontStyles.Normal;
     }
 
-    private void OnNewGameStarted()
+    private void OnNewGameStarted(List<int> a, int b)
     {
         playerNameText.color = Color.white;
     }
 
-    private void OnGameEnded(List<PlayerScript> playersWon)
+    private void OnGameEnded(List<int> playersWon)
     {
         playerNameText.fontStyle = FontStyles.Normal;
-        if (playersWon.Any(x => x == player))
+        if (playersWon.Any(x => x == player.PlayerId))
         {
             playerNameText.color = Color.green;
         }
@@ -44,15 +44,15 @@ public class PlayerStatusColorSetter : MonoBehaviour
         }
     }
 
-    private void OnPlayerStatusChange(PlayerScript playerStatusChanged, PlayerStatus previousValue)
+    private void OnPlayerStatusChange(int pIdStatusChanged, PlayerStatus playerStatus)
     {
         Debug.Log("OnPlayerStatusChange --> " + player.PlayerName + " " + player.PlayerStatus);
-        if(playerStatusChanged != player)
+        if(pIdStatusChanged != player.PlayerId)
         {
             return;
         }
 
-        switch (player.PlayerStatus)
+        switch (playerStatus)
         {
             case PlayerStatus.Normal:
                 playerNameText.color = Color.white;

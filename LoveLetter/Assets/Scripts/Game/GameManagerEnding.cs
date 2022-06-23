@@ -8,24 +8,24 @@ public partial class GameManager : MonoBehaviour
 
     public bool GameEnded;
   
-    private List<PlayerScript> CheckWinners()
+    private List<int> CheckWinners()
     {
         var highestScore = -1;
-        List<PlayerScript> playersWithHighestScore = new List<PlayerScript>();
+        List<int> playersWithHighestScore = new List<int>();
 
         foreach (PlayerScript player in AllPlayers.Where(x => x.PlayerStatus != PlayerStatus.Intercepted))
         {
-            var cardPlayer = player.CurrentCard1();
+            var cardPlayer = player.CurrentCard1() ?? player.CurrentCard2();
             var pointsOfCard = DeckSettings.GetCharacterSettings(cardPlayer.Character.Type).Points;
 
             if (pointsOfCard > highestScore)
             {
                 highestScore = pointsOfCard;
-                playersWithHighestScore = new List<PlayerScript> { player };
+                playersWithHighestScore = new List<int> { player.PlayerId };
             }
             else if (pointsOfCard == highestScore)
             {
-                playersWithHighestScore.Add(player);
+                playersWithHighestScore.Add(player.PlayerId);
             }
         }
 
@@ -37,7 +37,7 @@ public partial class GameManager : MonoBehaviour
             extraSpyText = " + Spy bonus";
         }       
 
-        Text.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.PlayerName).ToList()) + " Wins!" + extraSpyText);
+        Text.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.GetPlayer().PlayerName).ToList()) + " Wins!" + extraSpyText);
 
 
         return playersWithHighestScore;

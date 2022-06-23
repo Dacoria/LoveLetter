@@ -6,7 +6,7 @@ using UnityEngine;
 public static  class Extensions
 {
     public static Card GetCard(this int cardId) => Deck.instance.Cards.Single(x => x.Id == cardId);
-    public static PlayerScript GetPlayer(this int playerId) => NetworkHelper.Instance.GetPlayerById(playerId);
+    public static PlayerScript GetPlayer(this int playerId) => NetworkHelper.Instance.GetPlayerScriptById(playerId);
 
 
     public static object GetValue(this ExitGames.Client.Photon.Hashtable customProps, string key)

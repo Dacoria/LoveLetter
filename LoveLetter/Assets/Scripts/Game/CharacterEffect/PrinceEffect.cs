@@ -28,7 +28,7 @@ public class PrinceEffect : CharacterEffect
         else
         {
             Text.ActionSync("Priest played, noone to select");
-            GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
+            GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
         return true;
@@ -56,19 +56,21 @@ public class PrinceEffect : CharacterEffect
         var currentCardPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer && x.Id != currentCardId);
         var playerOfCard = currentCardPlayer.PlayerId.GetPlayer();
 
+        Deck.instance.DiscardCardSync(currentCardPlayer.Id);
+
         currentCardPlayer.Status = CardStatus.InDiscard;
 
         if(Deck.instance.Cards.Any(x => x.Status == CardStatus.InDeck))
         {
-            Deck.instance.PlayerDrawsCardFromPile(playerOfCard);
-            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + " & Got a new card");
+            Deck.instance.PlayerDrawsCardFromPileSync(playerOfCard.PlayerId);
+            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + " + got a new card");
         }
         else
         {
             Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". No other cards left");
         }
         
-        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
+        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
 

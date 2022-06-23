@@ -20,7 +20,7 @@ public class KingEffect: CharacterEffect
         var modalGo = MonoHelper.Instance.GetModal();
 
 
-        var otherPlayers = NetworkHelper.Instance.GetOtherPlayers(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
+        var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
             Text.ActionSync("King played...");
@@ -29,7 +29,7 @@ public class KingEffect: CharacterEffect
         else
         {
             Text.ActionSync("King played, noone to select");
-            GameManager.instance.CardEffectPlayed(cardId, currentPlayer);
+            GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
         return true;
@@ -57,11 +57,11 @@ public class KingEffect: CharacterEffect
         var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
         var yourOtherCard = GetOtherCard(currentPlayer, currentCardId);
 
-        yourOtherCard.PlayerId = currentCardOtherPlayer.PlayerId;
-        currentCardOtherPlayer.PlayerId = currentPlayer.PlayerId;
+        Deck.instance.SetPlayerId(yourOtherCard.Id, currentCardOtherPlayer.PlayerId);
+        Deck.instance.SetPlayerId(currentCardOtherPlayer.Id, currentPlayer.PlayerId);
 
         Text.ActionSync(currentPlayer.PlayerName + " swapped cards with " + optionSelectedPlayer);
-        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer);
+        GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
 

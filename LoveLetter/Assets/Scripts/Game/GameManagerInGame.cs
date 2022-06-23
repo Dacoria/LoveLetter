@@ -3,35 +3,38 @@ using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
-    private int CurrentPlayerIndex;
-    private PlayerScript CurrentPlayer() => AllPlayers[CurrentPlayerIndex];         
+    private int CurrentPlayerId;
+    public PlayerScript CurrentPlayer() => AllPlayers.Single(x => x.PlayerId == CurrentPlayerId);
 
-    public void PlayCard(int cardId, PlayerScript player)
+    private void OnNewPlayerTurn(int playerId)
     {
-        if(!GameEnded && player == CurrentPlayer() && !MonoHelper.Instance.GetModal().IsActive)
+        CurrentPlayerId = playerId;
+    }
+
+    public void PlayCard(int cardId, int playerId)
+    {
+        if(!GameEnded && playerId == CurrentPlayer().PlayerId && !MonoHelper.Instance.GetModal().IsActive)
         {            
-            DoCardEffect(cardId, player);         
+            DoCardEffect(cardId, playerId);            
         }       
         else if(GameEnded)
         {
-            Debug.Log(player.PlayerName + " wants to do a move, but the game has already ended");
+            Debug.Log(playerId.GetPlayer().PlayerName + " wants to do a move, but the game has already ended");
         }
         else
         {
-            Debug.Log(player.PlayerName + " wants to do a move, but it is not his turn");
+            Debug.Log(playerId.GetPlayer().PlayerName + " wants to do a move, but it is not his turn");
         }
     }
 
-    public void CardEffectPlayed(int cardId, PlayerScript player)
+    public void CardEffectPlayed(int cardId, int playerId)
     {
-        RemoveCard(cardId, player);
-        Deck.instance.SyncDeck();
-
-        NetworkActionEvents.instance.EndCharacterEffect(player, cardId.GetCard().Character.Type, cardId);
+        Deck.instance.RemoveCardFromPlayer(cardId);
+        NetworkActionEvents.instance.EndCharacterEffect(playerId, cardId.GetCard().Character.Type, cardId);
 
         if (!EndOfGame())
         {
-            NextPlayer();
+            NextPlayer();            
         }
         else
         {
@@ -42,46 +45,35 @@ public partial class GameManager : MonoBehaviour
         }
     }  
 
-    private void RemoveCard(int cardId, PlayerScript player)
-    {
-        var card = cardId.GetCard();
-        card.Status = CardStatus.InDiscard;
-        
-        var remainingCard = Deck.instance.Cards.FirstOrDefault(x => x.PlayerId.GetPlayer() == player);
-        if(remainingCard != null)
-        {
-            remainingCard.IndexOfCardInHand = 1;
-        }
-    }
-
     private void NextPlayer()
     {
         do
         {
-            CurrentPlayerIndex = (CurrentPlayerIndex + 1) % AllPlayers.Count;
+            CurrentPlayerId = AllPlayers.SkipWhile(x => x.PlayerId != CurrentPlayerId).Skip(1).DefaultIfEmpty(AllPlayers[0]).First().PlayerId;
         } 
         while (CurrentPlayer().PlayerStatus == PlayerStatus.Intercepted);
         
         CurrentPlayer().PlayerStatus = PlayerStatus.Normal;
-        DealCardToPlayer(CurrentPlayer());
+        Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
 
-        Deck.instance.SyncDeck();
-        NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer());
+        NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer().PlayerId);
     }
 
-    private void DoCardEffect(int cardId, PlayerScript player)
+    private void DoCardEffect(int cardId, int playerId)
     {
         var card = cardId.GetCard();
         var charSettings = DeckSettings.GetCharacterSettings(card.Character.Type);
 
-        Debug.Log(player.PlayerName + " - DoCardEffect -> " + card.Character.Type);
-        charSettings.CharacterEffect.DoEffect(player, cardId);
-        NetworkActionEvents.instance.StartCharacterEffect(player, card.Character.Type, cardId);
-    }
+        Debug.Log(playerId.GetPlayer().PlayerName + " - DoCardEffect -> " + card.Character.Type);
 
-    private void DealCardToPlayer(PlayerScript player)
-    {
-        Deck.instance.PlayerDrawsCardFromPile(player);
-        Text.GameSync("Turn: " + player.PlayerName);
-    }
+        var isEffectAllowed = charSettings.CharacterEffect.DoEffect(playerId.GetPlayer() , cardId);
+        if (isEffectAllowed)
+        {
+            NetworkActionEvents.instance.StartCharacterEffect(playerId, card.Character.Type, cardId);            
+        }
+        else
+        {
+            Text.ActionLocal("Not allowed to play " + cardId.GetCard().Character.Type);
+        }
+    }   
 }

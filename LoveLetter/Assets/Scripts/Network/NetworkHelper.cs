@@ -18,7 +18,7 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
         Instance = this;
         this.ComponentInject();
         GameTexts = FindObjectOfType<GameTexts>();
-    }
+    }   
 
     public void SetGameText(string gameText, bool network)
     {
@@ -86,17 +86,17 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
         return GameObject.FindGameObjectsWithTag(Statics.TAG_PLAYER).Select(x => x.GetComponent<PlayerScript>()).ToList();
     }
 
-    public List<PlayerScript> GetOtherPlayers(PlayerScript self)
+    public List<PlayerScript> GetOtherPlayersScript(PlayerScript self)
     {
         return GetPlayers().Where(x => x != self).ToList();
     }
 
-    public GameObject GetMyPlayerGo() => GetPlayerGo(PhotonNetwork.LocalPlayer.ActorNumber);
+    public PlayerScript GetMyPlayerScript() => GetPlayerScript(PhotonNetwork.LocalPlayer.ActorNumber);
 
-    public Player GetPlayerByActorNr(int actorNr) => PlayerList.FirstOrDefault(x => x.ActorNumber == actorNr);
-    public PlayerScript GetPlayerById(int id) => GetPlayers().FirstOrDefault(x => x.PlayerId == id);
+    public Player GetPlayerNetworkByActorNr(int actorNr) => PlayerList.FirstOrDefault(x => x.ActorNumber == actorNr);
+    public PlayerScript GetPlayerScriptById(int id) => GetPlayers().FirstOrDefault(x => x.PlayerId == id);
 
-    public GameObject GetPlayerGo(int actorNr)
+    public PlayerScript GetPlayerScript(int actorNr)
     {
         if (!PhotonNetwork.IsConnected)
         {
@@ -108,30 +108,19 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
             var photonview = playerGo.GetComponent<PhotonView>();
             if(photonview != null && photonview.OwnerActorNr == actorNr)
             {
-                return playerGo;
+                return playerGo.GetComponent<PlayerScript>();
             }
         }
 
         return null;
     }
 
-    public GameObject GetClosestPlayerGo(Transform myLoc)
-    {
-        if (!PhotonNetwork.IsConnected)
-        {
-            return null;
-        }
-
-        var playerGos = GameObject.FindGameObjectsWithTag(Statics.TAG_PLAYER);
-        return playerGos.OrderBy(playerLoc => Vector3.Distance(playerLoc.transform.position, myLoc.position)).FirstOrDefault();
-    }  
-
     public void PunDestroyAfterXSeconds(GameObject go, float secondsToDestroy)
     {
         StartCoroutine(CR_PunDestroyAfterXSeconds(go, secondsToDestroy));
     }
 
-    public IEnumerator CR_PunDestroyAfterXSeconds(GameObject go, float secondsToDestroy)
+    private IEnumerator CR_PunDestroyAfterXSeconds(GameObject go, float secondsToDestroy)
     {
         yield return new WaitForSeconds(secondsToDestroy);
         PhotonNetwork.Destroy(go);
