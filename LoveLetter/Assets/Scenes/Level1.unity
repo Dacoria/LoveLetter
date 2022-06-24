@@ -4782,6 +4782,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2174398207816756716, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2334084384906398252, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2334084385751822530, guid: acca0929447559b42ac3b14326195c79, type: 3}
       propertyPath: m_Name
       value: LevelLoader
@@ -4829,6 +4837,38 @@ PrefabInstance:
     - target: {fileID: 2334084385751822531, guid: acca0929447559b42ac3b14326195c79, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5800827093132848478, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767236172062495864, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767236172062495864, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767236172062495864, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767236172062495864, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -845.9998
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107732509687575745, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107732509687575745, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107732509687575745, guid: acca0929447559b42ac3b14326195c79, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 842
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: acca0929447559b42ac3b14326195c79, type: 3}

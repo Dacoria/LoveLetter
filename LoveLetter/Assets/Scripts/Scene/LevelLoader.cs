@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-    [ComponentInject] private Animator Transition;
+    private Animator Transition;
 
     private float TransitionTime = 0.5f;
 
@@ -14,7 +14,7 @@ public class LevelLoader : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        this.ComponentInject();
+        Transition = GetComponentInChildren<Animator>();
     }
 
     void Update()

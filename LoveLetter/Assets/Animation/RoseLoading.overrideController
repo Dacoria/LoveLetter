@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RoseLoading
+  m_Controller: {fileID: 9100000, guid: 91a2f18bec3324444833991f479e4769, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 82940e57500349e4692e1f2477ca4ddd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3bc365de43b3f2743a8d76c6239e74ba, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d01eca323ac60754fab5ef187997c8b3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6b1d4d34db904bf4aa70e7add9135f64, type: 2}
