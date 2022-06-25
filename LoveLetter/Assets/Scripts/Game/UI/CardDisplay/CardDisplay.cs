@@ -15,6 +15,11 @@ public class CardDisplay : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (MonoHelper.Instance.GetModal().IsActive)
+        {
+            return;
+        }
+        
         MouseDownTime = DateTime.Now;
         isMouseClick = true;
     }

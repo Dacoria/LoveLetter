@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,29 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
 
     private void Start()
     {
-        UpdateCardDisplay();        
+        UpdateCardDisplay();
+        ActionEvents.GameEnded += OnGameEnded;
+        ActionEvents.NewGameStarted += OnNewGameStarted;
+    }
+
+    private void OnNewGameStarted(List<int> arg1, int arg2)
+    {
+        gameEnded = false;
+        UpdateCardDisplay();
+    }
+
+    private bool gameEnded;
+
+    private void OnGameEnded(List<int> obj)
+    {
+        gameEnded = true;
+        UpdateCardDisplay();
+    }
+
+    private void OnDestroy()
+    {
+        ActionEvents.GameEnded -= OnGameEnded;
+        ActionEvents.NewGameStarted -= OnNewGameStarted;
     }
 
     public override void UpdateCardDisplay()
@@ -41,11 +64,11 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
 
             if (card1 != null)
             {
-                Card1Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card1.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
+                Card1Sprite.sprite = (gameEnded || photonView.IsMine) ? MonoHelper.Instance.GetCharacterSprite(card1.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
             }
             if (card2 != null)
             {
-                Card2Sprite.sprite = photonView.IsMine ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
+                Card2Sprite.sprite = (gameEnded || photonView.IsMine) ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
             }           
         }
         else

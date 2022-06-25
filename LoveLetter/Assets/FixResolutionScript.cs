@@ -14,12 +14,12 @@ public class FixResolutionScript : MonoBehaviour
 
     void Awake()
     {
-        //FixResolution();
+        FixResolution();
     }
 
     void Update()
     {
-        //FixResolution();
+        FixResolution();
     }
 
     private void FixResolution()

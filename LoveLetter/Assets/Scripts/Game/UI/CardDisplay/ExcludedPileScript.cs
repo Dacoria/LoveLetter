@@ -15,6 +15,12 @@ public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCar
         ActionEvents.NewGameStarted += OnNewGameStarted;
     }
 
+    private void OnDestroy()
+    {
+        ActionEvents.GameEnded -= OnGameEnded;
+        ActionEvents.NewGameStarted -= OnNewGameStarted;
+    }
+
     private void OnNewGameStarted(List<int> arg1, int arg2)
     {
         Card1Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;

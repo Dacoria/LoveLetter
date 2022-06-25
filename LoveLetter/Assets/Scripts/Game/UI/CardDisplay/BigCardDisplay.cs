@@ -43,6 +43,13 @@ public class BigCardDisplay : MonoBehaviour
 
     public void ShowBigCard(CharacterType characterType)
     {
+        if(MonoHelper.Instance.GetModal().IsActive)
+        { 
+            bigCardIsActive = false;
+            gameObject.SetActive(false);
+            return;
+        }
+
         spriteRenderer.sprite = MonoHelper.Instance.GetCharacterSprite(characterType);
 
         StartCoroutine(MonoHelper.Instance.FadeSprites(false, 0.5f, GetComponentsInChildren<SpriteRenderer>().ToList()));

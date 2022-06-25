@@ -9,6 +9,7 @@ public class LevelLoader : MonoBehaviour
     private Animator Transition;
 
     private float TransitionTime = 0.5f;
+    private Canvas canvas;
 
     public static LevelLoader instance;
 
@@ -16,7 +17,22 @@ public class LevelLoader : MonoBehaviour
     {
         instance = this;
         Transition = GetComponentInChildren<Animator>();
-    }   
+        canvas = FindObjectOfType<Canvas>();
+        canvas.gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        var animStateInfo = Transition.GetCurrentAnimatorStateInfo(0);
+        var NTime = animStateInfo.normalizedTime;
+
+        if (NTime > 1.0f)
+        {
+            canvas.gameObject.SetActive(true);
+        }
+    }
+
+
 
     private string sceneName;
     public void LoadScene(string sceneName)
