@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract
+public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCardMouseDownEvent
 {
     public SpriteRenderer Card1Sprite;
     public TMP_Text Text;
@@ -39,6 +39,14 @@ public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract
         {
             Text.text = "";
             Card1Sprite.gameObject.SetActive(false);
+        }
+    }
+
+    public void OnCardMouseDownEvent()
+    {        
+        if (Card1Sprite.sprite != MonoHelper.Instance.BackgroundCardSprite)
+        {
+            MonoHelper.Instance.ShowBigCard(Deck.instance.Cards.First(x => x.Status == CardStatus.Excluded).Character.Type);
         }
     }
 }

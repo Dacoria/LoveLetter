@@ -53,7 +53,7 @@ namespace Photon.Pun.UtilityScripts
 
             if (this.DestroyByRpc)
             {
-                this.photonView.RPC("DestroyRpc", RpcTarget.AllBuffered);
+                this.photonView.RPC("RPC_DestroyPun", RpcTarget.AllBuffered);
             }
             else
             {
@@ -63,7 +63,7 @@ namespace Photon.Pun.UtilityScripts
 
 
         [PunRPC]
-        public IEnumerator DestroyRpc()
+        public IEnumerator RPC_DestroyPun()
         {
             Destroy(this.gameObject);
             yield return 0; // if you allow 1 frame to pass, the object's OnDestroy() method gets called and cleans up references.

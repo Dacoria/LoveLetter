@@ -27,15 +27,15 @@ public class SpawnPlayers : MonoBehaviour
         
         if (playerCounter == 1)
         {
-            SpawnPlayer("P2", GetPos(2));
+            SpawnPlayer("DP2", GetPos(2));
         }
         else if(playerCounter == 2)
         {
-            SpawnPlayer("P3", GetPos(3));
+            SpawnPlayer("DP3", GetPos(3));
         }
         else if (playerCounter == 3)
         {
-            SpawnPlayer("P4", GetPos(4));
+            SpawnPlayer("DP4", GetPos(4));
         }
     }
 

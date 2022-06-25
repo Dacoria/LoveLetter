@@ -34,7 +34,7 @@ namespace Photon.Pun.UtilityScripts
                 return;
             }
             
-            this.photonView.RPC("ClickRpc", this.Target);
+            this.photonView.RPC("RPC_ClickPun", this.Target);
         }
 
 
@@ -45,7 +45,7 @@ namespace Photon.Pun.UtilityScripts
         private bool isFlashing;
 
         [PunRPC]
-        public void ClickRpc()
+        public void RPC_ClickPun()
         {
             //Debug.Log("ClickRpc Called");
             this.StartCoroutine(this.ClickFlash());

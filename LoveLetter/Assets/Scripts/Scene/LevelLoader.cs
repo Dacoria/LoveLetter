@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,38 +16,35 @@ public class LevelLoader : MonoBehaviour
     {
         instance = this;
         Transition = GetComponentInChildren<Animator>();
-    }
+    }   
 
-    void Update()
+    private string sceneName;
+    public void LoadScene(string sceneName)
     {
-        //if(Input.GetKeyDown("p"))
-        //{
-        //    LoadNextScene();
-        //}
+        this.sceneName = sceneName;
+        StartCoroutine(CR_LoadAnimation(LoadScene));
     }
 
-    public void LoadScene(string scene, bool punScene)
+    private void LoadScene()
     {
-        StartCoroutine(CR_LoadScene(scene, punScene));
+        SceneManager.LoadScene(sceneName);
     }
 
-    public void LoadNextScene(bool punScene)
+
+    public void LoadSceneAnimation(Action callback)
     {
-        StartCoroutine(CR_LoadScene(SceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1).name, punScene));
+        StartCoroutine(CR_LoadAnimation(callback));
     }
 
-    private IEnumerator CR_LoadScene(string sceneName, bool punScene)
+    //public void LoadNextScene(bool punScene)
+    //{
+    //    StartCoroutine(CR_LoadScene(SceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1).name, punScene));
+    //}  
+
+    private IEnumerator CR_LoadAnimation(Action Callback)
     {
         Transition.SetTrigger(Statics.ANIMATION_TRIGGER_START_ANIMATION_SCENE);
         yield return new WaitForSeconds(TransitionTime);
-
-        if(punScene)
-        {
-            PhotonNetwork.LoadLevel(sceneName);
-        }
-        else
-        {
-            SceneManager.LoadScene(sceneName);
-        }
+        Callback();
     }
 }

@@ -34,23 +34,18 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - ClickRpc
-  - DestroyRpc
-  - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - RPC_SetActionText
-  - RPC_SetGameText
-  - SyncDeck
   - RPC_AE_EndCharacterEffect
   - RPC_AE_GameEnded
   - RPC_AE_NewGameStarted
   - RPC_AE_NewPlayerTurn
   - RPC_AE_PlayerStatusChange
   - RPC_AE_StartCharacterEffect
-  - RPC_SyncDeck
+  - RPC_ClickPun
+  - RPC_DestroyPun
+  - RPC_SetActionText
+  - RPC_SetGameText
   - RPC_SyncCard
-  - RPC_SetGameText_PlayerTurn
+  - RPC_SyncDeck
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

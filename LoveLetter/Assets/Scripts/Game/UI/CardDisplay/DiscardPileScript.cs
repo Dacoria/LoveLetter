@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract
+public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCardMouseDownEvent
 {
     public SpriteRenderer Card1Sprite;
     public SpriteRenderer Card2Sprite;
@@ -37,7 +37,7 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract
             if (deckDiscardedCount > 0)
             {
                 var cardOnTop = deckDiscardedCount == 1 ? Card1Sprite : deckDiscardedCount == 2 ? Card2Sprite : Card3Sprite;
-                cardOnTop.sprite = MonoHelper.Instance.GetCharacterSprite(deckDiscarded.OrderByDescending(x => x.StatusChangeTime).First().Character.Type);
+                cardOnTop.sprite = MonoHelper.Instance.GetCharacterSprite(GetLastDiscardedCharacter());
             }
         }
         else
@@ -47,6 +47,20 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract
             Card1Sprite.gameObject.SetActive(false);
             Card2Sprite.gameObject.SetActive(false);
             Card3Sprite.gameObject.SetActive(false);
+        }
+    }
+
+    private CharacterType GetLastDiscardedCharacter() => Deck.instance.Cards.Where(x => x.Status == CardStatus.InDiscard).OrderByDescending(x => x.StatusChangeTime).First().Character.Type;
+
+    public void OnCardMouseDownEvent()
+    {
+        var cardOnTop = Card3Sprite.gameObject.activeSelf ? Card3Sprite :
+                        Card2Sprite.gameObject.activeSelf ? Card2Sprite :
+                        Card1Sprite.gameObject.activeSelf ? Card1Sprite :
+                        null;
+        if(cardOnTop != null)
+        {
+            MonoHelper.Instance.ShowBigCard(GetLastDiscardedCharacter());
         }
     }
 }
