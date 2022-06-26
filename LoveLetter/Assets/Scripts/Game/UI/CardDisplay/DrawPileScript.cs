@@ -17,7 +17,7 @@ public class DrawPileScript : UpdateCardDisplayMonoBehaviourAbstract
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
         UpdateCardDisplay();
     }
-
+        
     private void OnDestroy()
     {
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
@@ -55,15 +55,7 @@ public class DrawPileScript : UpdateCardDisplayMonoBehaviourAbstract
 
     private void OnNewPlayerTurn(int pId)
     {
-        canClickOnDeck = true;
-        if (!GameManager.instance.GameEnded)
-        {
-            if (GameManager.instance.CurrentPlayer().PlayerId == PhotonNetwork.LocalPlayer.ActorNumber)
-            {
-                Text.ActionSync("Draw a card from the pile");
-                Deck.instance.PlayerDrawsCardFromPileSync(GameManager.instance.CurrentPlayer().PlayerId);
-            }
-        }
+        canClickOnDeck = true;        
     }
 
     private bool canClickOnDeck;

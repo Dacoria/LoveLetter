@@ -37,7 +37,7 @@ public class GameTexts : MonoBehaviour
         var myPlayer = NetworkHelper.Instance.GetMyPlayerScript();
         if (myPlayer.PlayerId == playerId)
         {
-            if(Deck.instance.Cards.Count > 0 && Deck.instance.Cards.Count(x => x?.PlayerId == myPlayer?.PlayerId) < 2)
+            if(Deck.instance.Cards.Count > 0)
             {
                 GameText.text = "Your turn, pick a card!";
             }
