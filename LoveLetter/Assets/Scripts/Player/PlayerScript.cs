@@ -51,6 +51,8 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     private void Start()
     {
         ActionEvents.PlayerStatusChange += OnPlayerStatusChange;
+        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+        ActionEvents.DeckCardDrawn += OnDeckCardDrawn;
     }
 
     private void OnPlayerStatusChange(int playerId, PlayerStatus newPlayerStatus)
@@ -60,11 +62,6 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
             // dit ping pongt wel terug met events -> maar op een gegeven moment verandert de status niet meer (en stopt de netwerk update loop)
             PlayerStatus = newPlayerStatus;
         }
-    }
-
-    private void OnDestroy()
-    {
-        ActionEvents.PlayerStatusChange -= OnPlayerStatusChange;
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -83,5 +80,34 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 
         PlayerText.text = name;
         PlayerName = name;
+    }
+    
+
+    private bool hasDrawnCard;
+
+    public bool HasPickedCardFromDeckIfPossible()
+    {
+        if (hasDrawnCard)
+        {
+            return true;
+        }
+        return Deck.instance.Cards.Count(x => x.Status == CardStatus.InDeck) == 0;
+    }
+
+    private void OnNewPlayerTurn(int obj)
+    {
+        hasDrawnCard = false;
+    }
+
+    private void OnDestroy()
+    {
+        ActionEvents.PlayerStatusChange -= OnPlayerStatusChange;
+        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+        ActionEvents.DeckCardDrawn -= OnDeckCardDrawn;
+    }
+
+    private void OnDeckCardDrawn(int playedId)
+    {
+        hasDrawnCard = true;
     }
 }

@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System.Linq;
 using System;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class PlayerCardDisplay : MonoBehaviour
     private void Awake()
     {
         this.ComponentInject();
-    }
+    }    
 
     void OnMouseDown()
     {
@@ -46,7 +47,9 @@ public class PlayerCardDisplay : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if(isMouseClick)
+        MouseDownTime = null;
+
+        if (isMouseClick)
         {
             if (GameManager.instance.CurrentPlayer().PlayerId != player.PlayerId)
             {
@@ -58,10 +61,12 @@ public class PlayerCardDisplay : MonoBehaviour
                 Debug.Log("Not your card");
                 return;
             }
+            if (!player.HasPickedCardFromDeckIfPossible())
+            {
+                return;
+            }
             PlayCard();
         }
-
-        MouseDownTime = null;
     }
 
     private void MouseHoldEvent()

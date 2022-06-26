@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using System;
+using System.Linq;
 
 public class GameTexts : MonoBehaviour
 {
@@ -12,12 +12,14 @@ public class GameTexts : MonoBehaviour
     {
         ActionEvents.NewGameStarted += OnNewGameStarted;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+        ActionEvents.DeckCardDrawn += OnDeckCardDrawn;
     }
 
     private void OnDestroy()
     {
         ActionEvents.NewGameStarted -= OnNewGameStarted;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
+        ActionEvents.DeckCardDrawn -= OnDeckCardDrawn;
     }
 
     private void OnNewPlayerTurn(int playerId)
@@ -32,8 +34,30 @@ public class GameTexts : MonoBehaviour
 
     private void UpdateTurnCurrentPlayerGameText(int playerId)
     {
-        GameText.text = NetworkHelper.Instance.GetMyPlayerScript().PlayerId == playerId ? "Your turn" : "Turn: " + NetworkHelper.Instance.GetPlayerScriptById(playerId).PlayerName;
+        var myPlayer = NetworkHelper.Instance.GetMyPlayerScript();
+        if (myPlayer.PlayerId == playerId)
+        {
+            if(Deck.instance.Cards.Count > 0 && Deck.instance.Cards.Count(x => x?.PlayerId == myPlayer?.PlayerId) < 2)
+            {
+                GameText.text = "Your turn, pick a card!";
+            }
+            else
+            {
+                GameText.text = "Your turn";
+            }
+        }
+        else
+        {
+            GameText.text = "Turn: " + NetworkHelper.Instance.GetPlayerScriptById(playerId).PlayerName;
+        }
+    }
 
+    private void OnDeckCardDrawn(int playerId)
+    {
+        if (NetworkHelper.Instance.GetMyPlayerScript().PlayerId == playerId)
+        {
+            GameText.text = "Your turn";
+        }
     }
 }
 

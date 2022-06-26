@@ -71,7 +71,6 @@ public partial class GameManager : MonoBehaviour
         while (CurrentPlayer().PlayerStatus == PlayerStatus.Intercepted);
 
         CurrentPlayer().PlayerStatus = PlayerStatus.Normal;
-        Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
 
         NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer().PlayerId);
     }

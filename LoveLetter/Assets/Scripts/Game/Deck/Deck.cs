@@ -33,7 +33,10 @@ public class Deck : MonoBehaviour
             cardToDeal.IndexOfCardInHand = 2;
         }
 
+        ActionEvents.DeckCardDrawn?.Invoke(playerId);
+
         SyncCard(cardToDeal);
+        ActionEvents.CardSynced?.Invoke();
     }
 
     public void SetPlayerId(int cardId, int playerId)

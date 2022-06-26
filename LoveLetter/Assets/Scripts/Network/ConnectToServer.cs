@@ -2,12 +2,13 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     public TMP_InputField NameInputField;
+    public Button OnlineFastButton;
+
 
     private void Awake()
     {
@@ -16,8 +17,18 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     public ConnectMethod ConnectMethod;
 
+    private void Update()
+    {
+        OnlineFastButton.interactable = NameInputField.text.Length > 0;
+    }
+
     public void StartGameOnlineFast()
     {
+        if (string.IsNullOrEmpty(NameInputField.text))
+        {
+            return;
+        }
+
         StartGame(ConnectMethod.Online_Fast);
     }
 
@@ -73,15 +84,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         Debug.Log("OnJoinedRoom");
         if (ConnectMethod == ConnectMethod.Online_Fast)
         {
-            if (string.IsNullOrEmpty(NameInputField.text))
-            {
-                PhotonNetwork.NickName = PhotonNetwork.IsMasterClient ? "Host" : "Client";
-            }
-            else
-            {
-                PhotonNetwork.NickName = NameInputField.text;
-            }
-            
+            PhotonNetwork.NickName = NameInputField.text;
         }        
 
         PhotonNetwork.LoadLevel(Statics.SCENE_LEVEL1);

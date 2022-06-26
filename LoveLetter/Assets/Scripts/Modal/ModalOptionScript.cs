@@ -9,7 +9,6 @@ public class ModalOptionScript : MonoBehaviour
 
     public void ClickOnModalOption()
     {
-        Debug.Log("ClickOnModalOption");
         ModalScript.SelectOption(Text.text);
     }
 }
