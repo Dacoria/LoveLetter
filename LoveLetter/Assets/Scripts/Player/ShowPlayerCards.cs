@@ -160,12 +160,27 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
 
         var cardOnDisplay = origCardDisplayToCopy.Card.Id.GetCard();
         var isPlayedPrince = cardOnDisplay.CardIsPlayed && cardOnDisplay.Character.Type == CharacterType.Prince;
+        var isPlayedKing = cardOnDisplay.CardIsPlayed && cardOnDisplay.Character.Type == CharacterType.King;
+        var isPlayedChancellor = cardOnDisplay.CardIsPlayed && cardOnDisplay.Character.Type == CharacterType.Chancellor;
 
-        if(cardOnDisplay.Status == CardStatus.InDiscard)
+        if (cardOnDisplay.Status == CardStatus.InDiscard)
         {
             cardDisplay.SpriteRenderer.sprite = MonoHelper.Instance.GetCharacterSprite(cardOnDisplay.Character.Type);
         }
 
-        cardDisplay.Init(origCardDisplayToCopy.Card.Id, origCardDisplayToCopy.transform.position, waitTimeToStartInSeconds: isPlayedPrince ? 0.7f : 0);
+        var waitTimeToDiscard = 0.0f;
+        if(isPlayedPrince)
+        {
+            waitTimeToDiscard = 0.8f;
+        }
+        else if (isPlayedKing)
+        {
+            waitTimeToDiscard = 0.8f;
+        }
+        else if (isPlayedChancellor)
+        {
+            waitTimeToDiscard = 0.8f;
+        }
+        cardDisplay.Init(origCardDisplayToCopy.Card.Id, origCardDisplayToCopy.transform.position, waitTimeToStartInSeconds: waitTimeToDiscard);
     }
 }

@@ -22,7 +22,7 @@ public partial class GameManager : MonoBehaviour
         Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
 
         NetworkActionEvents.instance.NewGameStarted(AllPlayers.Select(x => x.PlayerId).ToList(), CurrentPlayer().PlayerId);
-    }
+    }    
 
     private void OnNewGameStarted(List<int> playerIds, int currentPlayerId)
     {

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
+    public TMP_InputField NameInputField;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -71,7 +73,15 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         Debug.Log("OnJoinedRoom");
         if (ConnectMethod == ConnectMethod.Online_Fast)
         {
-            PhotonNetwork.NickName = PhotonNetwork.IsMasterClient ? "Host" : "Client";
+            if (string.IsNullOrEmpty(NameInputField.text))
+            {
+                PhotonNetwork.NickName = PhotonNetwork.IsMasterClient ? "Host" : "Client";
+            }
+            else
+            {
+                PhotonNetwork.NickName = NameInputField.text;
+            }
+            
         }        
 
         PhotonNetwork.LoadLevel(Statics.SCENE_LEVEL1);

@@ -9,7 +9,7 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
 {
     public static NetworkHelper Instance;
     private Player[] PlayerList;
-    private GameTexts GameTexts;
+    public GameTexts GameTexts;
 
     [ComponentInject] private PhotonView photonView;
 
@@ -17,7 +17,6 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
     {
         Instance = this;
         this.ComponentInject();
-        GameTexts = FindObjectOfType<GameTexts>();
     }   
 
     public void SetGameText(string gameText, bool network)

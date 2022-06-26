@@ -5,9 +5,14 @@ using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
-
     public bool GameEnded;
-  
+
+    public void StopGame()
+    {
+        GameEnded = true;
+        NetworkActionEvents.instance.GameEnded(new List<int>());
+    }
+
     private List<int> CheckWinners()
     {
         var highestScore = -1;

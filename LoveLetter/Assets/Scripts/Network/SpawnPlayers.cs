@@ -69,6 +69,11 @@ public class SpawnPlayers : MonoBehaviour
         }
         playerCounter++;
 
+        if (!PhotonNetwork.OfflineMode)
+        {
+            name = PhotonNetwork.NickName;
+        }
+
         object[] myCustomInitData = new List<object> { name, playerCounter }.ToArray();
         var player = PhotonNetwork.Instantiate(PlayerPrefab.name, pos, Quaternion.identity, 0, myCustomInitData);        
     }
