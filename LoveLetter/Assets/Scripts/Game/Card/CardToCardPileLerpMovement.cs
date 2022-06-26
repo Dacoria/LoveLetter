@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Linq;
+using System;
+using System.Collections;
 
 public class CardToCardPileLerpMovement : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class CardToCardPileLerpMovement : MonoBehaviour
     private Vector2 startScale;
     private Vector2 localScaleTarget;
     private int cardId;
+
+
+    private bool active;
 
     private float scaleCorrectionForDiscardPile = 1.13f;
 
@@ -23,7 +28,7 @@ public class CardToCardPileLerpMovement : MonoBehaviour
         this.ComponentInject();
     }
 
-    public void Init(int cardId, Vector2 startPosition)
+    public void Init(int cardId, Vector2 startPosition, float waitTimeToStartInSeconds = 0)
     {
         var cardStatus = cardId.GetCard().Status;
         if(cardStatus == CardStatus.InDiscard)
@@ -49,10 +54,25 @@ public class CardToCardPileLerpMovement : MonoBehaviour
 
         deckPileScript.CardIdsBeingMoved.Add(cardId);
         deckPileScript.UpdateCardDisplay();
+
+        StartCoroutine(ActivateMovement(waitTimeToStartInSeconds));
+    }
+
+    private IEnumerator ActivateMovement(float waitTime)
+    {
+        transform.position = startPosition; 
+        yield return new WaitForSeconds(waitTime);
+        cardId.GetCard().Status = cardId.GetCard().Status; // opnieuw setten voor datum 
+        active = true;
     }
 
     void Update()
     {
+        if(!active)
+        {
+            return;
+        }
+
         if (elapsedTime > desiredDuration)
         {
             deckPileScript.CardIdsBeingMoved.Remove(cardId);

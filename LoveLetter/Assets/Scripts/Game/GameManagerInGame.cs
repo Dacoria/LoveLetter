@@ -27,36 +27,9 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
-    public void CardEffectPlayed(int cardId, int playerId)
-    {
-        Deck.instance.RemoveCardFromPlayer(cardId);
-        NetworkActionEvents.instance.EndCharacterEffect(playerId, cardId.GetCard().Character.Type, cardId);
+    
 
-        if (!EndOfGame())
-        {
-            NextPlayer();            
-        }
-        else
-        {
-            GameEnded = true;
-            var winners = CheckWinners();
-            NetworkActionEvents.instance.GameEnded(winners);            
-        }
-    }
-
-    private void NextPlayer()
-    {
-        do
-        {
-            CurrentPlayerId = AllPlayers.SkipWhile(x => x.PlayerId != CurrentPlayerId).Skip(1).DefaultIfEmpty(AllPlayers[0]).First().PlayerId;
-        } 
-        while (CurrentPlayer().PlayerStatus == PlayerStatus.Intercepted);
-        
-        CurrentPlayer().PlayerStatus = PlayerStatus.Normal;
-        Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
-
-        NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer().PlayerId);
-    }
+    
 
     private void DoCardEffect(int cardId, int playerId)
     {
@@ -74,5 +47,36 @@ public partial class GameManager : MonoBehaviour
         { 
             Text.ActionLocal("Not allowed to play " + cardId.GetCard().Character.Type);
         }
-    }   
+    }
+
+    public void CardEffectPlayed(int cardId, int playerId)
+    {
+        Deck.instance.DiscardCardSync(cardId, cardIsPlayed: true);
+        NetworkActionEvents.instance.EndCharacterEffect(playerId, cardId.GetCard().Character.Type, cardId);
+
+        if (!EndOfGame())
+        {
+            NextPlayer();
+        }
+        else
+        {
+            GameEnded = true;
+            var winners = CheckWinners();
+            NetworkActionEvents.instance.GameEnded(winners);
+        }
+    }
+
+    private void NextPlayer()
+    {
+        do
+        {
+            CurrentPlayerId = AllPlayers.SkipWhile(x => x.PlayerId != CurrentPlayerId).Skip(1).DefaultIfEmpty(AllPlayers[0]).First().PlayerId;
+        }
+        while (CurrentPlayer().PlayerStatus == PlayerStatus.Intercepted);
+
+        CurrentPlayer().PlayerStatus = PlayerStatus.Normal;
+        Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
+
+        NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer().PlayerId);
+    }
 }

@@ -56,6 +56,8 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
         UpdateCardDisplay();
     }
 
+    public Vector2 GetCardPosition(int number) => number == 2 ? card2EndPos : card1EndPos;
+
     private void OnDestroy()
     {
         ActionEvents.GameEnded -= OnGameEnded;
@@ -78,37 +80,31 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
             var card1 = playerScript.CurrentCard1();
             var card2 = playerScript.CurrentCard2();
 
-            //playerScript.PlayerStatus == PlayerStatus.Intercepted
-
-            if((card1 != null && !Card1Display.gameObject.activeSelf) ||
+            if(playerScript.PlayerStatus != PlayerStatus.Intercepted &&
+               (card1 != null && !Card1Display.gameObject.activeSelf) ||
                (card1 != null && card1?.Id != Card1Display?.Card?.Id))
-            {                
-                var locCardOnTop = drawPileScript.GetLocationVisibleCardOnTop();
-                Card1Display.LerpMovement.StartMovement(locCardOnTop.position, card1EndPos);                
+            {
+                StartCardAnimation(card1, Card1Display, card1EndPos);
             }
 
-            if ((card2 != null && !Card2Display.gameObject.activeSelf) ||
+            if (playerScript.PlayerStatus != PlayerStatus.Intercepted &&
+               (card2 != null && !Card2Display.gameObject.activeSelf) ||
                (card2 != null && card2?.Id != Card2Display?.Card?.Id))
             {
-                var locCardOnTop = drawPileScript.GetLocationVisibleCardOnTop();
-                Card2Display.LerpMovement.StartMovement(locCardOnTop.position, card2EndPos);
+                StartCardAnimation(card2, Card2Display, card2EndPos);
             }
 
 
             if ((card1 == null && Card1Display.gameObject.activeSelf) ||
                (Card1Display?.Card != null && card1?.Id != Card1Display?.Card?.Id))
             {
-                var cardDisplay = Instantiate(EmptyCardPrefab, transform);
-                cardDisplay.SpriteRenderer.sprite = Card1Sprite.sprite;
-                cardDisplay.Init(Card1Display.Card.Id, Card1Display.transform.position);
+                InitCardToDiscardPile(Card1Display, Card1Sprite);
             }
 
             if ((card2 == null && Card2Display.gameObject.activeSelf) ||
                (Card2Display?.Card != null && card2?.Id != Card2Display?.Card?.Id))
             {
-                var cardDisplay = Instantiate(EmptyCardPrefab, transform);
-                cardDisplay.SpriteRenderer.sprite = Card2Sprite.sprite;
-                cardDisplay.Init(Card2Display.Card.Id, Card2Display.transform.position);
+                InitCardToDiscardPile(Card2Display, Card2Sprite);
             }
 
 
@@ -135,8 +131,41 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
         }
     }
 
+    private void StartCardAnimation(Card card, PlayerCardDisplay cardDisplay, Vector2 endpos)
+    {
+        if(card.PreviousPlayerId > 0 && card.Status == CardStatus.InPlayerHand)
+        {
+            var prevPlayer = card.PreviousPlayerId.GetPlayer();
+            var prevPlayerShowPlayerCards = prevPlayer.GetComponent<ShowPlayerCards>();
+            var startPosition = prevPlayerShowPlayerCards.GetCardPosition(card.PreviousIndexOfCardInHand);
+
+            cardDisplay.LerpMovement.StartMovement(startPosition, endpos);
+        }
+        else
+        {
+            var locCardOnTop = drawPileScript.GetLocationVisibleCardOnTop();
+            cardDisplay.LerpMovement.StartMovement(locCardOnTop.position, endpos);
+        }
+    }
+
     public override Transform GetLocationVisibleCardOnTop()
     {
         return transform;
+    }
+
+    private void InitCardToDiscardPile(PlayerCardDisplay origCardDisplayToCopy, SpriteRenderer cardSpriteToCopy)
+    {
+        var cardDisplay = Instantiate(EmptyCardPrefab, transform);
+        cardDisplay.SpriteRenderer.sprite = cardSpriteToCopy.sprite;
+
+        var cardOnDisplay = origCardDisplayToCopy.Card.Id.GetCard();
+        var isPlayedPrince = cardOnDisplay.CardIsPlayed && cardOnDisplay.Character.Type == CharacterType.Prince;
+
+        if(cardOnDisplay.Status == CardStatus.InDiscard)
+        {
+            cardDisplay.SpriteRenderer.sprite = MonoHelper.Instance.GetCharacterSprite(cardOnDisplay.Character.Type);
+        }
+
+        cardDisplay.Init(origCardDisplayToCopy.Card.Id, origCardDisplayToCopy.transform.position, waitTimeToStartInSeconds: isPlayedPrince ? 0.7f : 0);
     }
 }

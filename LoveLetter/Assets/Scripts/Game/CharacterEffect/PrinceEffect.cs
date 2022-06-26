@@ -56,7 +56,7 @@ public class PrinceEffect : CharacterEffect
         var currentCardPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer && x.Id != currentCardId);
         var playerOfCard = currentCardPlayer.PlayerId.GetPlayer();
 
-        Deck.instance.DiscardCardSync(currentCardPlayer.Id);
+        Deck.instance.DiscardCardSync(currentCardPlayer.Id, cardIsPlayed: false);
         currentCardPlayer.Status = CardStatus.InDiscard;
 
         if (currentCardPlayer.Character.Type == CharacterType.Princess)

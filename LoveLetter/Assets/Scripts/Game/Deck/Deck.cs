@@ -44,6 +44,9 @@ public class Deck : MonoBehaviour
             return;
         }
 
+        card.PreviousPlayerId = card.PlayerId;
+        card.PreviousIndexOfCardInHand = card.IndexOfCardInHand;
+
         card.PlayerId = playerId;
         card.IndexOfCardInHand = 1;
 
@@ -54,14 +57,6 @@ public class Deck : MonoBehaviour
         }
 
         SyncCard(card);
-    }
-
-
-    public void RemoveCardFromPlayer(int cardId)
-    {
-        var card = cardId.GetCard();
-        card.Status = CardStatus.InDiscard;
-        SyncCard(card);        
     }
 
     public void CreateDeckSync()
@@ -78,11 +73,18 @@ public class Deck : MonoBehaviour
         SyncCard(card, setToEndOfList: true);
     }
 
-    public void DiscardCardSync(int cardId)
+    public void DiscardCardSync(int cardId, bool cardIsPlayed)
     {
         var card = cardId.GetCard();
         card.Status = CardStatus.InDiscard;
+        card.CardIsPlayed = cardIsPlayed;
         SyncCard(card);
+    }
+
+    public void SetCardIsPlayed(int cardId)
+    {
+        var card = cardId.GetCard();
+        card.CardIsPlayed = true;
     }
 
     private void SyncInitialDeck()
@@ -106,16 +108,16 @@ public class Deck : MonoBehaviour
 
     private void SyncCard(Card card, bool setToEndOfList = false)
     {
-        photonView.RPC("RPC_SyncCard", RpcTarget.Others, card.Id, card.Status, card.PlayerId, card.IndexOfCardInHand, setToEndOfList);
+        photonView.RPC("RPC_SyncCard", RpcTarget.Others, card.Id, card.Status, card.PlayerId, card.IndexOfCardInHand, card.CardIsPlayed, card.PreviousPlayerId, card.PreviousIndexOfCardInHand, setToEndOfList);
     }
 
     [PunRPC]
-    public void RPC_SyncCard(int cardId, CardStatus cardStatus, int playerId, int indexOfCardInHand, bool setToEndOfList)
+    public void RPC_SyncCard(int cardId, CardStatus cardStatus, int playerId, int indexOfCardInHand, bool cardIsPlayed, int previousPlayerId, int previousIndexOfCardInHand, bool setToEndOfList)
     {
-        StartCoroutine(SyncCardIfDeckAvailable(cardId, cardStatus, playerId, indexOfCardInHand, setToEndOfList));
+        StartCoroutine(SyncCardIfDeckAvailable(cardId, cardStatus, playerId, indexOfCardInHand, cardIsPlayed, previousPlayerId, previousIndexOfCardInHand, setToEndOfList));
     }
 
-    private IEnumerator SyncCardIfDeckAvailable(int cardId, CardStatus cardStatus, int playerId, int indexOfCardInHand, bool setToEndOfList)
+    private IEnumerator SyncCardIfDeckAvailable(int cardId, CardStatus cardStatus, int playerId, int indexOfCardInHand, bool cardIsPlayed, int previousPlayerId, int previousIndexOfCardInHand, bool setToEndOfList)
     {
         var counter = 0;
 
@@ -128,8 +130,11 @@ public class Deck : MonoBehaviour
                 card.Status = cardStatus;
                 card.PlayerId = playerId;
                 card.IndexOfCardInHand = indexOfCardInHand;
+                card.CardIsPlayed = cardIsPlayed;
+                card.PreviousPlayerId = previousPlayerId;
+                card.PreviousIndexOfCardInHand= previousIndexOfCardInHand;
 
-                if(setToEndOfList)
+                if (setToEndOfList)
                 {
                     Cards = Cards.OrderBy(x => x.Id == cardId ? 1 : 0).ToList();
                 }
@@ -148,7 +153,7 @@ public class Deck : MonoBehaviour
 
         ActionEvents.CardSynced?.Invoke();
         
-    }
+    }   
 }
 
 [Serializable]

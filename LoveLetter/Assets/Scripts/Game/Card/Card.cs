@@ -4,8 +4,16 @@
 public class Card
 {
     public int Id;
-    public int PlayerId; // alleen gevuld als een player deze kaart in de hand heeft
-    public int IndexOfCardInHand; // player kan meerdere kaarten in hand hebben --> dit bepaalt de index daarvan (0, 1, 2)
+
+    // alleen gevuld als een player deze kaart in de hand heeft, anders 0
+    public int PlayerId;
+    public int IndexOfCardInHand; // player kan meerdere kaarten in hand hebben --> dit bepaalt de index daarvan (1, 2)
+
+    // voor de king switch
+    public int PreviousPlayerId;
+    public int PreviousIndexOfCardInHand;
+
+    public bool CardIsPlayed;
 
     public Character Character;
     public DateTime StatusChangeTime { get; private set; }
@@ -15,6 +23,7 @@ public class Card
         get => _status;
         set
         {
+            StatusChangeTime = DateTime.Now;
             if (_status != value)
             {
                 if (Status == CardStatus.InDiscard && Character.Type == CharacterType.Princess)
@@ -32,8 +41,6 @@ public class Card
                     PlayerId = -1;
                 }
                 _status = value;
-                StatusChangeTime = DateTime.Now;
-
                 
             }
         }
