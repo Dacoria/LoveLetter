@@ -57,8 +57,17 @@ public class PrinceEffect : CharacterEffect
         var playerOfCard = currentCardPlayer.PlayerId.GetPlayer();
 
         Deck.instance.DiscardCardSync(currentCardPlayer.Id);
-
         currentCardPlayer.Status = CardStatus.InDiscard;
+
+        if (currentCardPlayer.Character.Type == CharacterType.Princess)
+        {
+            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". This means " + optionSelectedPlayer + " is now intercepted.");
+            playerOfCard.PlayerStatus = PlayerStatus.Intercepted;
+            NetworkActionEvents.instance.CardDiscarded(currentCardPlayer.Id);
+            GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
+            return;
+        }
+        
 
         if(Deck.instance.Cards.Any(x => x.Status == CardStatus.InDeck))
         {
@@ -69,8 +78,8 @@ public class PrinceEffect : CharacterEffect
         {
             Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". No other cards left");
         }
-        
+
+        NetworkActionEvents.instance.CardDiscarded(currentCardPlayer.Id);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
-

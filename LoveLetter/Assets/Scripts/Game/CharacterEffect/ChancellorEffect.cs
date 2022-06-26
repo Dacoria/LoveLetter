@@ -12,6 +12,7 @@ public class ChancellorEffect : CharacterEffect
     {
         currentPlayer = player;
         currentCardId = cardId;
+        cardIdsPutAtBottom = new List<int>();
 
         var modalGo = MonoHelper.Instance.GetModal();
 
@@ -40,16 +41,18 @@ public class ChancellorEffect : CharacterEffect
     }
 
     private List<string> cardOptions;
+    private List<int> cardIdsPutAtBottom;
 
     public void ChooseCardAtBottom(string optionCardAtBottom)
     {
         var cardToPutAtBottom = Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == currentPlayer && x.Id != currentCardId && x.Character.Type.ToString() == optionCardAtBottom);
 
         Deck.instance.PutCardAtBottom(cardToPutAtBottom.Id);
+        cardIdsPutAtBottom.Add(cardToPutAtBottom.Id);
 
         cardOptions.Remove(cardOptions.First(x => x == optionCardAtBottom));
 
-        if(cardOptions.Count > 1)
+        if (cardOptions.Count > 1)
         {
             var modalGo = MonoHelper.Instance.GetModal();
             modalGo.SetOptions(ChooseCardAtBottom, "Again, choose card to put at bottom of pile", cardOptions);
@@ -57,6 +60,7 @@ public class ChancellorEffect : CharacterEffect
         }
 
         Text.ActionSync("Chancellor has placed card(s) at the bottom of the pile");
+        NetworkActionEvents.instance.CardsToDeck(cardIdsPutAtBottom);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }

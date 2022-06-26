@@ -46,6 +46,9 @@ MonoBehaviour:
   - RPC_SetGameText
   - RPC_SyncCard
   - RPC_SyncDeck
+  - RPC_AE_CardDiscarded
+  - RPC_AE_CardsSwitched
+  - RPC_AE_CardsToDeck
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

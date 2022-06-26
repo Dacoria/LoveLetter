@@ -11,28 +11,39 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCard
 
     public TMP_Text Text;
 
+
+    private void Awake()
+    {
+        CardIdsBeingMoved = new List<int>();
+    }
+
     private void Start()
     {
         UpdateCardDisplay();       
+    }
+
+    public override Transform GetLocationVisibleCardOnTop()
+    {
+        var cardOnTop = Deck.instance.Cards.Count(card => card.Status == CardStatus.InDiscard) >= 3 ? Card3Sprite :
+                        Deck.instance.Cards.Count(card => card.Status == CardStatus.InDiscard) == 2 ? Card2Sprite :
+                        Card1Sprite; // dan maar zo
+
+        return cardOnTop.transform;
     }
 
     public override void UpdateCardDisplay()
     {
        if(Deck.instance.Cards != null)
         {
-            var deckDiscarded = Deck.instance.Cards.Where(x => x.Status == CardStatus.InDiscard);
+            var deckDiscarded = Deck.instance.Cards.Where(card => card.Status == CardStatus.InDiscard && !CardIdsBeingMoved.Any(cardIdsMoved => card.Id == cardIdsMoved)).OrderByDescending(x => x.StatusChangeTime).ToList();
             var deckDiscardedCount = deckDiscarded.Count();
-
             
             Text.text = "Discard pile (" + deckDiscardedCount + ")";
 
-            Card1Sprite.gameObject.SetActive(deckDiscardedCount >= 1);
-            Card2Sprite.gameObject.SetActive(deckDiscardedCount >= 2);
-            Card3Sprite.gameObject.SetActive(deckDiscardedCount >= 3);
+            UpdateCardDisplay(Card1Sprite, deckDiscarded, 1);
+            UpdateCardDisplay(Card2Sprite, deckDiscarded, 2);
+            UpdateCardDisplay(Card3Sprite, deckDiscarded, 3);
 
-            Card1Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;
-            Card2Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;
-            Card3Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;
 
             if (deckDiscardedCount > 0)
             {
@@ -50,7 +61,21 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCard
         }
     }
 
-    private CharacterType GetLastDiscardedCharacter() => Deck.instance.Cards.Where(x => x.Status == CardStatus.InDiscard).OrderByDescending(x => x.StatusChangeTime).First().Character.Type;
+    private void UpdateCardDisplay(SpriteRenderer spriteRenderer, List<Card> deckDiscarded, int number)
+    {
+        spriteRenderer.gameObject.SetActive(deckDiscarded.Count >= number);
+        if(deckDiscarded.Count >= number)
+        {
+            spriteRenderer.sprite = MonoHelper.Instance.GetCharacterSprite(deckDiscarded[number - 1].Character.Type);
+        }
+    }
+
+    private CharacterType GetLastDiscardedCharacter() => Deck.instance.Cards
+        .Where(card =>
+            card.Status == CardStatus.InDiscard &&
+            !CardIdsBeingMoved.Any(cardIdsMoved => card.Id == cardIdsMoved))
+        .OrderByDescending(x => x.StatusChangeTime)
+        .First().Character.Type;
 
     public void OnCardMouseDownEvent()
     {

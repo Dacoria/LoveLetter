@@ -16,6 +16,16 @@ public class DrawPileScript : UpdateCardDisplayMonoBehaviourAbstract
         UpdateCardDisplay();
     }
 
+    public override Transform GetLocationVisibleCardOnTop()
+    {
+        var cardOnTop = Card3.activeSelf ? Card3 :
+                        Card2.activeSelf ? Card2 :
+                        Card1.activeSelf ? Card1 :
+                        Card1; // dan maar zo
+
+        return cardOnTop.transform;
+    }
+
     public override void UpdateCardDisplay()
     {
         if (Deck.instance.Cards != null)

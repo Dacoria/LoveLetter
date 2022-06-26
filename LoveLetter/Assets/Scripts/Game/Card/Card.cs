@@ -17,6 +17,10 @@ public class Card
         {
             if (_status != value)
             {
+                if (Status == CardStatus.InDiscard && Character.Type == CharacterType.Princess)
+                {
+                    PlayerId.GetPlayer().PlayerStatus = PlayerStatus.Intercepted;
+                }
 
                 if (_status == CardStatus.InPlayerHand)
                 {
@@ -29,6 +33,8 @@ public class Card
                 }
                 _status = value;
                 StatusChangeTime = DateTime.Now;
+
+                
             }
         }
     }

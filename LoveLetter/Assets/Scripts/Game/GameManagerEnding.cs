@@ -43,6 +43,12 @@ public partial class GameManager : MonoBehaviour
         return playersWithHighestScore;
     }
 
+    private void OnGameEnded(List<int> obj)
+    {
+        GameEnded = true;
+    }
+
+
     private bool EndOfGame()
     {
         if (AllPlayers.Count(x => x.PlayerStatus != PlayerStatus.Intercepted) <= 1)

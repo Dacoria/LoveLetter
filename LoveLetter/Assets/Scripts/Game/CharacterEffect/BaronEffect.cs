@@ -31,26 +31,32 @@ public class BaronEffect : CharacterEffect
         return true;
     }
 
+    private Card GetOtherCard(PlayerScript player, int cardId)
+    {
+        return Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == player && x.Id != cardId);
+    }
+
     public void ChoosePlayer(string optionSelectedPlayer)
     {
-        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
-        var yourPoints = DeckSettings.GetCharacterSettings(CharacterType).Points;
+        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);        
         var otherPoints = DeckSettings.GetCharacterSettings(currentCardOtherPlayer.Character.Type).Points;
 
+        var yourOtherCard = GetOtherCard(currentPlayer, currentCardId);
+        var yourPoints = DeckSettings.GetCharacterSettings(yourOtherCard.Character.Type).Points;
 
         if (yourPoints == otherPoints)
         {
-            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". Baron is of the same rank! Nothing happens");
+            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". The ranks are the same! Nothing happens");
         }
         else if (yourPoints > otherPoints)
         {
-            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". Baron is ranked higher! " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is now intercepted");
+            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is ranked higher! " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is now intercepted");
             currentCardOtherPlayer.PlayerId.GetPlayer().PlayerStatus = PlayerStatus.Intercepted;
             
         }
         else if (yourPoints < otherPoints)
         {
-            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". Baron is ranked lower! " + currentPlayer.PlayerName + " is now intercepted");
+            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is ranked lower! " + currentPlayer.PlayerName + " is now intercepted");
             currentPlayer.PlayerStatus = PlayerStatus.Intercepted;            
         }
 

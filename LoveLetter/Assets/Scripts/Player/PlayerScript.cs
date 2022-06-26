@@ -25,14 +25,14 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 
                 NetworkActionEvents.instance.PlayerStatusChange(PlayerId, _playerStatus);
 
-                if(_playerStatus == PlayerStatus.Intercepted)
-                {
-                    var cardsOfPlayer = Deck.instance.Cards.Where(x => x.PlayerId == PlayerId).ToList();
-                    for(int i = 0; i < cardsOfPlayer.Count; i++)
-                    {
-                        cardsOfPlayer[i].Status = CardStatus.InDiscard;
-                    }    
-                }
+                //if(_playerStatus == PlayerStatus.Intercepted)
+                //{
+                //    var cardsOfPlayer = Deck.instance.Cards.Where(x => x.PlayerId == PlayerId).ToList();
+                //    for(int i = 0; i < cardsOfPlayer.Count; i++)
+                //    {
+                //        cardsOfPlayer[i].Status = CardStatus.InDiscard;
+                //    }    
+                //}
             }
         }
     }

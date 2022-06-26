@@ -23,11 +23,13 @@ public partial class GameManager : MonoBehaviour
     {
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
         ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.GameEnded += OnGameEnded;
     }
-
+    
     private void OnDestroy()
     {
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
         ActionEvents.NewGameStarted -= OnNewGameStarted;
-    }    
+        ActionEvents.GameEnded -= OnGameEnded;
+    }
 }

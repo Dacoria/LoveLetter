@@ -40,10 +40,9 @@ public partial class GameManager : MonoBehaviour
         {
             GameEnded = true;
             var winners = CheckWinners();
-            NetworkActionEvents.instance.GameEnded(winners);
-            
+            NetworkActionEvents.instance.GameEnded(winners);            
         }
-    }  
+    }
 
     private void NextPlayer()
     {
@@ -69,10 +68,10 @@ public partial class GameManager : MonoBehaviour
         var isEffectAllowed = charSettings.CharacterEffect.DoEffect(playerId.GetPlayer() , cardId);
         if (isEffectAllowed)
         {
-            NetworkActionEvents.instance.StartCharacterEffect(playerId, card.Character.Type, cardId);            
+            NetworkActionEvents.instance.StartCharacterEffect(playerId, card.Character.Type, cardId);
         }
-        else
-        {
+        else 
+        { 
             Text.ActionLocal("Not allowed to play " + cardId.GetCard().Character.Type);
         }
     }   

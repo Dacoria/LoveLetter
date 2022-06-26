@@ -61,6 +61,7 @@ public class KingEffect: CharacterEffect
         Deck.instance.SetPlayerId(currentCardOtherPlayer.Id, currentPlayer.PlayerId);
 
         Text.ActionSync(currentPlayer.PlayerName + " swapped cards with " + optionSelectedPlayer);
+        NetworkActionEvents.instance.CardsSwitched(yourOtherCard.Id, currentCardOtherPlayer.Id);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }

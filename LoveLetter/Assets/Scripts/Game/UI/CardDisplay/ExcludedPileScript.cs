@@ -55,4 +55,9 @@ public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCar
             MonoHelper.Instance.ShowBigCard(Deck.instance.Cards.First(x => x.Status == CardStatus.Excluded).Character.Type);
         }
     }
+
+    public override Transform GetLocationVisibleCardOnTop()
+    {
+        return transform;
+    }
 }

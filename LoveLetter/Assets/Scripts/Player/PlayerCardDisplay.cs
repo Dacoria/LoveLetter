@@ -2,8 +2,10 @@ using Photon.Pun;
 using System;
 using UnityEngine;
 
-public class CardDisplay : MonoBehaviour
-{   
+public class PlayerCardDisplay : MonoBehaviour
+{
+    [HideInInspector][ComponentInject] public LerpMovement LerpMovement;
+
     [HideInInspector] public Card Card;
     [ComponentInject] private PlayerScript player;
     [ComponentInject] private PhotonView photonView;
@@ -64,6 +66,12 @@ public class CardDisplay : MonoBehaviour
 
     private void MouseHoldEvent()
     {
+        if (!GameManager.instance.GameEnded && !photonView.IsMine)
+        {
+            Debug.Log("Not your card");
+            return;
+        }
+
         MonoHelper.Instance.ShowBigCard(Card.Character.Type);
     }
 

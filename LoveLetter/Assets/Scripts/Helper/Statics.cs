@@ -10,5 +10,4 @@ public static class Statics
     public static string SCENE_LOBBY = "Lobby";
 
     public static string ANIMATION_TRIGGER_START_ANIMATION_SCENE = "Start";
-
 }
