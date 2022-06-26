@@ -10,6 +10,7 @@ public class PlayerCardDisplay : MonoBehaviour
     [HideInInspector] public Card Card;
     [ComponentInject] private PlayerScript player;
     [ComponentInject] private PhotonView photonView;
+    [ComponentInject] private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
@@ -71,13 +72,10 @@ public class PlayerCardDisplay : MonoBehaviour
 
     private void MouseHoldEvent()
     {
-        if (!GameManager.instance.GameEnded && !photonView.IsMine)
+        if (spriteRenderer.sprite != MonoHelper.Instance.BackgroundCardSprite)
         {
-            Debug.Log("Not your card");
-            return;
+            MonoHelper.Instance.ShowBigCard(Card.Character.Type);
         }
-
-        MonoHelper.Instance.ShowBigCard(Card.Character.Type);
     }
 
     public void PlayCard()
