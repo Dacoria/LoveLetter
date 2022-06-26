@@ -3153,6 +3153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311cc533d0c233141929abafc615a9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ModalScript: {fileID: 596334296}
   BackgroundCardSprite: {fileID: 21300000, guid: 82e38a347ee1f094bb21eb9e14a42947, type: 3}
   CharacterSprites:
   - CharacterType: 0

@@ -12,8 +12,6 @@ public class SpawnPlayers : MonoBehaviour
 
     private void Start()
     {
-        Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
-
         var currentPlayers = NetworkHelper.Instance.GetPlayerList();
 
         var playerCount = currentPlayers.Length;
@@ -56,7 +54,7 @@ public class SpawnPlayers : MonoBehaviour
         }
         if (playerIndex == 4)
         {
-            return new Vector2(topRight.x / 3 * 1.5f, 0 * 1);
+            return new Vector2(topRight.x / 3 * 1.5f, 0);
         }
 
         throw new System.Exception();

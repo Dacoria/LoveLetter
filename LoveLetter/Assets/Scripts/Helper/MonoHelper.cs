@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class MonoHelper : MonoBehaviour
 {
     private Camera mainCam;
-    private ModalScript ModalScript;
+    public ModalScript ModalScript;
     private BigCardDisplay BigCardDisplay;
 
     public static MonoHelper Instance;
@@ -39,13 +39,13 @@ public class MonoHelper : MonoBehaviour
     {
         Instance = this;
         mainCam = Camera.main;
-        ModalScript = FindObjectOfType<ModalScript>();
         BigCardDisplay = GetComponentInChildren<BigCardDisplay>(true);
     }
 
     public Vector2 GetTopRightOfMainCam()
     {
         Vector2 topRight = mainCam.ScreenToWorldPoint(new Vector3(mainCam.pixelWidth, mainCam.pixelHeight, mainCam.nearClipPlane));
+        topRight = new Vector2(14f, 25f);
         return topRight;
     }
 

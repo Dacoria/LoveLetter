@@ -27,10 +27,6 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
-    
-
-    
-
     private void DoCardEffect(int cardId, int playerId)
     {
         var card = cardId.GetCard();
@@ -70,7 +66,7 @@ public partial class GameManager : MonoBehaviour
     {
         do
         {
-            CurrentPlayerId = AllPlayers.SkipWhile(x => x.PlayerId != CurrentPlayerId).Skip(1).DefaultIfEmpty(AllPlayers[0]).First().PlayerId;
+            CurrentPlayerId = NextPlayerId();
         }
         while (CurrentPlayer().PlayerStatus == PlayerStatus.Intercepted);
 
@@ -78,5 +74,26 @@ public partial class GameManager : MonoBehaviour
         Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
 
         NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer().PlayerId);
+    }
+
+    private int NextPlayerId()
+    {
+        var foundCurrPlayer = false;
+
+        for(int i = 0; i < AllPlayers.Count(); i++)
+        {
+            var player = AllPlayers[i];
+            if (foundCurrPlayer)
+            {
+                return player.PlayerId;
+            }
+            
+            if(player.PlayerId == CurrentPlayerId)
+            {
+                foundCurrPlayer = true;
+            }
+        }
+
+        return AllPlayers[0].PlayerId;
     }
 }

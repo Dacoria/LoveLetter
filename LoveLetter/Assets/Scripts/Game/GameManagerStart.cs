@@ -30,8 +30,19 @@ public partial class GameManager : MonoBehaviour
 
         var playersMatch = playerIds.All(AllPlayers.Select(x => x.PlayerId).Contains);
         var sameSize = playerIds.Count == AllPlayers.Count;
+        
+        // fix order....
+        var players = new List<PlayerScript>();
+        for (int i = 0; i < playerIds.Count; i++)
+        {
+            var pId = playerIds[i];
+            players.Add(AllPlayers.Single(x => x.PlayerId == pId));
+        }
 
-        if(playersMatch && sameSize)
+        AllPlayers = players;
+
+
+        if (playersMatch && sameSize)
         {
             CurrentPlayerId = currentPlayerId;
             return;
