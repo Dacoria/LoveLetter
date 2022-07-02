@@ -26,14 +26,14 @@ public class FixResolutionScript : MonoBehaviour
     {
         if (Screen.width > Screen.height)
         {
-            var width = Mathf.RoundToInt(MinimumHeight / (float)Screen.width * Screen.height);
-            width = math.max(width, MinimumWidth);
-
-            Camera.main.orthographicSize = width / pixelsToUnits / 2;
-            Camera.main.transform.rotation = Quaternion.Euler(0, 0, 90);
-        }
-        else
-        {
+        //    var width = Mathf.RoundToInt(MinimumHeight / (float)Screen.width * Screen.height);
+        //    width = math.max(width, MinimumWidth);
+        //
+        //    Camera.main.orthographicSize = width / pixelsToUnits / 2;
+        //    Camera.main.transform.rotation = Quaternion.Euler(0, 0, 90);
+        //}
+        //else
+        //{
             var height = Mathf.RoundToInt(MinimumWidth / (float)Screen.width * Screen.height);
             height = math.max(height, MinimumHeight);
 

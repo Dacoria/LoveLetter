@@ -9,6 +9,6 @@ public class ActivePlayersScript : MonoBehaviour
 
     void Update()
     {
-        Text.text = "Active Players: " + NetworkHelper.Instance.GetPlayers().Count(x => x.PlayerStatus != PlayerStatus.Intercepted).ToString();
+        Text.text = "Players Left: " + NetworkHelper.Instance.GetPlayers().Count(x => x.PlayerStatus != PlayerStatus.Intercepted).ToString();
     }
 }
