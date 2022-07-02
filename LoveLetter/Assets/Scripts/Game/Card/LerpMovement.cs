@@ -6,7 +6,7 @@ public class LerpMovement : MonoBehaviour
 {
     private Vector2 endPosition;
     private Vector2 startPosition;
-    private float desiredDuration = 1.5f;
+    private float desiredDuration;
     private float elapsedTime;
     private Vector2 startScale;
     private Vector2 localScaleTarget;
@@ -21,13 +21,14 @@ public class LerpMovement : MonoBehaviour
         this.ComponentInject();
     }
 
-    public void StartMovement(Vector2 startPosition, Vector2 endPosition, float localScaleMultiplier = 1, bool destroyAfterDestReached = false)
+    public void StartMovement(Vector2 startPosition, Vector2 endPosition, float localScaleMultiplier = 1, bool destroyAfterDestReached = false, float desiredDuration = 1.5f)
     {
         this.startPosition = startPosition;
         this.startScale = transform.localScale;
         this.endPosition = endPosition;
         this.destroyAfterDestReached = destroyAfterDestReached;
         this.localScaleTarget = new Vector2(localScaleMultiplier, localScaleMultiplier);
+        this.desiredDuration = desiredDuration;
 
         elapsedTime = 0;
         isActive = true;
