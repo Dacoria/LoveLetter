@@ -17,8 +17,13 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
 
     private DrawPileScript drawPileScript;
 
-    private Vector2 card1EndPos;
-    private Vector2 card2EndPos;
+    private Vector2 currentCard1EndPos;
+    private Vector2 currentCard2EndPos;
+
+    private Vector2 initCard1EndPos;
+    private Vector2 initCard2EndPos;
+
+    private Vector2 avgCardEndPos => (initCard1EndPos + initCard2EndPos) / 2;
 
     void Awake()
     {
@@ -27,8 +32,11 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         Card1Sprite = Card1Display.GetComponent<SpriteRenderer>();
         Card2Sprite = Card2Display.GetComponent<SpriteRenderer>();
 
-        card1EndPos = Card1Display.transform.position;
-        card2EndPos = Card2Display.transform.position;
+        initCard1EndPos = Card1Display.transform.position;
+        initCard2EndPos = Card2Display.transform.position;
+
+        currentCard1EndPos = initCard1EndPos;
+        currentCard2EndPos = initCard2EndPos;
 
         cardIdsAlwaysShown = new List<int>();
     }
@@ -41,6 +49,7 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         ActionEvents.StartCharacterEffect += OnStartCharacterEffect;
         ActionEvents.StartShowCardEffect += OnStartShowCardEffect;
         ActionEvents.EndShowCardEffect += OnEndShowCardEffect;
+        ActionEvents.DeckCardDrawn += OnDeckCardDrawn;
     }
 
     private void OnStartShowCardEffect(int pId, CharacterType cType, int cardId, int targetCardId)
@@ -63,23 +72,9 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         UpdateCardDisplay();
     }
 
-    private bool gameEnded;
-
-    private void OnGameEnded(List<int> obj)
+    private void OnDeckCardDrawn(int obj)
     {
-        gameEnded = true;
         UpdateCardDisplay();
-    }
-
-    public Vector2 GetCardPosition(int number) => number == 2 ? card2EndPos : card1EndPos;
-
-    private void OnDestroy()
-    {
-        ActionEvents.GameEnded -= OnGameEnded;
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
-        ActionEvents.StartCharacterEffect -= OnStartCharacterEffect;
-        ActionEvents.StartShowCardEffect -= OnStartShowCardEffect;
-        ActionEvents.EndShowCardEffect -= OnEndShowCardEffect;
     }
 
     private List<int> cardIdsAlwaysShown;
@@ -90,6 +85,26 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         UpdateCardDisplay();
     }
 
+    private bool gameEnded;
+
+    private void OnGameEnded(List<int> obj)
+    {
+        gameEnded = true;
+        UpdateCardDisplay();
+    }
+
+    public Vector2 GetCardPosition(int number) => number == 2 ? currentCard2EndPos : currentCard1EndPos;
+
+    private void OnDestroy()
+    {
+        ActionEvents.GameEnded -= OnGameEnded;
+        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.StartCharacterEffect -= OnStartCharacterEffect;
+        ActionEvents.StartShowCardEffect -= OnStartShowCardEffect;
+        ActionEvents.EndShowCardEffect -= OnEndShowCardEffect;
+        ActionEvents.DeckCardDrawn -= OnDeckCardDrawn;
+    }    
+
     public override void UpdateCardDisplay()
     {
         if (Deck.instance.Cards != null)
@@ -97,18 +112,29 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
             var card1 = playerScript.CurrentCard1();
             var card2 = playerScript.CurrentCard2();
 
-            if(playerScript.PlayerStatus != PlayerStatus.Intercepted &&
+
+            if (card1 != null && card2 != null)
+            {
+                currentCard1EndPos = initCard1EndPos;
+                currentCard2EndPos = initCard2EndPos;
+            }else
+            {
+                currentCard1EndPos = avgCardEndPos;
+                currentCard2EndPos = avgCardEndPos;
+            }
+
+            if (playerScript.PlayerStatus != PlayerStatus.Intercepted &&
                (card1 != null && !Card1Display.gameObject.activeSelf) ||
                (card1 != null && card1?.Id != Card1Display?.Card?.Id))
             {
-                StartCardAnimation(card1, Card1Display, card1EndPos);
+                StartCardAnimation(card1, Card1Display, currentCard1EndPos);
             }
 
             if (playerScript.PlayerStatus != PlayerStatus.Intercepted &&
                (card2 != null && !Card2Display.gameObject.activeSelf) ||
                (card2 != null && card2?.Id != Card2Display?.Card?.Id))
             {
-                StartCardAnimation(card2, Card2Display, card2EndPos);
+                StartCardAnimation(card2, Card2Display, currentCard2EndPos);
             }
 
 
@@ -139,7 +165,18 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
             if (card2 != null)
             {
                 Card2Sprite.sprite = (gameEnded || photonView.IsMine || cardIdsAlwaysShown.Any(x => x == card2.Id)) ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
-            }           
+            }
+
+            if(card1 != null  && (Vector2)Card1Display.transform.position != currentCard1EndPos && !Card1Display.LerpMovement.IsActive)
+            {
+                Card1Display.LerpMovement.StartMovement((Vector2)Card1Display.transform.position, currentCard1EndPos);
+            }
+            if (card2 != null && (Vector2)Card2Display.transform.position != currentCard2EndPos && !Card2Display.LerpMovement.IsActive)
+            {
+                Card2Display.LerpMovement.StartMovement((Vector2)Card2Display.transform.position, currentCard2EndPos);
+            }
+
+
         }
         else
         {

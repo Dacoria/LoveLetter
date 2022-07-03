@@ -38,7 +38,7 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCard
             var deckDiscarded = Deck.instance.Cards.Where(card => card.Status == CardStatus.InDiscard && !CardIdsBeingMoved.Any(cardIdsMoved => card.Id == cardIdsMoved)).OrderByDescending(x => x.StatusChangeTime).ToList();
             var deckDiscardedCount = deckDiscarded.Count();
             
-            Text.text = "Discard pile (" + deckDiscardedCount + ")";
+            Text.text = "Discarded (" + deckDiscardedCount + ")";
 
             UpdateCardDisplay(Card1Sprite, deckDiscarded, 1);
             UpdateCardDisplay(Card2Sprite, deckDiscarded, 2);

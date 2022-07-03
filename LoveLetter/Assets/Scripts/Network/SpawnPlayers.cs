@@ -42,19 +42,19 @@ public class SpawnPlayers : MonoBehaviour
         Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
         if (playerIndex == 1)
         {
-            return new Vector2(topRight.x / 3 * 1.5f * -1, topRight.y / 2);
+            return new Vector2(topRight.x / 4 * 1.5f * -1, topRight.y / 2);
         }
         if (playerIndex == 2)
         {
-            return new Vector2(topRight.x / 3 * 1.5f, topRight.y / 2);
+            return new Vector2(topRight.x / 4 * 1.5f, topRight.y / 2);
         }
         if (playerIndex == 3)
         {
-            return new Vector2(topRight.x / 3 * 1.5f * -1, 0);
+            return new Vector2(topRight.x / 4 * 1.5f * -1, 0);
         }
         if (playerIndex == 4)
         {
-            return new Vector2(topRight.x / 3 * 1.5f, 0);
+            return new Vector2(topRight.x / 4 * 1.5f, 0);
         }
 
         throw new System.Exception();

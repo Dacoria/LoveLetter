@@ -14,7 +14,7 @@ public class LerpMovement : MonoBehaviour
 
     [SerializeField] private AnimationCurve curve;
 
-    private bool isActive;
+    public bool IsActive;
 
     private void Awake()
     {
@@ -31,19 +31,19 @@ public class LerpMovement : MonoBehaviour
         this.desiredDuration = desiredDuration;
 
         elapsedTime = 0;
-        isActive = true;
+        IsActive = true;
     }
 
     void Update()
     {
-        if(!isActive)
+        if(!IsActive)
         {
             return;
         }
 
         if (elapsedTime > desiredDuration)
         {
-            isActive = false;
+            IsActive = false;
             if (destroyAfterDestReached)
             {
                 Destroy(gameObject);

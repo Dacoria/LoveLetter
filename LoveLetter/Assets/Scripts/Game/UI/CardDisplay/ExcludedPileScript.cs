@@ -38,7 +38,7 @@ public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCar
         {
             var exclusionCount = Deck.instance.Cards.Count(x => x.Status == CardStatus.Excluded);            
             
-            Text.text = "Excluded pile (" + exclusionCount + ")";
+            Text.text = "Excluded (" + exclusionCount + ")";
             Card1Sprite.gameObject.SetActive(exclusionCount >= 1);
         }
         else
