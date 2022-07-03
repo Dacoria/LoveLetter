@@ -33,6 +33,6 @@ public class InfoModalCharacter : MonoBehaviour
 
     public void ClickOnButton()
     {
-        MonoHelper.Instance.ShowBigCard(characterTypeOfModalOption);
+        BigCardHandler.instance.ShowBigCardNoButtons(characterTypeOfModalOption);
     }
 }

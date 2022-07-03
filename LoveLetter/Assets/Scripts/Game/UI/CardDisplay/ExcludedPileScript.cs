@@ -52,7 +52,7 @@ public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCar
     {        
         if (Card1Sprite.sprite != MonoHelper.Instance.BackgroundCardSprite)
         {
-            MonoHelper.Instance.ShowBigCard(Deck.instance.Cards.First(x => x.Status == CardStatus.Excluded).Character.Type);
+            BigCardHandler.instance.ShowBigCardNoButtons(Deck.instance.Cards.First(x => x.Status == CardStatus.Excluded).Character.Type);
         }
     }
 

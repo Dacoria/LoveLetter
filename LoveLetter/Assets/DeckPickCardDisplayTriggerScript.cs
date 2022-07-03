@@ -46,9 +46,7 @@ public class DeckPickCardDisplayTriggerScript : MonoBehaviour
     }
 
     private void ShowDrawCardMessage()
-    {        
-        var cancel = new Dialog.ActionButton("Cancel", null, new Color(0.9f, 0.9f,
-        0.9f));        
+    {
         var ok = new Dialog.ActionButton("OK", () =>
         {
             //Debug.Log("click ok");

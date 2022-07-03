@@ -34,7 +34,7 @@ public class ChancellorEffect : CharacterEffect
         }
 
         cardOptions = Deck.instance.Cards.Where(x => x?.PlayerId.GetPlayer() == player && x.Id != currentCardId).Select(x => x.Character.Type.ToString()).ToList();
-        modalGo.SetOptions(ChooseCardAtBottom, "Choose card to put at bottom of pile", cardOptions);
+        modalGo.SetOptions(ChooseCardAtBottom, "Choose card to keep", cardOptions);
         
         Textt.ActionSync("Chancellor played...");
         return true;
@@ -45,18 +45,13 @@ public class ChancellorEffect : CharacterEffect
 
     public void ChooseCardAtBottom(string optionCardAtBottom)
     {
-        var cardToPutAtBottom = Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == currentPlayer && x.Id != currentCardId && x.Character.Type.ToString() == optionCardAtBottom);
+        var remainingCardsOfPlayer = Deck.instance.Cards.Where(x => x?.PlayerId.GetPlayer() == currentPlayer && x.Id != currentCardId).ToList();
+        remainingCardsOfPlayer.Remove(remainingCardsOfPlayer.First(x => x.Character.Type.ToString() == optionCardAtBottom));
 
-        Deck.instance.PutCardAtBottom(cardToPutAtBottom.Id);
-        cardIdsPutAtBottom.Add(cardToPutAtBottom.Id);
-
-        cardOptions.Remove(cardOptions.First(x => x == optionCardAtBottom));
-
-        if (cardOptions.Count > 1)
+        foreach(var cardToPutAtBottomOfDeck in remainingCardsOfPlayer)
         {
-            var modalGo = MonoHelper.Instance.GetModal();
-            modalGo.SetOptions(ChooseCardAtBottom, "Again, choose card to put at bottom of pile", cardOptions);
-            return;
+            Deck.instance.PutCardAtBottom(cardToPutAtBottomOfDeck.Id);
+            cardIdsPutAtBottom.Add(cardToPutAtBottomOfDeck.Id);
         }
 
         Textt.ActionSync("Chancellor has placed card(s) at the bottom of the pile");

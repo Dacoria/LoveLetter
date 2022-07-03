@@ -7,6 +7,7 @@ public static class ActionEvents
     public static Action<List<int>, int> NewGameStarted;
     public static Action CardSynced;
     public static Action<int> NewPlayerTurn;
+    public static Action<int, CharacterType, int> StartCharacterEffect;
     public static Action<int, CharacterType, int> EndCharacterEffect;
     public static Action<int, PlayerStatus> PlayerStatusChange;
     public static Action<List<int>> GameEnded;
@@ -22,5 +23,4 @@ public static class ActionEvents
     public static Action<int> CardDiscarded;
     public static Action<int, int> CardsSwitched;
 
-    public static Action<int, CharacterType, int> StartCharacterEffect { get; internal set; }
 }

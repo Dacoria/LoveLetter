@@ -19,67 +19,37 @@ public class PlayerInteractionCardDisplay : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(!MonoHelper.Instance.GuiAllowed())
+        if (!MonoHelper.Instance.GuiAllowed(checkDialogPopup: false))
         {
             return;
         }
-        if (MonoHelper.Instance.GetModal().IsActive)
+
+        if (spriteRenderer.sprite == MonoHelper.Instance.BackgroundCardSprite)
         {
             return;
         }
-        
-        MouseDownTime = DateTime.Now;
-        isMouseClick = true;
-    }
-
-
-    private bool isMouseClick;
-    private DateTime? MouseDownTime;
-
-    private void Update()
-    {
-        if(MouseDownTime.HasValue)
+        if (GameManager.instance.CurrentPlayer().PlayerId != player.PlayerId)
         {
-            var msPast = (DateTime.Now - MouseDownTime.Value).TotalMilliseconds;
-            if(msPast > 500)
-            {
-                isMouseClick = false;
-                MouseDownTime = null;
-                MouseHoldEvent();
-            }
+            Debug.Log("Not your turn");
+            BigCardHandler.instance.ShowBigCardNoButtons(Card.Character.Type);
+            return;
         }
-    }
-
-    private void OnMouseUp()
-    {
-        MouseDownTime = null;
-
-        if (isMouseClick)
+        if (!photonView.IsMine)
         {
-            if (GameManager.instance.CurrentPlayer().PlayerId != player.PlayerId)
-            {
-                Debug.Log("Not your turn");
-                return;
-            }
-            if (!photonView.IsMine)
-            {
-                Debug.Log("Not your card");
-                return;
-            }
-            if (!player.HasPickedCardFromDeckIfPossible())
-            {
-                return;
-            }
-            PlayCard();
+            Debug.Log("Not your card");
+            BigCardHandler.instance.ShowBigCardNoButtons(Card.Character.Type);
+            return;
         }
-    }
-
-    private void MouseHoldEvent()
-    {
-        if (spriteRenderer.sprite != MonoHelper.Instance.BackgroundCardSprite)
+        if (!player.HasPickedCardFromDeckIfPossible())
         {
-            MonoHelper.Instance.ShowBigCard(Card.Character.Type);
+            BigCardHandler.instance.ShowBigCardNoButtons(Card.Character.Type);
+            return;
         }
+        else
+        {
+            BigCardHandler.instance.ShowBigCardWithButtons(Card.Character.Type, Card.Id, player.PlayerId);
+        }
+        //PlayCard();                    
     }
 
     public void PlayCard()

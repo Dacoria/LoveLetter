@@ -85,7 +85,7 @@ public class DiscardPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCard
                         null;
         if(cardOnTop != null)
         {
-            MonoHelper.Instance.ShowBigCard(GetLastDiscardedCharacter());
+            BigCardHandler.instance.ShowBigCardNoButtons(GetLastDiscardedCharacter());
         }
     }
 }

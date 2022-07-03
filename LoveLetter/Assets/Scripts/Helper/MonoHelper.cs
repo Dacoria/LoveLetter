@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MonoHelper : MonoBehaviour
 {
     private Camera mainCam;
     public ModalScript ModalScript;
-    private BigCardDisplay BigCardDisplay;
 
     public static MonoHelper Instance;
 
@@ -17,7 +18,7 @@ public class MonoHelper : MonoBehaviour
     public GameObject MenuGo;
     public GameObject InstructionsGo;
 
-    public bool GuiAllowed(bool checkDialogPopup = true, bool checkOptionsModal = true, bool checkMainMenu = true, bool checkInstructionsMenu = true )
+    public bool GuiAllowed(bool checkDialogPopup = true, bool checkOptionsModal = true, bool checkMainMenu = true, bool checkInstructionsMenu = true, bool checkBigCard = true)
     {
         if(checkDialogPopup && DialogMessageGo.isActiveAndEnabled)
         {
@@ -32,6 +33,10 @@ public class MonoHelper : MonoBehaviour
             return false;
         }
         if (checkInstructionsMenu && InstructionsGo.activeSelf)
+        {
+            return false;
+        }
+        if (checkBigCard && BigCardHandler.instance.BigCardIsActive())
         {
             return false;
         }
@@ -63,7 +68,6 @@ public class MonoHelper : MonoBehaviour
     {
         Instance = this;
         mainCam = Camera.main;
-        BigCardDisplay = GetComponentInChildren<BigCardDisplay>(true);
     }
 
     public Vector2 GetTopRightOfMainCam()
@@ -99,54 +103,60 @@ public class MonoHelper : MonoBehaviour
         }
 
         return null;
-
     }
 
-    public void ShowBigCard(CharacterType type)
+    public void Fade(bool fadeAway, float timeInSeconds, GameObject go, Action callback = null)
     {
-        BigCardDisplay.gameObject.SetActive(true);
-        BigCardDisplay.ShowBigCard(type, ignoreModalActive: true);
+        var fadeObjects = new FadeObjects
+        {
+            Images = go.GetComponentsInChildren<Image>().ToList(),
+            SpriteRenderers = go.GetComponentsInChildren<SpriteRenderer>().ToList(),
+            Texts = go.GetComponentsInChildren<TMP_Text>().ToList()
+        };
+
+        StartCoroutine(Fade(fadeAway, timeInSeconds, fadeObjects, callback));
     }
 
-    public bool BigCardIsActive()
-    {
-        return BigCardDisplay.gameObject.activeSelf && BigCardDisplay.bigCardIsActive;
-    }
-
-    public IEnumerator FadeSprites(bool fadeAway, float timeInSeconds, List<SpriteRenderer> SpriteRenderers, Action Callback = null)
+    public IEnumerator Fade(bool fadeAway, float timeInSeconds, FadeObjects fadeObjects, Action callback = null)
     {
         // fade from opaque to transparent
         if (fadeAway)
         {
-            // loop over 1 second backwards
             for (float i = 1; i >= 0; i -= (Time.deltaTime / timeInSeconds))
             {
-                foreach (SpriteRenderer spriteRenderer in SpriteRenderers)
-                {
-                    spriteRenderer.color = new Color(1, 1, 1, i);
-                }
-
+                UpdateAlphaColor(fadeObjects, i);
                 yield return null;
             }
         }
         // fade from transparent to opaque
         else
         {
-            // loop over 1 second
             for (float i = 0; i <= 1; i += (Time.deltaTime / timeInSeconds))
             {
-                foreach (SpriteRenderer spriteRenderer in SpriteRenderers)
-                {
-                    spriteRenderer.color = new Color(1, 1, 1, i);
-                }
-
+                UpdateAlphaColor(fadeObjects, i);
                 yield return null;
             }
         }
 
-        if(Callback != null)
+        if(callback != null)
         {
-            Callback();
+            callback();
+        }
+    }
+
+    private void UpdateAlphaColor(FadeObjects fadeObjects, float alpha)
+    {
+        foreach (SpriteRenderer spriteRenderer in fadeObjects.SpriteRenderers)
+        {
+            spriteRenderer.color = new Color(1, 1, 1, alpha);
+        }
+        foreach (Image image in fadeObjects.Images)
+        {
+            image.color = new Color(1, 1, 1, alpha);
+        }
+        foreach (TMP_Text text in fadeObjects.Texts)
+        {
+            text.color = new Color(1, 1, 1, alpha);
         }
     }
 
@@ -160,4 +170,11 @@ public class CharacterSprite
 {
     public CharacterType CharacterType;
     public Sprite Sprite;
+}
+
+public class FadeObjects
+{
+    public List<Image> Images;
+    public List<SpriteRenderer> SpriteRenderers;
+    public List<TMP_Text> Texts;
 }
