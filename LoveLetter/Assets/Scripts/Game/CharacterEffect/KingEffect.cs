@@ -23,12 +23,12 @@ public class KingEffect: CharacterEffect
         var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
-            Text.ActionSync("King played...");
+            Textt.ActionSync("King played...");
             modalGo.SetOptions(ChoosePlayer, "Choose who to trade cards with", otherPlayers);
         }
         else
         {
-            Text.ActionSync("King played, noone to select");
+            Textt.ActionSync("King played, noone to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
@@ -60,7 +60,7 @@ public class KingEffect: CharacterEffect
         Deck.instance.SetPlayerId(yourOtherCard.Id, currentCardOtherPlayer.PlayerId);
         Deck.instance.SetPlayerId(currentCardOtherPlayer.Id, currentPlayer.PlayerId);
 
-        Text.ActionSync(currentPlayer.PlayerName + " swapped cards with " + optionSelectedPlayer);
+        Textt.ActionSync(currentPlayer.PlayerName + " swapped cards with " + optionSelectedPlayer);
         NetworkActionEvents.instance.CardsSwitched(yourOtherCard.Id, currentCardOtherPlayer.Id);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }

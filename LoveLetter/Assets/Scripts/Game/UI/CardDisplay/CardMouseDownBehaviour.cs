@@ -13,6 +13,9 @@ public class CardMouseDownBehaviour : MonoBehaviour
 
     void OnMouseDown()
     {
-        OnCardMouseDownEvent.OnCardMouseDownEvent();
+        if(MonoHelper.Instance.GuiAllowed())
+        {
+            OnCardMouseDownEvent.OnCardMouseDownEvent();
+        }        
     }
 }

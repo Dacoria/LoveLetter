@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MonoHelper : MonoBehaviour
 {
@@ -14,6 +13,12 @@ public class MonoHelper : MonoBehaviour
     public static MonoHelper Instance;
 
     public Sprite BackgroundCardSprite;
+    public Chibi.Free.Dialog DialogMessageGo;
+
+    public bool GuiAllowed()
+    {
+        return !DialogMessageGo.isActiveAndEnabled;
+    }
 
     public ModalScript GetModal()
     {

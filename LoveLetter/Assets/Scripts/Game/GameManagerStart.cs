@@ -66,7 +66,7 @@ public partial class GameManager : MonoBehaviour
         CurrentPlayerId = AllPlayers[0].PlayerId;
         GameEnded = false;
         PlayersWhoDiscardedSpies = new List<int>();
-        Text.ActionSync(""); // clear actions
+        Textt.ActionSync(""); // clear actions
     }
 
     private void DrawCardsForPlayersSync()

@@ -22,12 +22,12 @@ public class PrinceEffect : CharacterEffect
 
         if (players.Any())
         {
-            Text.ActionSync("Prince played...");
+            Textt.ActionSync("Prince played...");
             modalGo.SetOptions(ChoosePlayer, "Choose who should discard his/her card", players);
         }
         else
         {
-            Text.ActionSync("Priest played, noone to select");
+            Textt.ActionSync("Priest played, noone to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
@@ -61,7 +61,7 @@ public class PrinceEffect : CharacterEffect
 
         if (currentCardPlayer.Character.Type == CharacterType.Princess)
         {
-            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". This means " + optionSelectedPlayer + " is now intercepted.");
+            Textt.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". This means " + optionSelectedPlayer + " is now intercepted.");
             playerOfCard.PlayerStatus = PlayerStatus.Intercepted;
             NetworkActionEvents.instance.CardDiscarded(currentCardPlayer.Id);
             GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
@@ -72,11 +72,11 @@ public class PrinceEffect : CharacterEffect
         if(Deck.instance.Cards.Any(x => x.Status == CardStatus.InDeck))
         {
             Deck.instance.PlayerDrawsCardFromPileSync(playerOfCard.PlayerId);
-            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + " + got a new card");
+            Textt.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + " + got a new card");
         }
         else
         {
-            Text.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". No other cards left");
+            Textt.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". No other cards left");
         }
 
         NetworkActionEvents.instance.CardDiscarded(currentCardPlayer.Id);

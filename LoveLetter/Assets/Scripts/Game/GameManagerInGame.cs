@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ public partial class GameManager : MonoBehaviour
         }
         else 
         { 
-            Text.ActionLocal("Not allowed to play " + cardId.GetCard().Character.Type);
+            Textt.ActionLocal("Not allowed to play " + cardId.GetCard().Character.Type);
         }
     }
 
@@ -50,6 +51,17 @@ public partial class GameManager : MonoBehaviour
         Deck.instance.DiscardCardSync(cardId, cardIsPlayed: true);
         NetworkActionEvents.instance.EndCharacterEffect(playerId, cardId.GetCard().Character.Type, cardId);
 
+        StartCoroutine(NextTurnInXSec(3));
+    }
+
+    private IEnumerator NextTurnInXSec(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        NextTurn();
+    }
+
+    private void NextTurn()
+    {
         if (!EndOfGame())
         {
             NextPlayer();

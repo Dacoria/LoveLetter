@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawCardDisplayScript : MonoBehaviour
@@ -12,6 +10,9 @@ public class DrawCardDisplayScript : MonoBehaviour
 
     void OnMouseDown()
     {
-        drawPileScript.OnDeckCardClick();
+        if (MonoHelper.Instance.GuiAllowed())
+        {
+            drawPileScript.OnDeckCardClick();
+        }
     }
 }

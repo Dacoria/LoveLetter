@@ -22,13 +22,13 @@ public class StartResetGameScript : MonoBehaviour
         {
             if(!PhotonNetwork.OfflineMode)
             {
-                Text.GameSync(PhotonNetwork.NickName + " has stopped the game. Waiting to start new game.");
+                Textt.GameSync(PhotonNetwork.NickName + " has stopped the game. Waiting to start new game.");
             }
             else
             {
-                Text.GameSync("Game has ended. Waiting to start new game.");
+                Textt.GameSync("Game has ended. Waiting to start new game.");
             }
-            Text.ActionSync("");
+            Textt.ActionSync("");
             GameManager.instance.StopGame();
         }
             

@@ -1,4 +1,4 @@
-﻿public static class Text
+﻿public static class Textt
 {
     public static void GameLocal(string text)
     {

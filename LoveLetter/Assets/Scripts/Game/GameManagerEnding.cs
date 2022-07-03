@@ -42,7 +42,7 @@ public partial class GameManager : MonoBehaviour
             extraSpyText = " + Spy bonus";
         }       
 
-        Text.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.GetPlayer().PlayerName).ToList()) + " Wins!" + extraSpyText);
+        Textt.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.GetPlayer().PlayerName).ToList()) + " Wins!" + extraSpyText);
 
 
         return playersWithHighestScore;

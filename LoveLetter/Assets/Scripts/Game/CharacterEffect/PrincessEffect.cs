@@ -5,7 +5,7 @@ public class PrincessEffect : CharacterEffect
 
     public override bool DoEffect(PlayerScript player, int cardId)
     {
-        Text.ActionSync(player.PlayerName + " discarded the princess - instant lose");
+        Textt.ActionSync(player.PlayerName + " discarded the princess - instant lose");
         player.PlayerStatus = PlayerStatus.Intercepted;
 
         GameManager.instance.CardEffectPlayed(cardId, player.PlayerId);

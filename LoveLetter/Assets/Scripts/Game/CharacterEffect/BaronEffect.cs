@@ -19,12 +19,12 @@ public class BaronEffect : CharacterEffect
         var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
-            Text.ActionSync("Baron played...");
+            Textt.ActionSync("Baron played...");
             modalGo.SetOptions(ChoosePlayer, "Choose who to compare rank with", otherPlayers);
         }
         else
         {
-            Text.ActionSync("Baron played, but noone to select");
+            Textt.ActionSync("Baron played, but noone to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
@@ -46,17 +46,17 @@ public class BaronEffect : CharacterEffect
 
         if (yourPoints == otherPoints)
         {
-            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". The ranks are the same! Nothing happens");
+            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". The ranks are the same! Nothing happens");
         }
         else if (yourPoints > otherPoints)
         {
-            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is ranked higher! " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is now intercepted");
+            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is ranked higher! " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is now intercepted");
             currentCardOtherPlayer.PlayerId.GetPlayer().PlayerStatus = PlayerStatus.Intercepted;
             
         }
         else if (yourPoints < otherPoints)
         {
-            Text.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is ranked lower! " + currentPlayer.PlayerName + " is now intercepted");
+            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is ranked lower! " + currentPlayer.PlayerName + " is now intercepted");
             currentPlayer.PlayerStatus = PlayerStatus.Intercepted;            
         }
 

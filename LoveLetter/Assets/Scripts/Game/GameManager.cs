@@ -15,7 +15,7 @@ public partial class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Text.GameLocal("Waiting for game to start");
+        Textt.GameLocal("Waiting for game to start");
         this.ComponentInject();
     }
 

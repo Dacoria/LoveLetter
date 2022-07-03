@@ -28,7 +28,7 @@ public class ChancellorEffect : CharacterEffect
         }
         else
         {
-            Text.ActionSync("Chancellor has no cards to get from the deck");
+            Textt.ActionSync("Chancellor has no cards to get from the deck");
             GameManager.instance.CardEffectPlayed(cardId, player.PlayerId);
             return true;
         }
@@ -36,7 +36,7 @@ public class ChancellorEffect : CharacterEffect
         cardOptions = Deck.instance.Cards.Where(x => x?.PlayerId.GetPlayer() == player && x.Id != currentCardId).Select(x => x.Character.Type.ToString()).ToList();
         modalGo.SetOptions(ChooseCardAtBottom, "Choose card to put at bottom of pile", cardOptions);
         
-        Text.ActionSync("Chancellor played...");
+        Textt.ActionSync("Chancellor played...");
         return true;
     }
 
@@ -59,7 +59,7 @@ public class ChancellorEffect : CharacterEffect
             return;
         }
 
-        Text.ActionSync("Chancellor has placed card(s) at the bottom of the pile");
+        Textt.ActionSync("Chancellor has placed card(s) at the bottom of the pile");
         NetworkActionEvents.instance.CardsToDeck(cardIdsPutAtBottom);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }

@@ -19,6 +19,10 @@ public class PlayerCardDisplay : MonoBehaviour
 
     void OnMouseDown()
     {
+        if(!MonoHelper.Instance.GuiAllowed())
+        {
+            return;
+        }
         if (MonoHelper.Instance.GetModal().IsActive)
         {
             return;
