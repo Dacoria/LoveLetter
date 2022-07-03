@@ -14,10 +14,29 @@ public class MonoHelper : MonoBehaviour
 
     public Sprite BackgroundCardSprite;
     public Chibi.Free.Dialog DialogMessageGo;
+    public GameObject MenuGo;
+    public GameObject InstructionsGo;
 
-    public bool GuiAllowed()
+    public bool GuiAllowed(bool checkDialogPopup = true, bool checkOptionsModal = true, bool checkMainMenu = true, bool checkInstructionsMenu = true )
     {
-        return !DialogMessageGo.isActiveAndEnabled;
+        if(checkDialogPopup && DialogMessageGo.isActiveAndEnabled)
+        {
+            return false;
+        }
+        if (checkOptionsModal && GetModal().IsActive)
+        {
+            return false;
+        }
+        if (checkMainMenu && MenuGo.activeSelf)
+        {
+            return false;
+        }
+        if (checkInstructionsMenu && InstructionsGo.activeSelf)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public ModalScript GetModal()

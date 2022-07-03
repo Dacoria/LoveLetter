@@ -14,7 +14,7 @@ public class ScrollRulesScript : MonoBehaviour
     public Image Image3;
     private CanvasGroup canvasGroupScroll;
 
-    private float diffTillNextImage = 37.5f;
+    private float diffTillNextImage => Screen.height / 19.1f;
 
     public int CurrentImageIndex;
 

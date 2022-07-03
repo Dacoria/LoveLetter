@@ -3,13 +3,13 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
+public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
 {
     [ComponentInject] private PlayerScript playerScript;
     [ComponentInject] private PhotonView photonView;
 
-    public PlayerCardDisplay Card1Display;
-    public PlayerCardDisplay Card2Display;
+    public PlayerInteractionCardDisplay Card1Display;
+    public PlayerInteractionCardDisplay Card2Display;
     public CardToCardPileLerpMovement EmptyCardPrefab;
 
     private SpriteRenderer Card1Sprite;
@@ -39,7 +39,22 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
         ActionEvents.GameEnded += OnGameEnded;
         ActionEvents.NewGameStarted += OnNewGameStarted;
         ActionEvents.StartCharacterEffect += OnStartCharacterEffect;
+        ActionEvents.StartShowCardEffect += OnStartShowCardEffect;
+        ActionEvents.EndShowCardEffect += OnEndShowCardEffect;
     }
+
+    private void OnStartShowCardEffect(int pId, CharacterType cType, int cardId, int targetCardId)
+    {
+        cardIdsAlwaysShown.Add(targetCardId);
+        UpdateCardDisplay();
+    }
+
+    private void OnEndShowCardEffect(int pId, CharacterType cType, int cardId, int targetCardId)
+    {
+        cardIdsAlwaysShown.Remove(targetCardId);
+        UpdateCardDisplay();
+    }
+    
 
     private void OnNewGameStarted(List<int> arg1, int arg2)
     {
@@ -63,6 +78,8 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
         ActionEvents.GameEnded -= OnGameEnded;
         ActionEvents.NewGameStarted -= OnNewGameStarted;
         ActionEvents.StartCharacterEffect -= OnStartCharacterEffect;
+        ActionEvents.StartShowCardEffect -= OnStartShowCardEffect;
+        ActionEvents.EndShowCardEffect -= OnEndShowCardEffect;
     }
 
     private List<int> cardIdsAlwaysShown;
@@ -131,12 +148,12 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
         }
     }
 
-    private void StartCardAnimation(Card card, PlayerCardDisplay cardDisplay, Vector2 endpos)
+    private void StartCardAnimation(Card card, PlayerInteractionCardDisplay cardDisplay, Vector2 endpos)
     {
         if(card.PreviousPlayerId > 0 && card.Status == CardStatus.InPlayerHand)
         {
             var prevPlayer = card.PreviousPlayerId.GetPlayer();
-            var prevPlayerShowPlayerCards = prevPlayer.GetComponent<ShowPlayerCards>();
+            var prevPlayerShowPlayerCards = prevPlayer.GetComponent<PlayerCardsDisplay>();
             var startPosition = prevPlayerShowPlayerCards.GetCardPosition(card.PreviousIndexOfCardInHand);
 
             cardDisplay.LerpMovement.StartMovement(startPosition, endpos);
@@ -153,7 +170,7 @@ public class ShowPlayerCards : UpdateCardDisplayMonoBehaviourAbstract
         return transform;
     }
 
-    private void InitCardToDiscardPile(PlayerCardDisplay origCardDisplayToCopy, SpriteRenderer cardSpriteToCopy)
+    private void InitCardToDiscardPile(PlayerInteractionCardDisplay origCardDisplayToCopy, SpriteRenderer cardSpriteToCopy)
     {
         var cardDisplay = Instantiate(EmptyCardPrefab, transform);
         cardDisplay.SpriteRenderer.sprite = cardSpriteToCopy.sprite;

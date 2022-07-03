@@ -34,6 +34,11 @@ public class BigCardDisplay : MonoBehaviour
 
     public void OnMouseDown()
     {
+        if(!MonoHelper.Instance.GuiAllowed(checkOptionsModal: false))
+        {
+            return;
+        }
+
         if (bigCardIsActive && spriteRenderer.color.a > 0.95f)
         {
             HideBigCard();

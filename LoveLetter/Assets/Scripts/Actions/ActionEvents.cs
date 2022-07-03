@@ -13,6 +13,8 @@ public static class ActionEvents
 
     // only local
     public static Action<int> DeckCardDrawn;
+    public static Action<int, CharacterType, int, int> StartShowCardEffect;
+    public static Action<int, CharacterType, int, int> EndShowCardEffect;
 
 
     // animatie events

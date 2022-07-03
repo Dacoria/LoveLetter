@@ -3,7 +3,7 @@ using System.Linq;
 using System;
 using UnityEngine;
 
-public class PlayerCardDisplay : MonoBehaviour
+public class PlayerInteractionCardDisplay : MonoBehaviour
 {
     [HideInInspector][ComponentInject] public LerpMovement LerpMovement;
 

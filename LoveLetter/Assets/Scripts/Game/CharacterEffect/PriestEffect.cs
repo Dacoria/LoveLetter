@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Linq;
 
 public class PriestEffect : CharacterEffect
@@ -31,12 +32,24 @@ public class PriestEffect : CharacterEffect
         return true;
     }
 
+    private int watchedCardId;
+
     public void ChoosePlayer(string optionSelectedPlayer)
     {
         var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
+        watchedCardId = currentCardOtherPlayer.Id;
 
+        ActionEvents.StartShowCardEffect(currentPlayer.PlayerId, CharacterType, currentCardId, watchedCardId);
         Textt.ActionSync("Priest watches the card of " + optionSelectedPlayer);
         Textt.ActionLocal("Card in hand of " + optionSelectedPlayer + " is " + currentCardOtherPlayer.Character.Type);
+
+        var modalGo = MonoHelper.Instance.GetModal();
+        modalGo.SetOptions(CardWatched, "Finished watching?", new List<string> { "Yes"});
+    }
+
+    public void CardWatched(string res)
+    {
+        ActionEvents.EndShowCardEffect(currentPlayer.PlayerId, CharacterType, currentCardId, watchedCardId);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
