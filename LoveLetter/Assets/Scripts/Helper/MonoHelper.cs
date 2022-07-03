@@ -105,7 +105,7 @@ public class MonoHelper : MonoBehaviour
     public void ShowBigCard(CharacterType type)
     {
         BigCardDisplay.gameObject.SetActive(true);
-        BigCardDisplay.ShowBigCard(type);
+        BigCardDisplay.ShowBigCard(type, ignoreModalActive: true);
     }
 
     public bool BigCardIsActive()

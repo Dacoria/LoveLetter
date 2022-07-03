@@ -46,9 +46,9 @@ public class BigCardDisplay : MonoBehaviour
         }        
     }
 
-    public void ShowBigCard(CharacterType characterType)
+    public void ShowBigCard(CharacterType characterType, bool ignoreModalActive = false)
     {
-        if(MonoHelper.Instance.GetModal().IsActive)
+        if(!ignoreModalActive && MonoHelper.Instance.GetModal().IsActive)
         { 
             bigCardIsActive = false;
             gameObject.SetActive(false);

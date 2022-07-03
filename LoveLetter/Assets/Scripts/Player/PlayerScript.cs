@@ -24,15 +24,6 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
                 _playerStatus = value;
 
                 NetworkActionEvents.instance.PlayerStatusChange(PlayerId, _playerStatus);
-
-                //if(_playerStatus == PlayerStatus.Intercepted)
-                //{
-                //    var cardsOfPlayer = Deck.instance.Cards.Where(x => x.PlayerId == PlayerId).ToList();
-                //    for(int i = 0; i < cardsOfPlayer.Count; i++)
-                //    {
-                //        cardsOfPlayer[i].Status = CardStatus.InDiscard;
-                //    }    
-                //}
             }
         }
     }
@@ -44,8 +35,6 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     {
         this.ComponentInject();
         PlayerStatus = PlayerStatus.Normal;
-        //PlayerText.text = PhotonNetwork.NickName;
-        // PlayerName = PhotonNetwork.NickName;
     }
 
     private void Start()

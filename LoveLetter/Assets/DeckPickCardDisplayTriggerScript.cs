@@ -52,7 +52,7 @@ public class DeckPickCardDisplayTriggerScript : MonoBehaviour
         var ok = new Dialog.ActionButton("OK", () =>
         {
             //Debug.Log("click ok");
-        }, new Color(0.5f, 0.9f, 0.9f));
+        }, new Color(69/255f, 196/255f, 1), Color.white);
 
         Dialog.ActionButton[] buttons = {  ok};
 

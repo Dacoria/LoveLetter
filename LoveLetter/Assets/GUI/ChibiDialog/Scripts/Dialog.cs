@@ -131,34 +131,33 @@ namespace Chibi.Free
             // ボタンを配置
             foreach (var actButton in acts)
             {
-                // Prefabから複製
+
                 var btn = Instantiate(dialogButton);
-                // Prefabを配置する親objを変更
+
                 btn.transform.SetParent(btnChild.transform);
-                // ボタン押下時に受け取る親スクリプトをこのクラス（this）にする。
+
                 btn.parent = this;
-                // スケールが変わるのでリセット
+
                 btn.transform.localScale = new Vector3(1, 1, 1);
-                // オブジェクト名変更
+
                 btn.name = "btn_" + idx;
                 btn.index = idx;
                 idx += 1;
-                // ボタンラベル名変更
+
                 var buttonText = btn.transform.Find("VLayout/Text").GetComponent<Text>();
                 buttonText.text = actButton.text;
-                // フォントサイズ変更
+
                 buttonText.fontSize = fontSizeOther;
-                // ボタン背景色設定
-                btn.GetComponent<Image>().color = actButton.color;
-                // リストに追加
+
+                buttonText.color = actButton.colorText;
+
+                btn.GetComponent<Image>().color = actButton.colorBg;
+
                 actionButtons.Add(actButton);
             }
         }
 
-        /// <summary>
-        /// アルファの増減
-        /// </summary>
-        /// <param name="plus">増分値</param>
+
         private void PlusAlpha(float plus)
         {
             alpha += plus * Time.deltaTime;
@@ -250,13 +249,15 @@ namespace Chibi.Free
         {
             public string text;
             public Action action;
-            public Color color;
+            public Color colorBg;
+            public Color colorText;
 
-            public ActionButton(string text, Action action = null, Color? color = null)
+            public ActionButton(string text, Action action = null, Color? colorBg = null, Color? colorText = null)
             {
                 this.text = text;
                 this.action = action;
-                this.color = color ?? Color.white;
+                this.colorBg = colorBg ?? Color.white;
+                this.colorText = colorText ?? Color.black;
             }
         }
 
