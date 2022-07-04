@@ -178,8 +178,22 @@ public class MonoHelper : MonoBehaviour
         var ok = new Dialog.ActionButton("OK", () =>
         {
         }, new Color(69 / 255f, 196 / 255f, 1), Color.white);
-
+        
         Dialog.ActionButton[] buttons = { ok };
+        DialogMessageGo.ShowDialog(title, body, buttons);
+    }
+
+    public void ShowCloseScoreDiaglogMessage(string title, string body)
+    {
+        var ok = new Dialog.ActionButton("Close", () =>
+        {
+        }, new Color(69 / 255f, 196 / 255f, 1), Color.white);
+        var score = new Dialog.ActionButton("Scores", () =>
+        {
+            ScoreGo.gameObject.SetActive(true);
+        }, new Color(69 / 255f, 196 / 255f, 1), Color.white);
+
+        Dialog.ActionButton[] buttons = { ok, score };
         DialogMessageGo.ShowDialog(title, body, buttons);
     }
 }

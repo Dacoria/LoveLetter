@@ -45,14 +45,15 @@ public partial class GameManager : MonoBehaviour
             extraSpyText = " + Spy bonus";
         }       
 
-        Textt.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.Key.GetPlayer().PlayerName).ToList()) + " Wins!" + extraSpyText);
+        Textt.GameSync("Game Ended - " + string.Join(" & ", playersWithHighestScore.Select(x => x.Key.GetPlayer().PlayerName).ToList()) + " Wins!" + extraSpyText);
 
         return playersWithHighestScore;
     }
 
-    private void OnGameEnded(List<int> obj)
+    private void OnGameEnded(List<int> pIds)
     {
         GameEnded = true;
+        MonoHelper.Instance.ShowCloseScoreDiaglogMessage("Game Ended", "Winner(s): " + string.Join(" & ", pIds.Select(x => x.GetPlayer().PlayerName).ToList()) + "!\nGo to menu to start  new round.");
     }
 
 

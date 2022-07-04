@@ -40,6 +40,11 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
                 _playerStatus = value;
 
                 NetworkActionEvents.instance.PlayerStatusChange(PlayerId, _playerStatus);
+
+                if (_playerStatus == PlayerStatus.Intercepted && !PhotonNetwork.OfflineMode && PlayerId == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    MonoHelper.Instance.ShowOkDiaglogMessage("Rose Intercepted", "You are out of the round!");
+                }
             }
         }
     }
