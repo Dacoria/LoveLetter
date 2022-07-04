@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -19,7 +19,7 @@ public class ScoreScript : MonoBehaviour
     public void OnEnable()
     {
         Reset();
-        var players = NetworkHelper.Instance.GetPlayers();
+        var players = NetworkHelper.Instance.GetPlayers().OrderByDescending(x => x.Score).ThenBy(x => x.PlayerId).ToList();
 
         TitleText.text = "Score (First to " + MonoHelper.Instance.GetRoseCountToWinGame(players.Count).ToString() + ")";
 

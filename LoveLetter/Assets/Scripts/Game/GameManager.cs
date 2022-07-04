@@ -25,6 +25,7 @@ public partial class GameManager : MonoBehaviour
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
         ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.RoundEnded += OnRoundEnded;
+        ActionEvents.GameEnded += OnGameEnded;
         StartCoroutine(ShowMenuLocationDialogInXSeconds(0.9f));
     }
 
@@ -39,5 +40,6 @@ public partial class GameManager : MonoBehaviour
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
         ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.RoundEnded -= OnRoundEnded;
+        ActionEvents.GameEnded -= OnGameEnded;
     }
 }

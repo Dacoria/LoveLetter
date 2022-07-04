@@ -6,11 +6,17 @@ using UnityEngine;
 public partial class GameManager : MonoBehaviour
 {
     public bool RoundEnded;
+    public bool GameEnded;
 
     public void StopRound()
     {
         RoundEnded = true;
         NetworkActionEvents.instance.RoundEnded(new RoundEnded { PlayerScores = new List<PlayerScore>()});
+    }
+
+    private void OnGameEnded()
+    {
+        GameEnded = true;
     }
 
     private Dictionary<int, int> CheckWinners()
@@ -70,7 +76,7 @@ public partial class GameManager : MonoBehaviour
     }
 
 
-    private bool EndOfRound()
+    private bool IsEndOfRound()
     {
         if (AllPlayers.Count(x => x.PlayerStatus != PlayerStatus.Intercepted) <= 1)
         {

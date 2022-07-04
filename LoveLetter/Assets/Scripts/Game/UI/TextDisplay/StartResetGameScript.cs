@@ -46,6 +46,14 @@ public class StartResetGameScript : MonoBehaviour
         text.text = "Start Round";        
     }
 
+    private void OnEnable()
+    {
+        if(GameManager.instance.GameEnded)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnGameEnded()
     {
         Destroy(gameObject);

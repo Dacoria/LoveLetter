@@ -63,7 +63,7 @@ public partial class GameManager : MonoBehaviour
 
     private void NextTurn()
     {
-        if (!EndOfRound())
+        if (!IsEndOfRound())
         {
             NextPlayer();
         }

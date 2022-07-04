@@ -199,8 +199,6 @@ public class MonoHelper : MonoBehaviour
 
     public int GetRoseCountToWinGame(int playerCount)
     {
-        return 2;
-
         if (playerCount == 2)
         {
             return 6;

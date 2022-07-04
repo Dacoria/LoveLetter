@@ -6124,6 +6124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayersWhoDiscardedSpies: 
   RoundEnded: 0
+  GameEnded: 0
 --- !u!114 &1225497081
 MonoBehaviour:
   m_ObjectHideFlags: 0
