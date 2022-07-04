@@ -10,6 +10,7 @@ public static class ActionEvents
     public static Action<int, CharacterType, int> StartCharacterEffect;
     public static Action<int, CharacterType, int> EndCharacterEffect;
     public static Action<int, PlayerStatus> PlayerStatusChange;
+    public static Action<int, int> PlayerScoreChange;
     public static Action<List<int>> GameEnded;
 
     // only local

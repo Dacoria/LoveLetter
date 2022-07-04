@@ -49,6 +49,7 @@ MonoBehaviour:
   - RPC_AE_CardDiscarded
   - RPC_AE_CardsSwitched
   - RPC_AE_CardsToDeck
+  - RPC_AE_PlayerScoreChange
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

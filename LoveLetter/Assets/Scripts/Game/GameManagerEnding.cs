@@ -13,10 +13,10 @@ public partial class GameManager : MonoBehaviour
         NetworkActionEvents.instance.GameEnded(new List<int>());
     }
 
-    private List<int> CheckWinners()
+    private Dictionary<int, int> CheckWinners()
     {
         var highestScore = -1;
-        List<int> playersWithHighestScore = new List<int>();
+        var playersWithHighestScore = new Dictionary<int, int>();
 
         foreach (PlayerScript player in AllPlayers.Where(x => x.PlayerStatus != PlayerStatus.Intercepted))
         {
@@ -26,11 +26,12 @@ public partial class GameManager : MonoBehaviour
             if (pointsOfCard > highestScore)
             {
                 highestScore = pointsOfCard;
-                playersWithHighestScore = new List<int> { player.PlayerId };
+                playersWithHighestScore = new Dictionary<int, int>();
+                playersWithHighestScore.Add(player.PlayerId, 1);
             }
             else if (pointsOfCard == highestScore)
             {
-                playersWithHighestScore.Add(player.PlayerId);
+                playersWithHighestScore.Add(player.PlayerId, 1);
             }
         }
 
@@ -39,11 +40,12 @@ public partial class GameManager : MonoBehaviour
         var extraSpyText = "";
         if (playersLeft.Count() == 1 && PlayersWhoDiscardedSpies.Any(x => x == playersLeft[0].PlayerId))
         {
+            playersWithHighestScore = new Dictionary<int, int>();
+            playersWithHighestScore.Add(playersLeft.First().PlayerId, 2);
             extraSpyText = " + Spy bonus";
         }       
 
-        Textt.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.GetPlayer().PlayerName).ToList()) + " Wins!" + extraSpyText);
-
+        Textt.GameSync("Game Ended - " + string.Join(", ", playersWithHighestScore.Select(x => x.Key.GetPlayer().PlayerName).ToList()) + " Wins!" + extraSpyText);
 
         return playersWithHighestScore;
     }

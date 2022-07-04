@@ -70,7 +70,11 @@ public partial class GameManager : MonoBehaviour
         {
             GameEnded = true;
             var winners = CheckWinners();
-            NetworkActionEvents.instance.GameEnded(winners);
+            NetworkActionEvents.instance.GameEnded(winners.Keys.ToList());
+            foreach (var winnerPId in winners)
+            {
+                winnerPId.Key.GetPlayer().Score += winnerPId.Value; // wordt gesynct automagisch na een change
+            }
         }
     }
 

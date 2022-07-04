@@ -18,8 +18,9 @@ public class MonoHelper : MonoBehaviour
     public Dialog DialogMessageGo;
     public GameObject MenuGo;
     public GameObject InstructionsGo;
+    public GameObject ScoreGo;
 
-    public bool GuiAllowed(bool checkDialogPopup = true, bool checkOptionsModal = true, bool checkMainMenu = true, bool checkInstructionsMenu = true, bool checkBigCard = true)
+    public bool GuiAllowed(bool checkDialogPopup = true, bool checkOptionsModal = true, bool checkMainMenu = true, bool checkInstructionsMenu = true, bool checkBigCard = true, bool checkScore = true)
     {
         if(checkDialogPopup && DialogMessageGo.isActiveAndEnabled)
         {
@@ -41,9 +42,13 @@ public class MonoHelper : MonoBehaviour
         {
             return false;
         }
+        if (checkScore && ScoreGo.activeSelf)
+        {
+            return false;
+        }
 
         return true;
-    }
+    }    
 
     public ModalScript GetModal()
     {
@@ -63,7 +68,10 @@ public class MonoHelper : MonoBehaviour
     }
 
     public List<CharacterSprite> CharacterSprites;
+    public List<Sprite> EmotionSprites;
 
+
+    public Sprite GetEmoticonSprite(int index) => EmotionSprites[index];
 
     void Awake()
     {

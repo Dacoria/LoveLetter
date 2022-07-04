@@ -19,7 +19,6 @@ public partial class GameManager : MonoBehaviour
 
         Deck.instance.CreateDeckSync();
         DrawCardsForPlayersSync();
-        //Deck.instance.PlayerDrawsCardFromPileSync(CurrentPlayer().PlayerId);
 
         NetworkActionEvents.instance.NewGameStarted(AllPlayers.Select(x => x.PlayerId).ToList(), CurrentPlayer().PlayerId);
     }    

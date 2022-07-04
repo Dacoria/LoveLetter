@@ -7,6 +7,22 @@ using System.Collections.Generic;
 public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
     public int PlayerId; // in offline mode een oplopend getal (voor dummies). voor normale games het actorNr vd player (natuurlijk... )
+    
+    private int _score;
+    public int Score
+    {
+        get => _score;
+        set
+        {
+            if (_score != value)
+            {
+                var oldValue = _score;
+                _score = value;
+
+                NetworkActionEvents.instance.PlayerScoreChange(PlayerId, _score);
+            }
+        }
+    }
 
     [ComponentInject] 
     private TMP_Text PlayerText;

@@ -58,6 +58,17 @@ public class NetworkActionEvents: MonoBehaviour
         ActionEvents.EndCharacterEffect?.Invoke(pId, ct, cId);
     }
 
+    public void PlayerScoreChange(int pId, int pScore)
+    {
+        photonView.RPC("RPC_AE_PlayerScoreChange", RpcTarget.All, pId, pScore);
+    }
+
+    [PunRPC]
+    public void RPC_AE_PlayerScoreChange(int pId, int pScore)
+    {
+        ActionEvents.PlayerScoreChange?.Invoke(pId, pScore);
+    }
+
     public void PlayerStatusChange(int pId, PlayerStatus pStatus)
     {
         photonView.RPC("RPC_AE_PlayerStatusChange", RpcTarget.All, pId, pStatus);

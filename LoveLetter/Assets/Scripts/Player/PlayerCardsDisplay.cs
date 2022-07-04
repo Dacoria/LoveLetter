@@ -169,11 +169,11 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
 
             if(card1 != null  && (Vector2)Card1Display.transform.position != currentCard1EndPos && !Card1Display.LerpMovement.IsActive)
             {
-                Card1Display.LerpMovement.StartMovement((Vector2)Card1Display.transform.position, currentCard1EndPos);
+                Card1Display.LerpMovement.StartMovement(Card1Display.transform.position, currentCard1EndPos);
             }
             if (card2 != null && (Vector2)Card2Display.transform.position != currentCard2EndPos && !Card2Display.LerpMovement.IsActive)
             {
-                Card2Display.LerpMovement.StartMovement((Vector2)Card2Display.transform.position, currentCard2EndPos);
+                Card2Display.LerpMovement.StartMovement(Card2Display.transform.position, currentCard2EndPos);
             }
 
 
