@@ -49,11 +49,5 @@ public class PlayerInteractionCardDisplay : MonoBehaviour
         {
             BigCardHandler.instance.ShowBigCardWithButtons(Card.Character.Type, Card.Id, player.PlayerId);
         }
-        //PlayCard();                    
-    }
-
-    public void PlayCard()
-    {
-        GameManager.instance.PlayCard(Card.Id, player.PlayerId);
     }
 }

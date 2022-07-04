@@ -1,4 +1,3 @@
-using Chibi.Free;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
@@ -11,8 +10,6 @@ public class DeckPickCardDisplayTriggerScript : MonoBehaviour
 
     public Material Outline;
     public Material NoOutline;
-
-    public Chibi.Free.Dialog dialog;
 
     private void Awake()
     {
@@ -41,20 +38,8 @@ public class DeckPickCardDisplayTriggerScript : MonoBehaviour
         if (PhotonNetwork.LocalPlayer.ActorNumber == pId || PhotonNetwork.OfflineMode)
         {
             ShowDrawCardDisplayTrigger();
-            ShowDrawCardMessage();
+            MonoHelper.Instance.ShowOkDiaglogMessage("Your Turn", "Please draw a card.");
         }
-    }
-
-    private void ShowDrawCardMessage()
-    {
-        var ok = new Dialog.ActionButton("OK", () =>
-        {
-            //Debug.Log("click ok");
-        }, new Color(69/255f, 196/255f, 1), Color.white);
-
-        Dialog.ActionButton[] buttons = {  ok};
-
-        dialog.ShowDialog("Your Turn", "Please draw a card.", buttons);        
     }
 
     private void OnDestroy()

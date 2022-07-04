@@ -1,6 +1,7 @@
 
 using Photon.Pun;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -24,8 +25,15 @@ public partial class GameManager : MonoBehaviour
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
         ActionEvents.NewGameStarted += OnNewGameStarted;
         ActionEvents.GameEnded += OnGameEnded;
+        StartCoroutine(ShowMenuLocationDialogInXSeconds(0.9f));
     }
-    
+
+    private IEnumerator ShowMenuLocationDialogInXSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        MonoHelper.Instance.ShowOkDiaglogMessage("Menu", "Menu can be found in the \nleft upper corner (Rose)");
+    }
+
     private void OnDestroy()
     {
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;

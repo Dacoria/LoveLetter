@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     public TMP_InputField NameInputField;
-    public Button OnlineFastButton;
+    public Button StartOnlineFastButton;
+    public Button OfflineButton;
 
 
     private void Awake()
@@ -17,10 +18,22 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     public ConnectMethod ConnectMethod;
 
+    private int prevLengthName;
+
     private void Update()
     {
-        OnlineFastButton.interactable = NameInputField.text.Length > 0;
+        if(StartOnlineFastButton.interactable && NameInputField.text.Length == 0)
+        {
+            StartOnlineFastButton.interactable = false;
+        }
+        else if(!HasStartedGame && !StartOnlineFastButton.interactable && NameInputField.text.Length != prevLengthName && NameInputField.text.Length > 0)
+        {
+            StartOnlineFastButton.interactable = true;
+            prevLengthName = NameInputField.text.Length;
+        }
     }
+
+    private bool HasStartedGame;
 
     public void StartGameOnlineFast()
     {
@@ -28,7 +41,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         {
             return;
         }
-
+        StartOnlineFastButton.interactable = false;
         StartGame(ConnectMethod.Online_Fast);
     }
 
@@ -39,11 +52,13 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     public void StartGameOffline()
     {
+        OfflineButton.interactable = false;
         StartGame(ConnectMethod.Offline);
     }
 
     public void StartGame(ConnectMethod connectMethod)
     {
+        HasStartedGame = true;
         ConnectMethod = connectMethod;
         Debug.Log("StartGame " + connectMethod);
         PhotonNetwork.ConnectUsingSettings(PhotonNetwork.PhotonServerSettings.AppSettings, startInOfflineMode: connectMethod == ConnectMethod.Offline);

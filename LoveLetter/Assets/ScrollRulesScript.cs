@@ -13,7 +13,8 @@ public class ScrollRulesScript : MonoBehaviour
     public Image Image2;
     public Image Image3;
     private CanvasGroup canvasGroupScroll;
-    public Transform ScrollTarget;
+    public Transform ScrollTargetDown;
+    public Transform ScrollTargetUp;
 
     public int CurrentImageIndex;
 
@@ -54,7 +55,7 @@ public class ScrollRulesScript : MonoBehaviour
     {
         if(!LerpIsActive && CurrentImageIndex < InstructionSprites.Count -1)
         {
-            endPosition = new Vector2(AllImages.transform.position.x, ScrollTarget.position.y);
+            endPosition = new Vector2(AllImages.transform.position.x, ScrollTargetDown.position.y);
             CurrentImageIndex++;
             LerpIsActive = true;
             canvasGroupScroll.interactable = false;
@@ -65,7 +66,7 @@ public class ScrollRulesScript : MonoBehaviour
     {
         if (!LerpIsActive && CurrentImageIndex > 0)
         {
-            endPosition = new Vector2(AllImages.transform.position.x, ScrollTarget.position.y);
+            endPosition = new Vector2(AllImages.transform.position.x, ScrollTargetUp.position.y);
             CurrentImageIndex--;
             LerpIsActive = true;
             canvasGroupScroll.interactable = false;

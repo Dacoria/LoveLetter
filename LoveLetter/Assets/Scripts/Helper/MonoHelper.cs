@@ -1,3 +1,4 @@
+using Chibi.Free;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ public class MonoHelper : MonoBehaviour
     public static MonoHelper Instance;
 
     public Sprite BackgroundCardSprite;
-    public Chibi.Free.Dialog DialogMessageGo;
+    public Dialog DialogMessageGo;
     public GameObject MenuGo;
     public GameObject InstructionsGo;
 
@@ -163,6 +164,16 @@ public class MonoHelper : MonoBehaviour
     public Sprite GetCharacterSprite(CharacterType characterType) => CharacterSprites.Single(x => x.CharacterType == characterType).Sprite;
 
     public bool IsPartOfPlayerGo(GameObject go) => GetPlayerGo(go) != null;
+
+    public void ShowOkDiaglogMessage(string title, string body)
+    {
+        var ok = new Dialog.ActionButton("OK", () =>
+        {
+        }, new Color(69 / 255f, 196 / 255f, 1), Color.white);
+
+        Dialog.ActionButton[] buttons = { ok };
+        DialogMessageGo.ShowDialog(title, body, buttons);
+    }
 }
 
 [Serializable]

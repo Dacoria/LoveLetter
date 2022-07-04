@@ -47,8 +47,7 @@ namespace Chibi.Free
         public GameObject btnChild;
         public Action action;
 
-        // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             state = DialogState.Hide;
             alpha = 0;
@@ -65,8 +64,6 @@ namespace Chibi.Free
             ToBack();
 
         }
-
-        // Update is called once per frame
         void Update()
         {
             switch (state)
@@ -83,7 +80,6 @@ namespace Chibi.Free
                         PlusAlpha(-addValue);
                         if (alpha < 0)
                         {
-                            // 閉じた後
                             enabled = false;
                             ToBack();
                             DeleteButtons();
@@ -96,39 +92,30 @@ namespace Chibi.Free
             }
         }
 
-        /// <summary>
-        /// ダイアログをビューに追加
-        /// どのボタンを押下してもダイアログは閉じられます。
-        /// </summary>
-        /// <param name="txtTitle">ダイアログタイトル</param>
-        /// <param name="txtMessage">ダイアログ本文</param>
-        /// <param name="acts">ボタンクリックコールバック（不要な場合は省略）</param>
-        /// <param name="actClosed">ダイアログが閉じた後に返すコールバック</param>
-        /// <param name="needCloseByTapBG">背景タップで閉じる場合はtrue（省略時：false）</param>
         public void ShowDialog(string txtTitle, string txtMessage, ActionButton[] acts = null, Action actClosed = null, bool needCloseByTapBG = false)
         {
-            // 手前に表示
             ToFront();
-            // タッチを受け付ける
+
             enabled = true;
-            // タイトルと本文をセット
+
             titleText.text = txtTitle;
             messageText.text = txtMessage;
-            // テキストが無い場合は非表示
+
             title.SetActive(txtTitle != null);
             message.SetActive(txtMessage != null);
-            // ダイアログが閉じた際に返すコールバック
+
             closedAction = actClosed;
-            // 背景タップで閉じる場合はtrue
+
             this.needCloseByTapBG = needCloseByTapBG;
-            // アニメーションで表示開始
+
             state = DialogState.Show;
-            // リストをクリア
-            actionButtons.Clear();
-            // ボタン削除
+
+            actionButtons.Clear();            
+            
+
             DeleteButtons();
             int idx = 0;
-            // ボタンを配置
+
             foreach (var actButton in acts)
             {
 
@@ -163,19 +150,12 @@ namespace Chibi.Free
             alpha += plus * Time.deltaTime;
             SetAlpha(alpha);
         }
-        /// <summary>
-        /// 全体にアルファを反映
-        /// </summary>
-        /// <param name="a">アルファ値</param>
         private void SetAlpha(float a)
         {
             var g = GetComponent<CanvasGroup>();
             g.alpha = a;
         }
-
-        /// <summary>
-        /// ダイアログを閉じる
-        /// </summary>
+       
         private void CloseDialog()
         {
             if (state == DialogState.Hide)
@@ -185,22 +165,14 @@ namespace Chibi.Free
             alpha = 1f;
             state = DialogState.Hide;
         }
-
-        /// <summary>
-        /// 複製したボタンを押下した際に呼ばれる
-        /// </summary>
-        /// <param name="idx">押したボタンのインデックス</param>
+        
         public void OnClickButton(int idx)
         {
             ActionButton btn = actionButtons[idx];
             btn.action?.Invoke();
-            // どのボタンを押してもダイアログは閉じる
             CloseDialog();
         }
-
-        /// <summary>
-        /// バックグラウンドをタップ時に呼ばれる
-        /// </summary>
+        
         public void OnClickBackground()
         {
             if (needCloseByTapBG)
@@ -208,16 +180,11 @@ namespace Chibi.Free
                 CloseDialog();
             }
         }
-
-
-        /// <summary>
-        /// ダイアログを手前に
-        /// </summary>
+        
         private void ToFront()
         {
             Sort(kDialogSort);
         }
-        // ダイアログを奥に
         private void ToBack()
         {
             Sort(-kDialogSort);
@@ -227,24 +194,16 @@ namespace Chibi.Free
             var canvas = GetComponentInChildren<Canvas>();
             canvas.sortingOrder = s;
         }
-
-        /// <summary>
-        /// OKボタン等を削除する。
-        /// </summary>
+        
         private void DeleteButtons()
         {
             GameObject child = btnChild;
             foreach (Transform btn in child.transform)
             {
-                // ボタン削除実行
                 Destroy(btn.gameObject);
             }
-
         }
-
-        /// <summary>
-        /// ボタンのラベルとコールバック用
-        /// </summary>
+        
         public class ActionButton
         {
             public string text;
@@ -260,7 +219,5 @@ namespace Chibi.Free
                 this.colorText = colorText ?? Color.black;
             }
         }
-
     }
-
 }
