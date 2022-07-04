@@ -288,6 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerId: 0
+  Score: 0
   PlayerName: 
 --- !u!114 &1941673923665311743
 MonoBehaviour:

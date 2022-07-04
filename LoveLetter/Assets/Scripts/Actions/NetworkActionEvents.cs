@@ -14,15 +14,15 @@ public class NetworkActionEvents: MonoBehaviour
         this.ComponentInject();
     }
 
-    public void NewGameStarted(List<int> playerIds, int currentPlayerId)
+    public void NewRoundStarted(List<int> playerIds, int currentPlayerId)
     {
-        photonView.RPC("RPC_AE_NewGameStarted", RpcTarget.All, playerIds.ToArray(), currentPlayerId);
+        photonView.RPC("RPC_AE_NewRoundStarted", RpcTarget.All, playerIds.ToArray(), currentPlayerId);
     }
 
     [PunRPC]
-    public void RPC_AE_NewGameStarted(int[] playerIds, int currentPlayerId)
+    public void RPC_AE_NewRoundStarted(int[] playerIds, int currentPlayerId)
     {
-        ActionEvents.NewGameStarted?.Invoke(playerIds.ToList(), currentPlayerId);
+        ActionEvents.NewRoundStarted?.Invoke(playerIds.ToList(), currentPlayerId);
     }
 
     public void NewPlayerTurn(int pId)
@@ -58,17 +58,6 @@ public class NetworkActionEvents: MonoBehaviour
         ActionEvents.EndCharacterEffect?.Invoke(pId, ct, cId);
     }
 
-    public void PlayerScoreChange(int pId, int pScore)
-    {
-        photonView.RPC("RPC_AE_PlayerScoreChange", RpcTarget.All, pId, pScore);
-    }
-
-    [PunRPC]
-    public void RPC_AE_PlayerScoreChange(int pId, int pScore)
-    {
-        ActionEvents.PlayerScoreChange?.Invoke(pId, pScore);
-    }
-
     public void PlayerStatusChange(int pId, PlayerStatus pStatus)
     {
         photonView.RPC("RPC_AE_PlayerStatusChange", RpcTarget.All, pId, pStatus);
@@ -80,15 +69,17 @@ public class NetworkActionEvents: MonoBehaviour
         ActionEvents.PlayerStatusChange?.Invoke(pId, pStatus);
     }
 
-    public void GameEnded(List<int> pIdsWon)
+    public void RoundEnded(RoundEnded roundEnded)
     {
-        photonView.RPC("RPC_AE_GameEnded", RpcTarget.All, pIdsWon.ToArray());
+        var roundEndedJson = JsonUtility.ToJson(roundEnded);
+        photonView.RPC("RPC_AE_RoundEnded", RpcTarget.All, roundEndedJson);
     }
 
     [PunRPC]
-    public void RPC_AE_GameEnded(int[] pIdsWon)
+    public void RPC_AE_RoundEnded(string roundEndedJson)
     {
-        ActionEvents.GameEnded?.Invoke(pIdsWon.ToList());
+        var roundEnded = JsonUtility.FromJson<RoundEnded>(roundEndedJson);
+        ActionEvents.RoundEnded?.Invoke(roundEnded);
     }
 
     public void CardsToDeck(List<int> cardidsToDeck)

@@ -12,16 +12,16 @@ public class DestroyDummyPlayerScript : MonoBehaviour
             Destroy(gameObject);
         }
 
-        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
     }
 
-    private void OnNewGameStarted(List<int> p, int q)
+    private void OnNewRoundStarted(List<int> p, int q)
     {
         Destroy(gameObject);
     }
 
     private void OnDestroy()
     {
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
     }
 }

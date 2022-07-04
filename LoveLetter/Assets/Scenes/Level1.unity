@@ -2098,7 +2098,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start Game
+  m_text: Start Round
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -6006,7 +6006,6 @@ GameObject:
   - component: {fileID: 1225497075}
   - component: {fileID: 1225497078}
   - component: {fileID: 1225497079}
-  - component: {fileID: 1225497080}
   - component: {fileID: 1225497081}
   - component: {fileID: 1225497082}
   - component: {fileID: 1225497083}
@@ -6124,19 +6123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayersWhoDiscardedSpies: 
-  GameEnded: 0
---- !u!114 &1225497080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1225497074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 636a5fb49b3860242b22c9bf8d0bf430, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  RoundEnded: 0
 --- !u!114 &1225497081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9432,7 +9419,7 @@ GameObject:
   - component: {fileID: 2030799260}
   - component: {fileID: 2030799263}
   m_Layer: 5
-  m_Name: BtnStartGame
+  m_Name: BtnStartRound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9578,6 +9565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 272312622}
+  StartRound: {fileID: 2030799260}
 --- !u!1 &2033473334
 GameObject:
   m_ObjectHideFlags: 0

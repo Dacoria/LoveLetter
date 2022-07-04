@@ -17,8 +17,8 @@ public class PlayerStatusColorSetter : MonoBehaviour
     void Start()
     {
         ActionEvents.PlayerStatusChange += OnPlayerStatusChange;
-        ActionEvents.NewGameStarted += OnNewGameStarted;
-        ActionEvents.GameEnded += OnGameEnded;
+        ActionEvents.NewRoundStarted += OnNewGameStarted;
+        ActionEvents.RoundEnded += OnRoundEnded;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
     }
     private void OnNewPlayerTurn(int currentPlayerId)
@@ -31,10 +31,10 @@ public class PlayerStatusColorSetter : MonoBehaviour
         playerNameText.color = Color.white;
     }
 
-    private void OnGameEnded(List<int> playersWon)
+    private void OnRoundEnded(RoundEnded roundEnded)
     {
         playerNameText.fontStyle = FontStyles.Normal;
-        if (playersWon.Any(x => x == player.PlayerId))
+        if (roundEnded.PlayerScores.Any(x => x.PlayerId == player.PlayerId))
         {
             playerNameText.color = Color.green;
         }
@@ -71,8 +71,8 @@ public class PlayerStatusColorSetter : MonoBehaviour
     private void OnDestroy()
     {
         ActionEvents.PlayerStatusChange -= OnPlayerStatusChange;
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
-        ActionEvents.GameEnded -= OnGameEnded;
+        ActionEvents.NewRoundStarted -= OnNewGameStarted;
+        ActionEvents.RoundEnded -= OnRoundEnded;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
     }
 }

@@ -23,8 +23,8 @@ public partial class GameManager : MonoBehaviour
     private void Start()
     {
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
-        ActionEvents.NewGameStarted += OnNewGameStarted;
-        ActionEvents.GameEnded += OnGameEnded;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
+        ActionEvents.RoundEnded += OnRoundEnded;
         StartCoroutine(ShowMenuLocationDialogInXSeconds(0.9f));
     }
 
@@ -37,7 +37,7 @@ public partial class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
-        ActionEvents.GameEnded -= OnGameEnded;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
+        ActionEvents.RoundEnded -= OnRoundEnded;
     }
 }

@@ -21,7 +21,7 @@ public class ScoreScript : MonoBehaviour
         Reset();
         var players = NetworkHelper.Instance.GetPlayers();
 
-        TitleText.text = "Score (First to " + GetRoseCountToWinGame(players.Count).ToString() + ")";
+        TitleText.text = "Score (First to " + MonoHelper.Instance.GetRoseCountToWinGame(players.Count).ToString() + ")";
 
         var counter = 0;
         foreach(var player in players)
@@ -61,23 +61,5 @@ public class ScoreScript : MonoBehaviour
         {
             Destroy(Players.transform.GetChild(i).gameObject);
         }
-    }
-
-    private int GetRoseCountToWinGame(int playerCount)
-    {
-        if(playerCount == 2)
-        {
-            return 6;
-        }
-        if (playerCount == 3)
-        {
-            return 5;
-        }
-        if (playerCount == 4)
-        {
-            return 4;
-        }
-
-        return 3;
     }
 }

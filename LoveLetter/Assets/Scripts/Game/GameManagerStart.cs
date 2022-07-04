@@ -7,7 +7,7 @@ using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
-    public void StartGame()
+    public void StartRound()
     {
         if(NetworkHelper.Instance.GetPlayers().Count() <= 1)
         {
@@ -20,10 +20,10 @@ public partial class GameManager : MonoBehaviour
         Deck.instance.CreateDeckSync();
         DrawCardsForPlayersSync();
 
-        NetworkActionEvents.instance.NewGameStarted(AllPlayers.Select(x => x.PlayerId).ToList(), CurrentPlayer().PlayerId);
+        NetworkActionEvents.instance.NewRoundStarted(AllPlayers.Select(x => x.PlayerId).ToList(), CurrentPlayer().PlayerId);
     }    
 
-    private void OnNewGameStarted(List<int> playerIds, int currentPlayerId)
+    private void OnNewRoundStarted(List<int> playerIds, int currentPlayerId)
     {
         ResetGameLocal();
 
@@ -63,7 +63,7 @@ public partial class GameManager : MonoBehaviour
         }
 
         CurrentPlayerId = AllPlayers[0].PlayerId;
-        GameEnded = false;
+        RoundEnded = false;
         PlayersWhoDiscardedSpies = new List<int>();
         Textt.ActionSync(""); // clear actions
     }

@@ -1,8 +1,5 @@
-using System.Linq;
 using UnityEngine;
 using Photon.Pun;
-using UnityEditor;
-using TMPro;
 using System.Collections.Generic;
 
 public class SpawnPlayers : MonoBehaviour

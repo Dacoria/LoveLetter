@@ -15,8 +15,8 @@ public class BigCardHandler : MonoBehaviour
     void Start()
     {
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
-        ActionEvents.GameEnded += OnGameEnded;
-        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.RoundEnded += OnRoundEnded;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.CardDiscarded += OnCardDiscarded;
         ActionEvents.CardsSwitched += OnCardsSwitched;
         ActionEvents.CardsToDeck += OnCardsToDeck;
@@ -26,8 +26,8 @@ public class BigCardHandler : MonoBehaviour
     void OnDestroy()
     {
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
-        ActionEvents.GameEnded -= OnGameEnded;
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.RoundEnded -= OnRoundEnded;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.CardDiscarded -= OnCardDiscarded;
         ActionEvents.CardsSwitched -= OnCardsSwitched;
         ActionEvents.CardsToDeck -= OnCardsToDeck;
@@ -103,12 +103,12 @@ public class BigCardHandler : MonoBehaviour
         SetNewWaitTime(4);
     }
 
-    private void OnNewGameStarted(List<int> arg1, int arg2)
+    private void OnNewRoundStarted(List<int> arg1, int arg2)
     {
         SetNewWaitTime(3, resetTimer: true);
     }
 
-    private void OnGameEnded(List<int> obj)
+    private void OnRoundEnded(RoundEnded roundEnded)
     {
         SetNewWaitTime(0.9f, resetTimer: true);
     }

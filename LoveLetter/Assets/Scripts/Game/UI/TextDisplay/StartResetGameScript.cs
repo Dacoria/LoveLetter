@@ -1,24 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class StartResetGameScript : MonoBehaviour
 {
     public TMP_Text text;
-    private bool isGameActive;
+    public Button StartRound;
+
+    private bool isRoundActive;
 
     private void Start()
     {
-        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
+        ActionEvents.RoundEnded += OnRoundEnded;
         ActionEvents.GameEnded += OnGameEnded;
-    }
+    }    
 
     public void OnButtonClick()
     {
-        if (isGameActive)
+        if (isRoundActive)
         {
             if(!PhotonNetwork.OfflineMode)
             {
@@ -29,30 +31,36 @@ public class StartResetGameScript : MonoBehaviour
                 Textt.GameSync("Game has ended. Waiting to start new game.");
             }
             Textt.ActionSync("");
-            GameManager.instance.StopGame();
+            GameManager.instance.StopRound();
         }
             
         else
         {
-            GameManager.instance.StartGame();
+            GameManager.instance.StartRound();
         }
     }
 
-    private void OnGameEnded(List<int> obj)
+    private void OnRoundEnded(RoundEnded roundEnded)
     {
-        isGameActive = false;
-        text.text = "Start game";
+        isRoundActive = false;
+        text.text = "Start Round";        
     }
 
-    private void OnNewGameStarted(List<int> arg1, int arg2)
+    private void OnGameEnded()
     {
-        text.text = "Stop game";
-        isGameActive = true;
+        Destroy(gameObject);
+    }
+
+    private void OnNewRoundStarted(List<int> arg1, int arg2)
+    {
+        text.text = "Stop Round";
+        isRoundActive = true;
     }
 
     private void OnDestroy()
     {
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
+        ActionEvents.RoundEnded -= OnRoundEnded;
         ActionEvents.GameEnded -= OnGameEnded;
     }
 }

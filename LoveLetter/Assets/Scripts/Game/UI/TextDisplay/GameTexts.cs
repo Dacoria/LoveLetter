@@ -10,14 +10,14 @@ public class GameTexts : MonoBehaviour
 
     private void Start()
     {
-        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
         ActionEvents.DeckCardDrawn += OnDeckCardDrawn;
     }
 
     private void OnDestroy()
     {
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
         ActionEvents.DeckCardDrawn -= OnDeckCardDrawn;
     }
@@ -27,7 +27,7 @@ public class GameTexts : MonoBehaviour
         UpdateTurnCurrentPlayerGameText(playerId);
     }
 
-    private void OnNewGameStarted(List<int> listPlayers, int playerId)
+    private void OnNewRoundStarted(List<int> listPlayers, int playerId)
     {
         UpdateTurnCurrentPlayerGameText(playerId);
     }

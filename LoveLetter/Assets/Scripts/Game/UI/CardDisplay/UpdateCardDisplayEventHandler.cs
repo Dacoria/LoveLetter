@@ -8,9 +8,9 @@ public class UpdateCardDisplayEventHandler : MonoBehaviour
 {
     private void Start()
     {
-        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
-        ActionEvents.GameEnded += OnGameEnded;
+        ActionEvents.RoundEnded += OnRoundEnded;
         ActionEvents.CardSynced += OnCardSynced;
     }
 
@@ -19,7 +19,7 @@ public class UpdateCardDisplayEventHandler : MonoBehaviour
         UpdateCardDisplay();
     }
 
-    private void OnGameEnded(List<int> obj)
+    private void OnRoundEnded(RoundEnded roundEnded)
     {
         UpdateCardDisplay();
     }
@@ -29,7 +29,7 @@ public class UpdateCardDisplayEventHandler : MonoBehaviour
         UpdateCardDisplay();
     }
 
-    private void OnNewGameStarted(List<int> a, int b)
+    private void OnNewRoundStarted(List<int> a, int b)
     {
         UpdateCardDisplay();
     }
@@ -46,9 +46,9 @@ public class UpdateCardDisplayEventHandler : MonoBehaviour
 
     private void OnDestroy()
     {
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
-        ActionEvents.GameEnded -= OnGameEnded;
+        ActionEvents.RoundEnded -= OnRoundEnded;
         ActionEvents.CardSynced -= OnCardSynced;
     }
 }

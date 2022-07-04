@@ -103,19 +103,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         }        
 
         PhotonNetwork.LoadLevel(Statics.SCENE_LEVEL1);
-
-        //sceneNamePun = Statics.SCENE_LEVEL1;
-        //LevelLoader.instance.LoadSceneAnimation(PunLoadScene);
     }
-
-   //private string sceneNamePun;
-   //private void PunLoadScene()
-   //{
-   //    Debug.Log(1);
-   //    PhotonNetwork.LoadLevel(sceneNamePun);
-   //    Debug.Log(2);
-   //}  
-
 }
 
 [SerializeField]

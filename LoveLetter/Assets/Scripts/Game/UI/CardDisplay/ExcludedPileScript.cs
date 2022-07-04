@@ -11,22 +11,22 @@ public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCar
     private void Start()
     {
         UpdateCardDisplay();
-        ActionEvents.GameEnded += OnGameEnded;
-        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.RoundEnded += OnRoundEnded;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
     }
 
     private void OnDestroy()
     {
-        ActionEvents.GameEnded -= OnGameEnded;
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.RoundEnded -= OnRoundEnded;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
     }
 
-    private void OnNewGameStarted(List<int> arg1, int arg2)
+    private void OnNewRoundStarted(List<int> arg1, int arg2)
     {
         Card1Sprite.sprite = MonoHelper.Instance.BackgroundCardSprite;
     }
 
-    private void OnGameEnded(List<int> obj)
+    private void OnRoundEnded(RoundEnded roundEnded)
     {
         var deckExclusions = Deck.instance.Cards.Where(x => x.Status == CardStatus.Excluded);
         Card1Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(Deck.instance.Cards.First(x => x.Status == CardStatus.Excluded).Character.Type);        

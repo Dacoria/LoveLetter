@@ -44,8 +44,8 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
     private void Start()
     {
         UpdateCardDisplay();
-        ActionEvents.GameEnded += OnGameEnded;
-        ActionEvents.NewGameStarted += OnNewGameStarted;
+        ActionEvents.RoundEnded += OnRoundEnded;
+        ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.StartCharacterEffect += OnStartCharacterEffect;
         ActionEvents.StartShowCardEffect += OnStartShowCardEffect;
         ActionEvents.EndShowCardEffect += OnEndShowCardEffect;
@@ -65,7 +65,7 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
     }
     
 
-    private void OnNewGameStarted(List<int> arg1, int arg2)
+    private void OnNewRoundStarted(List<int> arg1, int arg2)
     {
         gameEnded = false;
         cardIdsAlwaysShown = new List<int>();
@@ -87,7 +87,7 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
 
     private bool gameEnded;
 
-    private void OnGameEnded(List<int> obj)
+    private void OnRoundEnded(RoundEnded roundEnded)
     {
         gameEnded = true;
         UpdateCardDisplay();
@@ -97,8 +97,8 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
 
     private void OnDestroy()
     {
-        ActionEvents.GameEnded -= OnGameEnded;
-        ActionEvents.NewGameStarted -= OnNewGameStarted;
+        ActionEvents.RoundEnded -= OnRoundEnded;
+        ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.StartCharacterEffect -= OnStartCharacterEffect;
         ActionEvents.StartShowCardEffect -= OnStartShowCardEffect;
         ActionEvents.EndShowCardEffect -= OnEndShowCardEffect;

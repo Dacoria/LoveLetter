@@ -62,7 +62,7 @@ public class DrawPileScript : UpdateCardDisplayMonoBehaviourAbstract
 
     public void OnDeckCardClick()
     {
-        if(!GameManager.instance.GameEnded && canClickOnDeck)
+        if(!GameManager.instance.RoundEnded && canClickOnDeck)
         {
             if(PhotonNetwork.OfflineMode)
             {

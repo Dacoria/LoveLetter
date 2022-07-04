@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -14,13 +15,13 @@ public partial class GameManager : MonoBehaviour
 
     public void PlayCard(int cardId, int playerId)
     {
-        if(!GameEnded && playerId == CurrentPlayer().PlayerId && !MonoHelper.Instance.GetModal().IsActive)
+        if(!RoundEnded && playerId == CurrentPlayer().PlayerId && !MonoHelper.Instance.GetModal().IsActive)
         {            
             DoCardEffect(cardId, playerId);            
         }       
-        else if(GameEnded)
+        else if(RoundEnded)
         {
-            Debug.Log(playerId.GetPlayer().PlayerName + " wants to do a move, but the game has already ended");
+            Debug.Log(playerId.GetPlayer().PlayerName + " wants to do a move, but the round has already ended");
         }
         else
         {
@@ -62,19 +63,34 @@ public partial class GameManager : MonoBehaviour
 
     private void NextTurn()
     {
-        if (!EndOfGame())
+        if (!EndOfRound())
         {
             NextPlayer();
         }
         else
         {
-            GameEnded = true;
+            RoundEnded = true;
             var winners = CheckWinners();
-            NetworkActionEvents.instance.GameEnded(winners.Keys.ToList());
+            
             foreach (var winnerPId in winners)
             {
-                winnerPId.Key.GetPlayer().Score += winnerPId.Value; // wordt gesynct automagisch na een change
+                winnerPId.Key.GetPlayer().Score += winnerPId.Value; // wordt gesynct automagisch na een change                
             }
+
+            var roundEnded = new RoundEnded { PlayerScores = new List<PlayerScore>() };
+            foreach (var player in NetworkHelper.Instance.GetPlayers())
+            {
+                roundEnded.PlayerScores.Add(
+                        new PlayerScore
+                        {
+                            PlayerId = player.PlayerId,
+                            PlayerScorePoints = player.Score,
+                            WonRound = winners.Keys.Contains(player.PlayerId)
+                        }
+                    );
+            }
+
+            NetworkActionEvents.instance.RoundEnded(roundEnded);
         }
     }
 

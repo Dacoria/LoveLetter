@@ -196,6 +196,26 @@ public class MonoHelper : MonoBehaviour
         Dialog.ActionButton[] buttons = { ok, score };
         DialogMessageGo.ShowDialog(title, body, buttons);
     }
+
+    public int GetRoseCountToWinGame(int playerCount)
+    {
+        return 2;
+
+        if (playerCount == 2)
+        {
+            return 6;
+        }
+        if (playerCount == 3)
+        {
+            return 5;
+        }
+        if (playerCount == 4)
+        {
+            return 4;
+        }
+
+        return 3;
+    }
 }
 
 [Serializable]
