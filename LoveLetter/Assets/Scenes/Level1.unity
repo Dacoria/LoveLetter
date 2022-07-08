@@ -491,7 +491,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -200
   m_TargetDisplay: 0
 --- !u!224 &99862178
 RectTransform:
@@ -8875,7 +8875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -13.498264
+      value: -11.979969
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.y
