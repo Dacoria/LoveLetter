@@ -11,7 +11,9 @@ public class BgScriptInLeftBottomEditMode : MonoBehaviour
 
     void Update()
     {
-        if (EditorApplication.isPlaying) return;
+        #if UNITY_EDITOR
+            if (EditorApplication.isPlaying) return;
+        #endif
 
         var leftLimit = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).x;
         var rightLimit = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x;
