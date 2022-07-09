@@ -37,25 +37,48 @@ public class SpawnPlayers : MonoBehaviour
     private Vector2 GetPos(int playerIndex)
     {
         Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
-        if (playerIndex == 1)
+        if (StaticHelper.IsWideScreen)
         {
-            return new Vector2(topRight.x / 4 * 1.5f * -1, topRight.y / 2);
+
+            if (playerIndex == 1)
+            {
+                return new Vector2(topRight.x / 0.9f * 1.5f * -1, topRight.y / 4);
+            }
+            if (playerIndex == 2)
+            {
+                return new Vector2(topRight.x / 2.7f * 1.5f * -1, topRight.y / 4);
+            }
+            if (playerIndex == 3)
+            {
+                return new Vector2(topRight.x / 2.7f * 1.5f * 1, topRight.y / 4);
+            }
+            if (playerIndex == 4)
+            {
+                return new Vector2(topRight.x / 0.9f * 1.5f * 1, topRight.y / 4);
+            }
         }
-        if (playerIndex == 2)
+        else
         {
-            return new Vector2(topRight.x / 4 * 1.5f, topRight.y / 2);
-        }
-        if (playerIndex == 3)
-        {
-            return new Vector2(topRight.x / 4 * 1.5f * -1, 0);
-        }
-        if (playerIndex == 4)
-        {
-            return new Vector2(topRight.x / 4 * 1.5f, 0);
+
+            if (playerIndex == 1)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f * -1, topRight.y / 2);
+            }
+            if (playerIndex == 2)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f, topRight.y / 2);
+            }
+            if (playerIndex == 3)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f * -1, 0);
+            }
+            if (playerIndex == 4)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f, 0);
+            }
         }
 
         throw new System.Exception();
-
     }
 
     public void SpawnPlayer(string name, Vector2 pos)

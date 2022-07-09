@@ -17,7 +17,7 @@ public class BgScriptMoveToRight : MonoBehaviour
     {
         transform.position += new Vector3(1,0,0) * speed * Time.deltaTime;
 
-        if(!FirstGo && transform.position.x > -15 && !spawnedNewGo)
+        if(!FirstGo && transform.position.x > -75 && !spawnedNewGo)
         {
             SpawnNewBg();
         }

@@ -7,7 +7,8 @@ using System.Collections.Generic;
 public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
     public int PlayerId; // in offline mode een oplopend getal (voor dummies). voor normale games het actorNr vd player (natuurlijk... )
-    
+    public int CounterId;
+
     public int Score;
 
     [ComponentInject] 
@@ -74,10 +75,11 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     {
         object[] instantiationData = info.photonView.InstantiationData;
         var name = instantiationData[0].ToString();
+        CounterId = int.Parse(instantiationData[1].ToString());
 
-        if(PhotonNetwork.OfflineMode)
+        if (PhotonNetwork.OfflineMode)
         {
-            PlayerId = int.Parse(instantiationData[1].ToString());
+            PlayerId = CounterId;
         }
         else
         {
@@ -86,6 +88,13 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 
         PlayerText.text = name;
         PlayerName = name;
+
+        if(StaticHelper.IsWideScreen)
+        {
+            transform.localScale *= 1.8f;
+            PlayerText.transform.localScale *= 1.2f;
+            PlayerText.transform.localPosition += new Vector3(0, 0.55f, 0);
+        }
     }
     
 
