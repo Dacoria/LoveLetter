@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class PlayerScoreScript : MonoBehaviour
+public class PlayerScoreDisplayScript : MonoBehaviour
 {
     public Image EmotionImage;
     public TMP_Text PlayerText;

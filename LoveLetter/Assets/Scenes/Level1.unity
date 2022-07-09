@@ -611,7 +611,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1985747141}
+      - m_Target: {fileID: 1985747145}
         m_TargetAssemblyTypeName: HideShowMenu, Assembly-CSharp
         m_MethodName: HideStartMenu
         m_Mode: 1
@@ -1385,11 +1385,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 7551043114393011849, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3091,8 +3091,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e7bb905b55e4da44b7277fa6b1de8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScrollRulesScript: {fileID: 2117272337}
-  ScoreScript: {fileID: 1151318441}
 --- !u!1 &702833655
 GameObject:
   m_ObjectHideFlags: 0
@@ -3103,8 +3101,8 @@ GameObject:
   m_Component:
   - component: {fileID: 702833656}
   - component: {fileID: 702833657}
-  - component: {fileID: 702833658}
   - component: {fileID: 702833659}
+  - component: {fileID: 702833660}
   m_Layer: 0
   m_Name: Card3
   m_TagString: Untagged
@@ -3179,18 +3177,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &702833658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702833655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1288d20cf869ec42aa454a21353cc85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &702833659
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3217,6 +3203,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.7, y: 3.7}
   m_EdgeRadius: 0
+--- !u!114 &702833660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702833655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c595fafb92db145bda2a49e18c21da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &751432239
 GameObject:
   m_ObjectHideFlags: 0
@@ -3227,8 +3225,8 @@ GameObject:
   m_Component:
   - component: {fileID: 751432240}
   - component: {fileID: 751432241}
-  - component: {fileID: 751432242}
   - component: {fileID: 751432243}
+  - component: {fileID: 751432244}
   m_Layer: 0
   m_Name: DiscardPile
   m_TagString: Untagged
@@ -3244,8 +3242,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751432239}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.32, y: -2.9, z: 0}
-  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
+  m_LocalPosition: {x: 5.32, y: -3.4, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1144447169}
@@ -3307,23 +3305,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &751432242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 751432239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 296c875ffcb40c040a3853a1dff3c06f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardIdsBeingMoved: 
-  Card1Sprite: {fileID: 1144447170}
-  Card2Sprite: {fileID: 887677101}
-  Card3Sprite: {fileID: 985243524}
-  Text: {fileID: 771272166}
 --- !u!114 &751432243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3339,6 +3320,23 @@ MonoBehaviour:
   InitPos: {x: 5.32, y: -3.4, z: 0}
   WideScreenPosOffset: {x: 0, y: 0.5, z: 0}
   WideScreenScaleMultiplier: 1.8
+--- !u!114 &751432244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751432239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb775c4556595454caff8577cdf7fc3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardIdsBeingMoved: 
+  Card1Sprite: {fileID: 1144447170}
+  Card2Sprite: {fileID: 887677101}
+  Card3Sprite: {fileID: 985243524}
+  Text: {fileID: 771272166}
 --- !u!1 &771272164
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,9 +3519,9 @@ GameObject:
   m_Component:
   - component: {fileID: 847284856}
   - component: {fileID: 847284858}
-  - component: {fileID: 847284857}
   - component: {fileID: 847284859}
   - component: {fileID: 847284860}
+  - component: {fileID: 847284861}
   m_Layer: 0
   m_Name: DrawDeckPile
   m_TagString: Untagged
@@ -3539,8 +3537,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847284855}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.639999, y: -2.9, z: 0}
-  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
+  m_LocalPosition: {x: 7.14, y: -3.4, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 958168843}
@@ -3551,23 +3549,6 @@ Transform:
   m_Father: {fileID: 1651676007}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &847284857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847284855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 642a29cb69f90344e955c0ae28f1cb56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardIdsBeingMoved: 
-  Card1: {fileID: 958168842}
-  Card2: {fileID: 1512548075}
-  Card3: {fileID: 702833655}
-  DeckText: {fileID: 1526349245}
 --- !u!212 &847284858
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3654,6 +3635,23 @@ MonoBehaviour:
   InitPos: {x: 7.14, y: -3.4, z: 0}
   WideScreenPosOffset: {x: 1.5, y: 0.5, z: 0}
   WideScreenScaleMultiplier: 1.8
+--- !u!114 &847284861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847284855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65c92feef9be1e43a71f6cffa5559d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardIdsBeingMoved: 
+  Card1: {fileID: 958168842}
+  Card2: {fileID: 1512548075}
+  Card3: {fileID: 702833655}
+  DeckText: {fileID: 1526349245}
 --- !u!1 &872386997
 GameObject:
   m_ObjectHideFlags: 0
@@ -4395,8 +4393,8 @@ GameObject:
   m_Component:
   - component: {fileID: 958168843}
   - component: {fileID: 958168844}
-  - component: {fileID: 958168845}
   - component: {fileID: 958168846}
+  - component: {fileID: 958168847}
   m_Layer: 0
   m_Name: Card1
   m_TagString: Untagged
@@ -4471,18 +4469,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &958168845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958168842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1288d20cf869ec42aa454a21353cc85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &958168846
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4509,6 +4495,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.7, y: 3.7}
   m_EdgeRadius: 0
+--- !u!114 &958168847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958168842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c595fafb92db145bda2a49e18c21da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &971894390
 GameObject:
   m_ObjectHideFlags: 0
@@ -6126,7 +6124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76cd1361361f82d46b51f66950610f55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BigCardDisplay: {fileID: 891539124}
 --- !u!1 &1230854326
 GameObject:
   m_ObjectHideFlags: 0
@@ -6595,8 +6592,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1512548076}
   - component: {fileID: 1512548077}
-  - component: {fileID: 1512548078}
   - component: {fileID: 1512548079}
+  - component: {fileID: 1512548080}
   m_Layer: 0
   m_Name: Card2
   m_TagString: Untagged
@@ -6671,18 +6668,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1512548078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1512548075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1288d20cf869ec42aa454a21353cc85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1512548079
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6709,6 +6694,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.7, y: 3.7}
   m_EdgeRadius: 0
+--- !u!114 &1512548080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512548075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c595fafb92db145bda2a49e18c21da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1526349243
 GameObject:
   m_ObjectHideFlags: 0
@@ -7180,7 +7177,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1985747141}
+      - m_Target: {fileID: 1985747145}
         m_TargetAssemblyTypeName: HideShowMenu, Assembly-CSharp
         m_MethodName: HideStartMenu
         m_Mode: 1
@@ -8459,6 +8456,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 99862178}
     m_Modifications:
+    - target: {fileID: 1859050113, guid: be3c2d45627250640952259099fcda75, type: 3}
+      propertyPath: FirstGo
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -8525,7 +8526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -42.195766
+      value: -13.696368
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8546,10 +8547,6 @@ PrefabInstance:
     - target: {fileID: 6644501431245797762, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_Name
       value: Bg
-      objectReference: {fileID: 0}
-    - target: {fileID: 6644501431245797773, guid: be3c2d45627250640952259099fcda75, type: 3}
-      propertyPath: firstGo
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be3c2d45627250640952259099fcda75, type: 3}
@@ -8820,7 +8817,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1985747141}
+      - m_Target: {fileID: 1985747145}
         m_TargetAssemblyTypeName: HideShowMenu, Assembly-CSharp
         m_MethodName: HideStartMenu
         m_Mode: 1
@@ -8957,8 +8954,8 @@ GameObject:
   - component: {fileID: 1985747140}
   - component: {fileID: 1985747143}
   - component: {fileID: 1985747142}
-  - component: {fileID: 1985747141}
   - component: {fileID: 1985747144}
+  - component: {fileID: 1985747145}
   m_Layer: 2
   m_Name: ClickAreaMenu
   m_TagString: Untagged
@@ -8986,19 +8983,6 @@ RectTransform:
   m_AnchoredPosition: {x: -261, y: 530}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1985747141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985747139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c5ad315777e0e41a72f0efb0f81e9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MenuGo: {fileID: 184993744}
 --- !u!114 &1985747142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9063,6 +9047,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1985747145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985747139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d8713c28e87f18488963762b0fa090e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MenuGo: {fileID: 184993744}
 --- !u!1 &2022285584
 GameObject:
   m_ObjectHideFlags: 0
@@ -9360,7 +9357,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1985747141}
+      - m_Target: {fileID: 1985747145}
         m_TargetAssemblyTypeName: HideShowMenu, Assembly-CSharp
         m_MethodName: HideStartMenu
         m_Mode: 1
@@ -9434,8 +9431,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2033473335}
   - component: {fileID: 2033473336}
-  - component: {fileID: 2033473337}
   - component: {fileID: 2033473338}
+  - component: {fileID: 2033473339}
   m_Layer: 0
   m_Name: ExcludedCard
   m_TagString: Untagged
@@ -9451,8 +9448,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033473334}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.36, y: -2.9, z: 0}
-  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
+  m_LocalPosition: {x: 3.86, y: -3.4, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1100647546}
@@ -9512,21 +9509,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2033473337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2033473334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b9184326fa443245a1325918e22f86b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardIdsBeingMoved: 
-  Card1Sprite: {fileID: 1100647547}
-  Text: {fileID: 259490999}
 --- !u!114 &2033473338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9542,6 +9524,21 @@ MonoBehaviour:
   InitPos: {x: 3.86, y: -3.4, z: 0}
   WideScreenPosOffset: {x: -1.5, y: 0.5, z: 0}
   WideScreenScaleMultiplier: 1.8
+--- !u!114 &2033473339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033473334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e41e7d368df004f8931a346b5c3073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardIdsBeingMoved: 
+  Card1Sprite: {fileID: 1100647547}
+  Text: {fileID: 259490999}
 --- !u!1 &2084009381
 GameObject:
   m_ObjectHideFlags: 0

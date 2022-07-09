@@ -45,8 +45,6 @@ public class InstructionScreenScaler : MonoBehaviour
         var idealMultiNow = 1 + extraMultiNow;
 
         transform.localScale = InitLocalScale / idealMultiNow;
-
-        Debug.Log(Screen.width + " " + Screen.height + " " + idealMultiNow);
     }
 
     private void ScreenTooBigSoScaleDown(float scaleNow)

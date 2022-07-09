@@ -7,7 +7,7 @@ public class ScoreScript : MonoBehaviour
 {
     public TMP_Text TitleText;
     public GameObject Players;
-    public PlayerScoreScript PlayerScorePrefab;
+    public PlayerScoreDisplayScript PlayerScorePrefab;
 
     [ComponentInject] private CanvasGroup canvasGroup;
 
