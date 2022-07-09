@@ -8,7 +8,7 @@ public class KingEffect: CharacterEffect
     private PlayerScript currentPlayer;
     private int currentCardId;
 
-    public override bool DoEffect(PlayerScript player, int cardId)
+   public override bool DoEffect(PlayerScript player, int cardId)
     {
         if(!CanDoEffect(player, cardId))
         {
@@ -17,14 +17,21 @@ public class KingEffect: CharacterEffect
 
         currentPlayer = player;
         currentCardId = cardId;
-        var modalGo = MonoHelper.Instance.GetModal();
-
 
         var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
             Textt.ActionSync("King played...");
-            modalGo.SetOptions(ChoosePlayer, "Choose who to trade cards with", otherPlayers);
+
+            if (player.IsAi)
+            {
+                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, otherPlayers, CharacterType, currentCardId);
+            }
+            else
+            {
+                var modalGo = MonoHelper.Instance.GetModal();
+                modalGo.SetOptions(ChoosePlayer, "Choose who to trade cards with", otherPlayers);
+            }
         }
         else
         {
@@ -35,7 +42,7 @@ public class KingEffect: CharacterEffect
         return true;
     }
 
-    private bool CanDoEffect(PlayerScript player, int cardId)
+    public override bool CanDoEffect(PlayerScript player, int cardId)
     {
         var otherCardOfCurrentPlayer = GetOtherCard(player, cardId);
 
@@ -65,4 +72,3 @@ public class KingEffect: CharacterEffect
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
-

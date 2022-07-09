@@ -8,7 +8,7 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
     public int PlayerId; // in offline mode een oplopend getal (voor dummies). voor normale games het actorNr vd player (natuurlijk... )
     public int CounterId;
-
+    public bool IsAi;
     public int Score;
 
     [ComponentInject] 
@@ -76,8 +76,9 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         object[] instantiationData = info.photonView.InstantiationData;
         var name = instantiationData[0].ToString();
         CounterId = int.Parse(instantiationData[1].ToString());
+        IsAi = bool.Parse(instantiationData[2].ToString());
 
-        if (PhotonNetwork.OfflineMode)
+        if (PhotonNetwork.OfflineMode || IsAi)
         {
             PlayerId = CounterId;
         }
@@ -94,6 +95,11 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
             transform.localScale *= 1.8f;
             PlayerText.transform.localScale *= 1.2f;
             PlayerText.transform.localPosition += new Vector3(0, 0.55f, 0);
+        }
+
+        if(IsAi && PhotonNetwork.IsMasterClient)
+        {
+            gameObject.AddComponent<AiPlayerScript>();
         }
     }
     
@@ -117,8 +123,9 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     private void OnDestroy()
     {
         ActionEvents.PlayerStatusChange -= OnPlayerStatusChange;
-        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+        ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
         ActionEvents.DeckCardDrawn -= OnDeckCardDrawn;
+        ActionEvents.RoundEnded -= OnRoundEnded;
     }
 
     private void OnDeckCardDrawn(int playedId)

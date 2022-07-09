@@ -9,19 +9,27 @@ public class PriestEffect : CharacterEffect
     private PlayerScript currentPlayer;
     private int currentCardId;
 
+    public override bool CanDoEffect(PlayerScript player, int cardId) => true;
     public override bool DoEffect(PlayerScript player, int cardId)
     {
         currentPlayer = player;
         currentCardId = cardId;
 
-        var modalGo = MonoHelper.Instance.GetModal();
 
 
         var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if (otherPlayers.Any())
         {
             Textt.ActionSync("Priest played...");
-            modalGo.SetOptions(ChoosePlayer, "Choose who's card to look at", otherPlayers);
+            if (player.IsAi)
+            {
+                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, otherPlayers, CharacterType, currentCardId);
+            }
+            else
+            {
+                var modalGo = MonoHelper.Instance.GetModal();
+                modalGo.SetOptions(ChoosePlayer, "Choose who's card to look at", otherPlayers);
+            }
         }
         else
         {
@@ -43,8 +51,15 @@ public class PriestEffect : CharacterEffect
         Textt.ActionSync("Priest watches the card of " + optionSelectedPlayer);
         Textt.ActionLocal("Card in hand of " + optionSelectedPlayer + " is " + currentCardOtherPlayer.Character.Type);
 
-        var modalGo = MonoHelper.Instance.GetModal();
-        modalGo.SetOptions(CardWatched, "Finished watching?", new List<string> { "Yes"});
+        if (currentPlayer.IsAi)
+        {
+            currentPlayer.GetComponent<AiPlayerScript>().DoCardChoice(CardWatched, new List<string> { "Yes" }, CharacterType, currentCardId);
+        }
+        else
+        {
+            var modalGo = MonoHelper.Instance.GetModal();
+            modalGo.SetOptions(CardWatched, "Finished watching?", new List<string> { "Yes" });
+        }
     }
 
     public void CardWatched(string res)

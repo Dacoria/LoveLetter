@@ -6,6 +6,7 @@ public class GuardEffect: CharacterEffect
 {
     public override CharacterType CharacterType => CharacterType.Guard;
 
+    public override bool CanDoEffect(PlayerScript player, int cardId) => true;
 
     private PlayerScript currentPlayer;
     private int currentCardId;
@@ -15,13 +16,19 @@ public class GuardEffect: CharacterEffect
         currentPlayer = player;
         currentCardId = cardId;
 
-        var modalGo = MonoHelper.Instance.GetModal();
-
         var otherPlayers = NetworkHelper.Instance.GetOtherPlayersScript(player).Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
         if(otherPlayers.Any())
         {
             Textt.ActionSync("Guard played...");
-            modalGo.SetOptions(ChoosePlayer, "Choose who to intercept", otherPlayers);
+            if (player.IsAi)
+            {
+                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, otherPlayers, CharacterType, currentCardId);
+            }
+            else
+            {
+                var modalGo = MonoHelper.Instance.GetModal();
+                modalGo.SetOptions(ChoosePlayer, "Choose who to intercept", otherPlayers);
+            }
         }
         else
         {
@@ -40,11 +47,18 @@ public class GuardEffect: CharacterEffect
         selectedPlayerName = optionSelectedPlayer;
         Textt.ActionSync("Guard selects " + selectedPlayerName + " to intercept...");
 
-        var modalGo = MonoHelper.Instance.GetModal();
         var options = MonoHelper.Instance.GetCharacterTypes().Where(x => x != CharacterType).Select(x => x.ToString()).ToList();
-        modalGo.SetOptions(ChooseCharacterType, "Choose Character to intercept", options);
-    }
 
+        if (currentPlayer.IsAi)
+        {
+            currentPlayer.GetComponent<AiPlayerScript>().DoCardChoice(ChooseCharacterType, options, CharacterType, currentCardId);
+        }
+        else
+        {
+            var modalGo = MonoHelper.Instance.GetModal();
+            modalGo.SetOptions(ChooseCharacterType, "Choose Character to intercept", options);
+        }
+    }
 
     public void ChooseCharacterType(string optionSelectedCharacterType)
     {

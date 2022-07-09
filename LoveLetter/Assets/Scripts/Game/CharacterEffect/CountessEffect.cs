@@ -3,6 +3,7 @@ public class CountessEffect : CharacterEffect
 {
     public override CharacterType CharacterType => CharacterType.Countess;
 
+    public override bool CanDoEffect(PlayerScript player, int cardId) => true;
     public override bool DoEffect(PlayerScript player, int cardId)
     {
         Textt.ActionSync("Countess played, no special effect");

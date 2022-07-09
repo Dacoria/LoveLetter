@@ -6,13 +6,14 @@ public class SpawnPlayers : MonoBehaviour
 {
     public GameObject PlayerPrefab;
     public float BufferSizeforCameraRange;
+    public bool UseAiInDummy;
 
     private void Start()
     {
         var currentPlayers = NetworkHelper.Instance.GetPlayerList();
 
         var playerCount = currentPlayers.Length;
-        SpawnPlayer("P" + playerCount, GetPos(playerCount));
+        SpawnPlayer("P" + playerCount, GetPos(playerCount), false);
     }
 
     private int playerCounter;
@@ -22,15 +23,15 @@ public class SpawnPlayers : MonoBehaviour
         
         if (playerCounter == 1)
         {
-            SpawnPlayer("DP2", GetPos(2));
+            SpawnPlayer("DP2", GetPos(2), true);
         }
         else if(playerCounter == 2)
         {
-            SpawnPlayer("DP3", GetPos(3));
+            SpawnPlayer("DP3", GetPos(3), true);
         }
         else if (playerCounter == 3)
         {
-            SpawnPlayer("DP4", GetPos(4));
+            SpawnPlayer("DP4", GetPos(4), true);
         }
     }
 
@@ -81,7 +82,7 @@ public class SpawnPlayers : MonoBehaviour
         throw new System.Exception();
     }
 
-    public void SpawnPlayer(string name, Vector2 pos)
+    public void SpawnPlayer(string name, Vector2 pos, bool isDummy)
     {
         if (!PhotonNetwork.IsConnected)
         {
@@ -89,12 +90,14 @@ public class SpawnPlayers : MonoBehaviour
         }
         playerCounter++;
 
-        if (!PhotonNetwork.OfflineMode)
+        var isAi = isDummy && !PhotonNetwork.OfflineMode; // offline = altijd dummy zonder AI
+
+        if (!PhotonNetwork.OfflineMode && !isAi)
         {
             name = PhotonNetwork.NickName;
         }
 
-        object[] myCustomInitData = new List<object> { name, playerCounter }.ToArray();
+        object[] myCustomInitData = new List<object> { name, playerCounter, isAi }.ToArray();
         var player = PhotonNetwork.Instantiate(PlayerPrefab.name, pos, Quaternion.identity, 0, myCustomInitData);        
     }
 }

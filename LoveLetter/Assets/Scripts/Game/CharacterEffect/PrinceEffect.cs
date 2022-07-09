@@ -16,14 +16,23 @@ public class PrinceEffect : CharacterEffect
 
         currentPlayer = player;
         currentCardId = cardId;
-        var modalGo = MonoHelper.Instance.GetModal();
 
         var players = NetworkHelper.Instance.GetPlayers().Where(x => x.PlayerStatus == PlayerStatus.Normal).Select(x => x.PlayerName).ToList();
 
         if (players.Any())
         {
-            Textt.ActionSync("Prince played...");
-            modalGo.SetOptions(ChoosePlayer, "Choose who should discard his/her card", players);
+            Textt.ActionSync("Prince played...");            
+
+            if (player.IsAi)
+            {
+                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, players, CharacterType, currentCardId);
+            }
+            else
+            {
+                var modalGo = MonoHelper.Instance.GetModal();
+                modalGo.SetOptions(ChoosePlayer, "Choose who should discard his/her card", players);
+            }
+
         }
         else
         {
@@ -34,7 +43,7 @@ public class PrinceEffect : CharacterEffect
         return true;
     }
 
-    private bool CanDoEffect(PlayerScript player, int cardId)
+    public override bool CanDoEffect(PlayerScript player, int cardId)
     {
         var otherCardOfCurrentPlayer = GetOtherCard(player, cardId);
 

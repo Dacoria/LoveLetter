@@ -3,6 +3,7 @@ public class HandmaidEffect : CharacterEffect
 {
     public override CharacterType CharacterType => CharacterType.Handmaid;
 
+    public override bool CanDoEffect(PlayerScript player, int cardId) => true;
     public override bool DoEffect(PlayerScript player, int cardId)
     {
         player.PlayerStatus = PlayerStatus.Protected;

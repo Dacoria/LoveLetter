@@ -157,14 +157,15 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
             Card1Display.gameObject.SetActive(card1 != null);
             Card2Display.gameObject.SetActive(card2 != null);
 
+            var shouldShowCardToMe = PhotonNetwork.OfflineMode || (photonView.IsMine && !playerScript.IsAi);
 
             if (card1 != null)
             {
-                Card1Sprite.sprite = (gameEnded || photonView.IsMine || cardIdsAlwaysShown.Any(x => x == card1.Id)) ? MonoHelper.Instance.GetCharacterSprite(card1.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
+                Card1Sprite.sprite = (gameEnded || shouldShowCardToMe || cardIdsAlwaysShown.Any(x => x == card1.Id)) ? MonoHelper.Instance.GetCharacterSprite(card1.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
             }
             if (card2 != null)
             {
-                Card2Sprite.sprite = (gameEnded || photonView.IsMine || cardIdsAlwaysShown.Any(x => x == card2.Id)) ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
+                Card2Sprite.sprite = (gameEnded || shouldShowCardToMe || cardIdsAlwaysShown.Any(x => x == card2.Id)) ? MonoHelper.Instance.GetCharacterSprite(card2.Character.Type) : MonoHelper.Instance.BackgroundCardSprite;
             }
 
             if(card1 != null  && (Vector2)Card1Display.transform.position != currentCard1EndPos && !Card1Display.LerpMovement.IsActive)

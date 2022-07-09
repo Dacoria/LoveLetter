@@ -55,7 +55,15 @@ public class DrawPileScript : UpdateCardDisplayMonoBehaviourAbstract
 
     private void OnNewPlayerTurn(int pId)
     {
-        canClickOnDeck = true;        
+        var myPlayer = NetworkHelper.Instance.GetMyPlayerScript();
+        if (PhotonNetwork.OfflineMode)
+        {
+            canClickOnDeck = true;
+        }
+        else if (myPlayer.PlayerId == pId && !pId.GetPlayer().IsAi)
+        {
+            canClickOnDeck = true;
+        }
     }
 
     private bool canClickOnDeck;

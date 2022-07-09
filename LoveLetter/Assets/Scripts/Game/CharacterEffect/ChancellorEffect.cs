@@ -8,13 +8,12 @@ public class ChancellorEffect : CharacterEffect
     private PlayerScript currentPlayer;
     private int currentCardId;
 
+    public override bool CanDoEffect(PlayerScript player, int cardId) => true;
     public override bool DoEffect(PlayerScript player, int cardId)
     {
         currentPlayer = player;
         currentCardId = cardId;
         cardIdsPutAtBottom = new List<int>();
-
-        var modalGo = MonoHelper.Instance.GetModal();
 
         var cardsInDeck = Deck.instance.Cards.Where(x => x.Status == CardStatus.InDeck).ToList();
         if (cardsInDeck.Count() >= 2)
@@ -34,9 +33,20 @@ public class ChancellorEffect : CharacterEffect
         }
 
         cardOptions = Deck.instance.Cards.Where(x => x?.PlayerId.GetPlayer() == player && x.Id != currentCardId).Select(x => x.Character.Type.ToString()).ToList();
-        modalGo.SetOptions(ChooseCardAtBottom, "Choose card to keep", cardOptions);
-        
+
         Textt.ActionSync("Chancellor played...");
+
+        if (currentPlayer.IsAi)
+        {
+            currentPlayer.GetComponent<AiPlayerScript>().DoCardChoice(ChooseCardAtBottom, cardOptions, CharacterType, currentCardId);
+        }
+        else
+        {
+            var modalGo = MonoHelper.Instance.GetModal();
+            modalGo.SetOptions(ChooseCardAtBottom, "Choose card to keep", cardOptions);
+        }
+
+
         return true;
     }
 

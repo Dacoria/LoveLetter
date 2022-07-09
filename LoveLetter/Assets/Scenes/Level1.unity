@@ -1323,6 +1323,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6158605883127086713, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158605883127086713, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
+      propertyPath: m_ScreenMatchMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158605883127086713, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6321268743181853715, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1370,6 +1382,14 @@ PrefabInstance:
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7551043114393011849, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7716,7 +7736,7 @@ RectTransform:
   m_GameObject: {fileID: 1672994295}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
+  m_LocalScale: {x: 1.3999999, y: 1.3999999, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 85470597}
@@ -8505,7 +8525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -37.78626
+      value: -42.195766
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9568,6 +9588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 1941673923665311740, guid: 1208ca1cd1acb8f4e99e2bb64af5e8ea, type: 3}
   BufferSizeforCameraRange: 2
+  UseAiInDummy: 0
 --- !u!1 &2102262092
 GameObject:
   m_ObjectHideFlags: 0
