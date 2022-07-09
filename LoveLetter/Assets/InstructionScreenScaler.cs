@@ -15,19 +15,43 @@ public class InstructionScreenScaler : MonoBehaviour
 
     void Update()
     {
-        if (Screen.height > Screen.width)
+        var diffWidthHeight = (float)Screen.width / Screen.height;
+        if (diffWidthHeight >= 1.32)
         {
-            transform.localScale = InitLocalScale;
+            ScreenTooWideSoScaleDown(diffWidthHeight);
+        }
+        else if (diffWidthHeight < 0.65f)
+        {
+            ScreenTooBigSoScaleDown(diffWidthHeight);
         }
         else
         {
-            var downLimit = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
-            var topLimit = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
-
-            Debug.Log(Screen.height + "  " + Screen.width + downLimit + "  " + topLimit + "  " + rect.sizeDelta.y + "  " + rect.rect.height);
-            //transform.localScale = new Vector3(0.3f, 0.3f, 1);
-
+            transform.localScale = InitLocalScale;
         }
+    }    
 
+    private void ScreenTooWideSoScaleDown(float scaleNow)
+    {
+        // https://docs.google.com/spreadsheets/d/1e6uaZtFYQGyo96YvATnNIVJ9ggrm4d_b6n47n2g2BBE/edit#gid=0
+        var scale1 = 1.32f;
+        var idealMulti1 = 1;
+
+        var scale2 = 2.6666f;
+        var idealMulti2 = 2;
+
+        var scaleExtraNow = scaleNow - scale1;
+
+        var extraMultiNow = scaleExtraNow / scale1;
+        var idealMultiNow = 1 + extraMultiNow;
+
+        transform.localScale = InitLocalScale / idealMultiNow;
+
+        Debug.Log(Screen.width + " " + Screen.height + " " + idealMultiNow);
+    }
+
+    private void ScreenTooBigSoScaleDown(float scaleNow)
+    {
+        var diff = 0.65f / scaleNow;
+        transform.localScale = InitLocalScale / diff;
     }
 }
