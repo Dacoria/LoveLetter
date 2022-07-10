@@ -83,7 +83,7 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 
         if (PhotonNetwork.OfflineMode || IsAi)
         {
-            PlayerId = CounterId;
+            PlayerId = CounterId + 1000; // forceert dat het anders is dat het photonId
         }
         else
         {

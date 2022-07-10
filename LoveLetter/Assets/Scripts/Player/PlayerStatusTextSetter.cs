@@ -17,7 +17,6 @@ public class PlayerStatusTextSetter : MonoBehaviour
 
     void Start()
     {
-        ActionEvents.PlayerStatusChange += OnPlayerStatusChange;
         ActionEvents.NewRoundStarted += OnNewGameStarted;
         ActionEvents.RoundEnded += OnRoundEnded;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
@@ -51,7 +50,7 @@ public class PlayerStatusTextSetter : MonoBehaviour
     private void OnRoundEnded(RoundEnded roundEnded)
     {
         playerNameText.fontStyle = FontStyles.Normal;
-        if (roundEnded.PlayerScores.Any(x => x.PlayerId == player.PlayerId))
+        if (roundEnded.PlayerScores.Any(x => x.PlayerId == player.PlayerId && x.WonRound))
         {
             playerNameText.color = Color.green;
         }
@@ -59,35 +58,10 @@ public class PlayerStatusTextSetter : MonoBehaviour
         {
             playerNameText.color = Color.black;
         }
-    }
-
-    private void OnPlayerStatusChange(int pIdStatusChanged, PlayerStatus playerStatus)
-    {
-        Debug.Log("OnPlayerStatusChange --> " + player.PlayerName + " " + player.PlayerStatus);
-        if(pIdStatusChanged != player.PlayerId)
-        {
-            return;
-        }
-
-        switch (playerStatus)
-        {
-            case PlayerStatus.Normal:
-                playerNameText.color = Color.black;
-                break;
-            case PlayerStatus.Protected:
-                playerNameText.color = Color.blue;
-                break;
-            case PlayerStatus.Intercepted:
-                playerNameText.color = Color.red;
-                break;
-            default:
-                throw new Exception(player.PlayerStatus + " onbekend");
-        }
-    }
+    }    
 
     private void OnDestroy()
     {
-        ActionEvents.PlayerStatusChange -= OnPlayerStatusChange;
         ActionEvents.NewRoundStarted -= OnNewGameStarted;
         ActionEvents.RoundEnded -= OnRoundEnded;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
