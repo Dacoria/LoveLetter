@@ -20,15 +20,7 @@ public class GuardEffect: CharacterEffect
         if(otherPlayers.Any())
         {
             Textt.ActionSync("Guard played...");
-            if (player.IsAi)
-            {
-                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, otherPlayers, CharacterType, currentCardId);
-            }
-            else
-            {
-                var modalGo = MonoHelper.Instance.GetModal();
-                modalGo.SetOptions(ChoosePlayer, "Choose who to intercept", otherPlayers);
-            }
+            MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChoosePlayer, "Choose who to intercept", otherPlayers, CharacterType, currentCardId);
         }
         else
         {
@@ -48,16 +40,7 @@ public class GuardEffect: CharacterEffect
         Textt.ActionSync("Guard selects " + selectedPlayerName + " to intercept...");
 
         var options = MonoHelper.Instance.GetCharacterTypes().Where(x => x != CharacterType).Select(x => x.ToString()).ToList();
-
-        if (currentPlayer.IsAi)
-        {
-            currentPlayer.GetComponent<AiPlayerScript>().DoCardChoice(ChooseCharacterType, options, CharacterType, currentCardId);
-        }
-        else
-        {
-            var modalGo = MonoHelper.Instance.GetModal();
-            modalGo.SetOptions(ChooseCharacterType, "Choose Character to intercept", options);
-        }
+        MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChooseCharacterType, "Choose Character to intercept", options, CharacterType, currentCardId);
     }
 
     public void ChooseCharacterType(string optionSelectedCharacterType)
@@ -78,4 +61,3 @@ public class GuardEffect: CharacterEffect
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
-

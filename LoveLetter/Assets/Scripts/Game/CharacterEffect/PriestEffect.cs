@@ -21,15 +21,7 @@ public class PriestEffect : CharacterEffect
         if (otherPlayers.Any())
         {
             Textt.ActionSync("Priest played...");
-            if (player.IsAi)
-            {
-                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, otherPlayers, CharacterType, currentCardId);
-            }
-            else
-            {
-                var modalGo = MonoHelper.Instance.GetModal();
-                modalGo.SetOptions(ChoosePlayer, "Choose who's card to look at", otherPlayers);
-            }
+            MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChoosePlayer, "Choose who's card to look at", otherPlayers, CharacterType, currentCardId);
         }
         else
         {
@@ -51,15 +43,7 @@ public class PriestEffect : CharacterEffect
         Textt.ActionSync("Priest watches the card of " + optionSelectedPlayer);
         Textt.ActionLocal("Card in hand of " + optionSelectedPlayer + " is " + currentCardOtherPlayer.Character.Type);
 
-        if (currentPlayer.IsAi)
-        {
-            currentPlayer.GetComponent<AiPlayerScript>().DoCardChoice(CardWatched, new List<string> { "Yes" }, CharacterType, currentCardId);
-        }
-        else
-        {
-            var modalGo = MonoHelper.Instance.GetModal();
-            modalGo.SetOptions(CardWatched, "Finished watching?", new List<string> { "Yes" });
-        }
+        MonoHelper.Instance.DoCharacterChoice(currentPlayer, CardWatched, "Finished watching?", new List<string> { "Yes" }, CharacterType, currentCardId);
     }
 
     public void CardWatched(string res)

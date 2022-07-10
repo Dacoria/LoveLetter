@@ -48,7 +48,19 @@ public class MonoHelper : MonoBehaviour
         }
 
         return true;
-    }    
+    }
+
+    public void DoCharacterChoice(PlayerScript playerScript, Action<string> callback, string optionsText, List<string> options, CharacterType characterType, int cardId)
+    {
+        if(playerScript.IsAi)
+        {
+            playerScript.GetComponent<AiPlayerScript>().DoCardChoice(callback, options, characterType, cardId);
+        }
+        else
+        {
+            ModalScript.SetOptions(callback, optionsText, options);
+        }
+    }
 
     public ModalScript GetModal()
     {

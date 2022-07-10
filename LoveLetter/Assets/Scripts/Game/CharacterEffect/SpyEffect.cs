@@ -1,8 +1,6 @@
-﻿
-public class SpyEffect : CharacterEffect
+﻿public class SpyEffect : CharacterEffect
 {
     public override CharacterType CharacterType => CharacterType.Spy;
-
     public override bool CanDoEffect(PlayerScript player, int cardId) => true;
     public override bool DoEffect(PlayerScript player, int cardId)
     {

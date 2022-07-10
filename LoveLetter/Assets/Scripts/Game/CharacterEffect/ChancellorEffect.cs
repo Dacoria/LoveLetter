@@ -35,18 +35,7 @@ public class ChancellorEffect : CharacterEffect
         cardOptions = Deck.instance.Cards.Where(x => x?.PlayerId.GetPlayer() == player && x.Id != currentCardId).Select(x => x.Character.Type.ToString()).ToList();
 
         Textt.ActionSync("Chancellor played...");
-
-        if (currentPlayer.IsAi)
-        {
-            currentPlayer.GetComponent<AiPlayerScript>().DoCardChoice(ChooseCardAtBottom, cardOptions, CharacterType, currentCardId);
-        }
-        else
-        {
-            var modalGo = MonoHelper.Instance.GetModal();
-            modalGo.SetOptions(ChooseCardAtBottom, "Choose card to keep", cardOptions);
-        }
-
-
+        MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChooseCardAtBottom, "Choose card to keep", cardOptions, CharacterType, currentCardId);
         return true;
     }
 

@@ -20,15 +20,7 @@ public class BaronEffect : CharacterEffect
         if (otherPlayers.Any())
         {
             Textt.ActionSync("Baron played...");
-            if (currentPlayer.IsAi)
-            {
-                currentPlayer.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, otherPlayers, CharacterType, currentCardId);
-            }
-            else
-            {
-                var modalGo = MonoHelper.Instance.GetModal();
-                modalGo.SetOptions(ChoosePlayer, "Choose who to compare rank with", otherPlayers);
-            }
+            MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChoosePlayer, "Choose who to compare rank with", otherPlayers, CharacterType, currentCardId);
         }
         else
         {

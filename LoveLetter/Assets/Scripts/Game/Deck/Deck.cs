@@ -154,8 +154,7 @@ public class Deck : MonoBehaviour
             throw new Exception("No deck found!");
         }
 
-        ActionEvents.CardSynced?.Invoke();
-        
+        ActionEvents.CardSynced?.Invoke();        
     }   
 }
 

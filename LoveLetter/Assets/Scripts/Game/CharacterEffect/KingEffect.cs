@@ -22,16 +22,7 @@ public class KingEffect: CharacterEffect
         if (otherPlayers.Any())
         {
             Textt.ActionSync("King played...");
-
-            if (player.IsAi)
-            {
-                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, otherPlayers, CharacterType, currentCardId);
-            }
-            else
-            {
-                var modalGo = MonoHelper.Instance.GetModal();
-                modalGo.SetOptions(ChoosePlayer, "Choose who to trade cards with", otherPlayers);
-            }
+            MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChoosePlayer, "Choose who to trade cards with", otherPlayers, CharacterType, currentCardId);
         }
         else
         {

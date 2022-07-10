@@ -21,18 +21,8 @@ public class PrinceEffect : CharacterEffect
 
         if (players.Any())
         {
-            Textt.ActionSync("Prince played...");            
-
-            if (player.IsAi)
-            {
-                player.GetComponent<AiPlayerScript>().DoCardChoice(ChoosePlayer, players, CharacterType, currentCardId);
-            }
-            else
-            {
-                var modalGo = MonoHelper.Instance.GetModal();
-                modalGo.SetOptions(ChoosePlayer, "Choose who should discard his/her card", players);
-            }
-
+            Textt.ActionSync("Prince played...");
+            MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChoosePlayer, "Choose who should discard his/her card", players, CharacterType, currentCardId);
         }
         else
         {
