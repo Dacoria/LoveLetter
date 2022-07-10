@@ -1385,15 +1385,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7551043114393011849, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3003,6 +3003,7 @@ GameObject:
   - component: {fileID: 688962164}
   - component: {fileID: 688962163}
   - component: {fileID: 688962167}
+  - component: {fileID: 688962168}
   m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
@@ -3115,6 +3116,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScrollRulesScript: {fileID: 2117272337}
   ScoreScript: {fileID: 1151318441}
+--- !u!114 &688962168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688962161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284cb8b67bfce07488a4aaa0c4c73d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BigCardDisplay: {fileID: 891539124}
 --- !u!1 &702833655
 GameObject:
   m_ObjectHideFlags: 0
@@ -3266,8 +3280,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751432239}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.32, y: -2.9, z: 0}
-  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
+  m_LocalPosition: {x: 5.32, y: -3.4, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1144447169}
@@ -3561,8 +3575,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847284855}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.639999, y: -2.9, z: 0}
-  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
+  m_LocalPosition: {x: 7.14, y: -3.4, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 958168843}
@@ -8559,7 +8573,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bg
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1859050114, guid: be3c2d45627250640952259099fcda75, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: be3c2d45627250640952259099fcda75, type: 3}
 --- !u!1 &1898653154
 GameObject:
@@ -9155,7 +9170,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 688962167}
         m_TargetAssemblyTypeName: HideShowGoScript, Assembly-CSharp
         m_MethodName: HideScore
         m_Mode: 1
@@ -9459,8 +9474,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033473334}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.36, y: -2.9, z: 0}
-  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
+  m_LocalPosition: {x: 3.86, y: -3.4, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1100647546}

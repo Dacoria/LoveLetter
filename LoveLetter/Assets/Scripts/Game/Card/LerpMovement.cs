@@ -11,6 +11,7 @@ public class LerpMovement : MonoBehaviour
     private Vector2 startScale;
     private Vector2 localScaleTarget;
     private bool destroyAfterDestReached;
+    private bool useLocalScale;
 
     [SerializeField] private AnimationCurve curve;
 
@@ -27,6 +28,7 @@ public class LerpMovement : MonoBehaviour
         this.startScale = transform.localScale;
         this.endPosition = endPosition;
         this.destroyAfterDestReached = destroyAfterDestReached;
+        this.useLocalScale = localScaleMultiplier != 1;
         this.localScaleTarget = new Vector2(localScaleMultiplier, localScaleMultiplier);
         this.desiredDuration = desiredDuration;
 
@@ -55,6 +57,9 @@ public class LerpMovement : MonoBehaviour
         float percComplete = elapsedTime / desiredDuration;
 
         transform.position = Vector3.Lerp(startPosition, endPosition, curve.Evaluate(percComplete));
-        transform.localScale = Vector2.Lerp(startScale, localScaleTarget, percComplete);
+        if (useLocalScale)
+        {
+            transform.localScale = Vector2.Lerp(startScale, localScaleTarget, percComplete);
+        }
     }
 }

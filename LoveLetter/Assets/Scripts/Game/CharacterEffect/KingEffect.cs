@@ -26,7 +26,7 @@ public class KingEffect: CharacterEffect
         }
         else
         {
-            Textt.ActionSync("King played, noone to select");
+            Textt.ActionSync("King played, no one to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 

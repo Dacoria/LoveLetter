@@ -20,11 +20,11 @@ public class GuardEffect: CharacterEffect
         if(otherPlayers.Any())
         {
             Textt.ActionSync("Guard played...");
-            MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChoosePlayer, "Choose who to intercept", otherPlayers, CharacterType, currentCardId);
+            MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChoosePlayer, "Choose player...", otherPlayers, CharacterType, currentCardId);
         }
         else
         {
-            Textt.ActionSync("Guard played, noone to select");
+            Textt.ActionSync("Guard played, no one to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
@@ -37,10 +37,10 @@ public class GuardEffect: CharacterEffect
     public void ChoosePlayer(string optionSelectedPlayer)
     {
         selectedPlayerName = optionSelectedPlayer;
-        Textt.ActionSync("Guard selects " + selectedPlayerName + " to intercept...");
+        Textt.ActionSync("Guard selects " + selectedPlayerName + " ...");
 
         var options = MonoHelper.Instance.GetCharacterTypes().Where(x => x != CharacterType).Select(x => x.ToString()).ToList();
-        MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChooseCharacterType, "Choose Character to intercept", options, CharacterType, currentCardId);
+        MonoHelper.Instance.DoCharacterChoice(currentPlayer, ChooseCharacterType, "Choose Character to inspect", options, CharacterType, currentCardId);
     }
 
     public void ChooseCharacterType(string optionSelectedCharacterType)
@@ -50,7 +50,7 @@ public class GuardEffect: CharacterEffect
 
         if(currentCardPlayer.Character.Type == selectedCharacterType)
         {
-            Textt.ActionSync("Guard chose right! " + currentCardPlayer.PlayerId.GetPlayer().PlayerName + " has a " + optionSelectedCharacterType + " and is now intercepted");
+            Textt.ActionSync("Guard chose right! " + currentCardPlayer.PlayerId.GetPlayer().PlayerName + " has a " + optionSelectedCharacterType + " and is now out of the round");
             currentCardPlayer.PlayerId.GetPlayer().PlayerStatus = PlayerStatus.Intercepted;            
         }
         else

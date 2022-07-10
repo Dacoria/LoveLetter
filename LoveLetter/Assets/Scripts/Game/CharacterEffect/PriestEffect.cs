@@ -25,7 +25,7 @@ public class PriestEffect : CharacterEffect
         }
         else
         {
-            Textt.ActionSync("Priest played, noone to select");
+            Textt.ActionSync("Priest played, no one to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 

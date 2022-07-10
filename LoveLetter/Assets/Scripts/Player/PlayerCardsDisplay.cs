@@ -30,13 +30,7 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         this.ComponentInject();
         drawPileScript = FindObjectOfType<DrawPileScript>();
         Card1Sprite = Card1Display.GetComponent<SpriteRenderer>();
-        Card2Sprite = Card2Display.GetComponent<SpriteRenderer>();
-
-        initCard1EndPos = Card1Display.transform.position;
-        initCard2EndPos = Card2Display.transform.position;
-
-        currentCard1EndPos = initCard1EndPos;
-        currentCard2EndPos = initCard2EndPos;
+        Card2Sprite = Card2Display.GetComponent<SpriteRenderer>();               
 
         cardIdsAlwaysShown = new List<int>();
     }
@@ -50,6 +44,12 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         ActionEvents.StartShowCardEffect += OnStartShowCardEffect;
         ActionEvents.EndShowCardEffect += OnEndShowCardEffect;
         ActionEvents.DeckCardDrawn += OnDeckCardDrawn;
+
+        initCard1EndPos = Card1Display.transform.position;
+        initCard2EndPos = Card2Display.transform.position;
+
+        currentCard1EndPos = initCard1EndPos;
+        currentCard2EndPos = initCard2EndPos;
     }
 
     private void OnStartShowCardEffect(int pId, CharacterType cType, int cardId, int targetCardId)

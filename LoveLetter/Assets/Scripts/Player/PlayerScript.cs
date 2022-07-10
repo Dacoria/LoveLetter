@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using System.Linq;
@@ -43,6 +43,7 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     {
         this.ComponentInject();
         PlayerStatus = PlayerStatus.Normal;
+        Debug.Log("Awake: " + CounterId);
     }
 
     private void Start()
@@ -75,8 +76,10 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     {
         object[] instantiationData = info.photonView.InstantiationData;
         var name = instantiationData[0].ToString();
-        CounterId = int.Parse(instantiationData[1].ToString());
-        IsAi = bool.Parse(instantiationData[2].ToString());
+        CounterId = NetworkHelper.Instance.GetPlayers().Count(); // aantal spawned Playerobject (inclusief jijzelf)
+        IsAi = bool.Parse(instantiationData[1].ToString());   
+
+        Debug.Log("OnPhotonInstantiate: " + CounterId);
 
         if (PhotonNetwork.OfflineMode || IsAi)
         {
@@ -87,14 +90,17 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
             PlayerId = info.photonView.OwnerActorNr;
         }
 
-        PlayerText.text = name;
+        transform.position = GetPos(CounterId);
+
+        PlayerText.text = name;        
         PlayerName = name;
+
 
         if(StaticHelper.IsWideScreen)
         {
             transform.localScale *= 1.8f;
             PlayerText.transform.localScale *= 1.2f;
-            PlayerText.transform.localPosition += new Vector3(0, 0.55f, 0);
+            PlayerText.transform.localPosition += new Vector3(0, 0.3f, 0);
         }
 
         if(IsAi && PhotonNetwork.IsMasterClient)
@@ -131,5 +137,52 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     private void OnDeckCardDrawn(int playedId)
     {
         hasDrawnCard = true;
+    }
+
+    private Vector2 GetPos(int playerIndex)
+    {
+        Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
+        if (StaticHelper.IsWideScreen)
+        {
+
+            if (playerIndex == 1)
+            {
+                return new Vector2(topRight.x / 0.9f * 1.5f * -1, topRight.y / 2.5f);
+            }
+            if (playerIndex == 2)
+            {
+                return new Vector2(topRight.x / 2.7f * 1.5f * -1, topRight.y / 2.5f);
+            }
+            if (playerIndex == 3)
+            {
+                return new Vector2(topRight.x / 2.7f * 1.5f * 1, topRight.y / 2.5f);
+            }
+            if (playerIndex == 4)
+            {
+                return new Vector2(topRight.x / 0.9f * 1.5f * 1, topRight.y / 2.5f);
+            }
+        }
+        else
+        {
+
+            if (playerIndex == 1)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f * -1, topRight.y / 2);
+            }
+            if (playerIndex == 2)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f, topRight.y / 2);
+            }
+            if (playerIndex == 3)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f * -1, 0);
+            }
+            if (playerIndex == 4)
+            {
+                return new Vector2(topRight.x / 4 * 1.5f, 0);
+            }
+        }
+
+        throw new System.Exception();
     }
 }

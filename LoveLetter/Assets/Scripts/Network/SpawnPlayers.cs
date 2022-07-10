@@ -10,85 +10,42 @@ public class SpawnPlayers : MonoBehaviour
 
     private void Start()
     {
-        var currentPlayers = NetworkHelper.Instance.GetPlayerList();
-
-        var playerCount = currentPlayers.Length;
-        SpawnPlayer("P" + playerCount, GetPos(playerCount), false);
+        
+        SpawnPlayer("P" + GetPlayerCounter(), false);
     }
 
-    private int playerCounter;
+    private int GetPlayerCounter()
+    {
+        var currentPlayers = NetworkHelper.Instance.GetPlayerList();
+        var currentGoObjects = NetworkHelper.Instance.GetPlayers();
+
+        var playerCount = Mathf.Max(currentPlayers.Length, currentGoObjects.Count);
+        return playerCount;
+    }
 
     public void SpawnDummyPlayer()
     {        
-        
+        var playerCounter = GetPlayerCounter();
         if (playerCounter == 1)
         {
-            SpawnPlayer("DP2", GetPos(2), true);
+            SpawnPlayer("AI2", true);
         }
         else if(playerCounter == 2)
         {
-            SpawnPlayer("DP3", GetPos(3), true);
+            SpawnPlayer("AI3", true);
         }
         else if (playerCounter == 3)
         {
-            SpawnPlayer("DP4", GetPos(4), true);
+            SpawnPlayer("AI4", true);
         }
-    }
+    }    
 
-    private Vector2 GetPos(int playerIndex)
-    {
-        Vector2 topRight = MonoHelper.Instance.GetTopRightOfMainCam();
-        if (StaticHelper.IsWideScreen)
-        {
-
-            if (playerIndex == 1)
-            {
-                return new Vector2(topRight.x / 0.9f * 1.5f * -1, topRight.y / 4);
-            }
-            if (playerIndex == 2)
-            {
-                return new Vector2(topRight.x / 2.7f * 1.5f * -1, topRight.y / 4);
-            }
-            if (playerIndex == 3)
-            {
-                return new Vector2(topRight.x / 2.7f * 1.5f * 1, topRight.y / 4);
-            }
-            if (playerIndex == 4)
-            {
-                return new Vector2(topRight.x / 0.9f * 1.5f * 1, topRight.y / 4);
-            }
-        }
-        else
-        {
-
-            if (playerIndex == 1)
-            {
-                return new Vector2(topRight.x / 4 * 1.5f * -1, topRight.y / 2);
-            }
-            if (playerIndex == 2)
-            {
-                return new Vector2(topRight.x / 4 * 1.5f, topRight.y / 2);
-            }
-            if (playerIndex == 3)
-            {
-                return new Vector2(topRight.x / 4 * 1.5f * -1, 0);
-            }
-            if (playerIndex == 4)
-            {
-                return new Vector2(topRight.x / 4 * 1.5f, 0);
-            }
-        }
-
-        throw new System.Exception();
-    }
-
-    public void SpawnPlayer(string name, Vector2 pos, bool isDummy)
+    public void SpawnPlayer(string name, bool isDummy)
     {
         if (!PhotonNetwork.IsConnected)
         {
             return;
         }
-        playerCounter++;
 
         var isAi = isDummy && !PhotonNetwork.OfflineMode; // offline = altijd dummy zonder AI
 
@@ -97,7 +54,7 @@ public class SpawnPlayers : MonoBehaviour
             name = PhotonNetwork.NickName;
         }
 
-        object[] myCustomInitData = new List<object> { name, playerCounter, isAi }.ToArray();
-        var player = PhotonNetwork.Instantiate(PlayerPrefab.name, pos, Quaternion.identity, 0, myCustomInitData);        
+        object[] myCustomInitData = new List<object> { name, isAi }.ToArray();
+        var player = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(0,0), Quaternion.identity, 0, myCustomInitData);        
     }
 }

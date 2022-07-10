@@ -24,7 +24,7 @@ public class BaronEffect : CharacterEffect
         }
         else
         {
-            Textt.ActionSync("Baron played, but noone to select");
+            Textt.ActionSync("Baron played, but no one to select");
             GameManager.instance.CardEffectPlayed(cardId, currentPlayer.PlayerId);
         }
 
@@ -50,13 +50,13 @@ public class BaronEffect : CharacterEffect
         }
         else if (yourPoints > otherPoints)
         {
-            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentPlayer.PlayerName + " is ranked higher! " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is now intercepted");
+            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". " + currentPlayer.PlayerName + " has a higher rank. " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is out of the round");
             currentCardOtherPlayer.PlayerId.GetPlayer().PlayerStatus = PlayerStatus.Intercepted;
             
         }
         else if (yourPoints < otherPoints)
         {
-            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". Card of " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is ranked higher! " + currentPlayer.PlayerName + " is now intercepted");
+            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " has a higher rank. " + currentPlayer.PlayerName + " is out of the round");
             currentPlayer.PlayerStatus = PlayerStatus.Intercepted;            
         }
 
