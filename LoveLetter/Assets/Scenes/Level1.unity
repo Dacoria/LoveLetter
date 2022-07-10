@@ -1385,11 +1385,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.75
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.75
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7551043114393011849, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1681,7 +1685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModalOptionPrefab: {fileID: 3976384496790883413, guid: 748dcc7b8ce4aeb4798943b1ed8f1c12, type: 3}
   ModalOptions: {fileID: 1230854326}
-  HeaderModal: {fileID: 0}
+  HeaderModal: {fileID: 1064134651}
   IsActive: 0
 --- !u!114 &223878768
 MonoBehaviour:
@@ -2333,6 +2337,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &372790795 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5612469609192387964, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
+  m_PrefabInstance: {fileID: 209820062}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &372790802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372790795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafc37ad309f7054ba2bc6b632436491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalScaleMultiplier: 1
 --- !u!1 &418139378
 GameObject:
   m_ObjectHideFlags: 0
@@ -3088,9 +3110,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 688962161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e7bb905b55e4da44b7277fa6b1de8dc, type: 3}
+  m_Script: {fileID: 11500000, guid: d31d438b2d46e0a4c8ee0c4c19bb0c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScrollRulesScript: {fileID: 2117272337}
+  ScoreScript: {fileID: 1151318441}
 --- !u!1 &702833655
 GameObject:
   m_ObjectHideFlags: 0
@@ -3242,8 +3266,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751432239}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.32, y: -3.4, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalPosition: {x: 5.32, y: -2.9, z: 0}
+  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1144447169}
@@ -3537,8 +3561,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847284855}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.14, y: -3.4, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalPosition: {x: 8.639999, y: -2.9, z: 0}
+  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 958168843}
@@ -5971,7 +5995,6 @@ GameObject:
   - component: {fileID: 1225497079}
   - component: {fileID: 1225497081}
   - component: {fileID: 1225497082}
-  - component: {fileID: 1225497083}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6110,18 +6133,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2576cc4554c18df4e87301b30f4edc71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1225497083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1225497074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76cd1361361f82d46b51f66950610f55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1230854326
@@ -8526,7 +8537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -13.696368
+      value: -40.901505
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9144,7 +9155,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 688962167}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HideShowGoScript, Assembly-CSharp
         m_MethodName: HideScore
         m_Mode: 1
@@ -9448,8 +9459,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033473334}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.86, y: -3.4, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalPosition: {x: 2.36, y: -2.9, z: 0}
+  m_LocalScale: {x: 1.4399999, y: 1.4399999, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1100647546}
