@@ -8,7 +8,13 @@ public class ModalScreenScaler : MonoBehaviour
     public float LocalScaleMultiplier = 1f;
 
     private Vector3 InitScale = new Vector3(1, 1, 1);
-    
+
+    private RectTransform RectTransform;
+    private void Start()
+    {
+        RectTransform = GetComponent<RectTransform>();
+    }
+
     void Update()
     {
         if(Screen.width > Screen.height * 2)
@@ -39,5 +45,13 @@ public class ModalScreenScaler : MonoBehaviour
         {
             transform.localScale = InitScale * 0.75f;
         }
+
+        var rectWidth = RectTransform.rect.width;
+
+        if(rectWidth > Screen.width)
+        {
+            transform.localScale *= Screen.width / rectWidth * 0.95f;
+        }
+
     }
 }

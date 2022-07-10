@@ -1,4 +1,3 @@
-using Chibi.Free;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,14 +14,14 @@ public class MonoHelper : MonoBehaviour
     public static MonoHelper Instance;
 
     public Sprite BackgroundCardSprite;
-    public Dialog DialogMessageGo;
+    public DialogText DialogText;
     public GameObject MenuGo;
     public GameObject InstructionsGo;
     public GameObject ScoreGo;
 
     public bool GuiAllowed(bool checkDialogPopup = true, bool checkOptionsModal = true, bool checkMainMenu = true, bool checkInstructionsMenu = true, bool checkBigCard = true, bool checkScore = true)
     {
-        if(checkDialogPopup && DialogMessageGo.isActiveAndEnabled)
+        if(checkDialogPopup && DialogText.gameObject.activeSelf)
         {
             return false;
         }
@@ -185,28 +184,10 @@ public class MonoHelper : MonoBehaviour
 
     public bool IsPartOfPlayerGo(GameObject go) => GetPlayerGo(go) != null;
 
-    public void ShowOkDiaglogMessage(string title, string body)
+    public void ShowOkDiaglogMessage(string title, string description, bool showScore = false)
     {
-        var ok = new Dialog.ActionButton("OK", () =>
-        {
-        }, new Color(69 / 255f, 196 / 255f, 1), Color.white);
-        
-        Dialog.ActionButton[] buttons = { ok };
-        DialogMessageGo.ShowDialog(title, body, buttons);
-    }
-
-    public void ShowCloseScoreDiaglogMessage(string title, string body)
-    {
-        var ok = new Dialog.ActionButton("Close", () =>
-        {
-        }, new Color(69 / 255f, 196 / 255f, 1), Color.white);
-        var score = new Dialog.ActionButton("Scores", () =>
-        {
-            ScoreGo.gameObject.SetActive(true);
-        }, new Color(69 / 255f, 196 / 255f, 1), Color.white);
-
-        Dialog.ActionButton[] buttons = { ok, score };
-        DialogMessageGo.ShowDialog(title, body, buttons);
+        DialogText.gameObject.SetActive(true);
+        DialogText.SetText(title, description, showScore);
     }
 
     public int GetRoseCountToWinGame(int playerCount)

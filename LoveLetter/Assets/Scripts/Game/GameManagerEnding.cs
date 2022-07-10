@@ -66,12 +66,12 @@ public partial class GameManager : MonoBehaviour
 
         if(largestScore >= roseLimitToWin)
         {
-            MonoHelper.Instance.ShowCloseScoreDiaglogMessage("Game Ended", "Winner(s) of the Game:\n" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.PlayerScorePoints == largestScore).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + ".\nThe princess has found her partner(s)!");
+            MonoHelper.Instance.ShowOkDiaglogMessage("Game Ended", "Winner(s) of the Game:" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.PlayerScorePoints == largestScore).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + ".The princess has found her partner(s)!", true);
             ActionEvents.GameEnded?.Invoke();
         }
         else
         {
-            MonoHelper.Instance.ShowCloseScoreDiaglogMessage("Round Ended", "Winner(s) of the Round:\n" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.WonRound).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + "!\nGo to menu to start a new round.");
+            MonoHelper.Instance.ShowOkDiaglogMessage("Round Ended", "Winner(s) of the Round:" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.WonRound).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + "!Go to menu to start a new round.", true);
         }
     }
 

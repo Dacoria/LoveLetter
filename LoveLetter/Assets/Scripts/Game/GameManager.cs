@@ -32,7 +32,7 @@ public partial class GameManager : MonoBehaviour
     private IEnumerator ShowMenuLocationDialogInXSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        MonoHelper.Instance.ShowOkDiaglogMessage("Menu", "Menu can be found in the \nleft upper corner (Rose)");
+        MonoHelper.Instance.ShowOkDiaglogMessage("Menu", "Menu can be found in the left upper corner (Rose)");
     }
 
     private void OnDestroy()

@@ -4,6 +4,7 @@ public class HideShowGoScript : MonoBehaviour
 {
     public ScrollRulesScript ScrollRulesScript;
     public ScoreScript ScoreScript;
+    public DialogText DialogText;
 
     public void ShowScrollRules()
     {
@@ -18,5 +19,15 @@ public class HideShowGoScript : MonoBehaviour
     public void HideScore()
     {
         ScoreScript.gameObject.SetActive(false);
+    }
+
+    public void ShowDialogText()
+    {
+        DialogText.gameObject.SetActive(true);
+    }
+
+    public void HideDialogText()
+    {
+        DialogText.gameObject.SetActive(false);
     }
 }
