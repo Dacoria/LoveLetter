@@ -13,31 +13,31 @@ public class ModalScreenScaler : MonoBehaviour
     {
         if(Screen.width > Screen.height * 2)
         {
-            transform.localScale = InitScale * 0.45f;
+            transform.localScale = InitScale * 0.35f;
         }
         else if (Screen.width > Screen.height * 1.7)
         {
-            transform.localScale = InitScale * 0.5f;
+            transform.localScale = InitScale * 0.4f;
         }
         else if (Screen.width > Screen.height * 1.4)
         {
-            transform.localScale = InitScale * 0.6f;
+            transform.localScale = InitScale * 0.45f;
         }
-        else if (Screen.width > Screen.height * 1.2)
+        else if (Screen.width > Screen.height * 1.1)
+        {
+            transform.localScale = InitScale * 0.55f;
+        }
+        else if (Screen.width > Screen.height * 0.9)
         {
             transform.localScale = InitScale * 0.65f;
         }
-        else if (Screen.width > Screen.height * 1)
+        else if (Screen.width > Screen.height * 0.75)
         {
             transform.localScale = InitScale * 0.7f;
         }
-        else if (Screen.width > Screen.height * 0.8)
-        {
-            transform.localScale = InitScale * 0.75f;
-        }
         else
         {
-            transform.localScale = InitScale * 0.85f;
+            transform.localScale = InitScale * 0.75f;
         }
     }
 }

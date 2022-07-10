@@ -9,12 +9,13 @@ public class BgScriptInLeftBottomEditMode : MonoBehaviour
 {
     public Image Image;
 
+    private void Start()
+    {
+        DestroyImmediate(this);
+    }
+
     void Update()
     {
-        #if UNITY_EDITOR
-            if (EditorApplication.isPlaying) return;
-        #endif
-
         var leftLimit = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).x;
         var rightLimit = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x;
         var downLimit = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;

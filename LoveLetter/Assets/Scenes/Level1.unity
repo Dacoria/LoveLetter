@@ -1385,15 +1385,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7083897271315729873, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7551043114393011849, guid: c57495aa2a91c430485997a6aeeb589a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5919,7 +5919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TitleText: {fileID: 998729068}
   Players: {fileID: 938100174}
-  PlayerScorePrefab: {fileID: 1957871283428121424, guid: b82d35c948ddf164b9e6786f7b7270d6, type: 3}
+  PlayerScorePrefab: {fileID: 8058997675147805809, guid: b82d35c948ddf164b9e6786f7b7270d6, type: 3}
 --- !u!225 &1151318442
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8537,7 +8537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -40.901505
+      value: -52.185314
       objectReference: {fileID: 0}
     - target: {fileID: 6644501431245797761, guid: be3c2d45627250640952259099fcda75, type: 3}
       propertyPath: m_AnchoredPosition.y
