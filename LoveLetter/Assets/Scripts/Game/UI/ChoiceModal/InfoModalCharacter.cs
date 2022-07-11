@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InfoModalCharacter : MonoBehaviour
@@ -23,6 +21,7 @@ public class InfoModalCharacter : MonoBehaviour
             if (valueOfModal == type.ToString())
             {
                 characterTypeOfModalOption = type;
+                modalOptionScript.SetCountInDeck(DeckSettings.GetCharacterSettings(type).CountInDeck);
                 return;
             }
         }

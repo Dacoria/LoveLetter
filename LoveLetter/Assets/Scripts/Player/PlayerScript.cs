@@ -164,7 +164,6 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         }
         else
         {
-
             if (playerIndex == 1)
             {
                 return new Vector2(topRight.x / 4 * 1.5f * -1, topRight.y / 2);

@@ -31,8 +31,12 @@ public class ScrollRulesScript : MonoBehaviour
         if(canvasGroupScroll != null)
         {
             StartCoroutine(StartShowingScroll());
-        }
-        
+
+            // fix voor web gl.... anders geen image
+            endPosition = new Vector2(AllImages.transform.position.x, AllImages.transform.position.y + 0.0001f);
+            LerpIsActive = true;
+            canvasGroupScroll.interactable = false;
+        }       
     }
 
     private IEnumerator StartShowingScroll()
