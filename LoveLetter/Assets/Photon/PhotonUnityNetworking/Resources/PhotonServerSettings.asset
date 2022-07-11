@@ -52,6 +52,8 @@ MonoBehaviour:
   - RPC_AE_PlayerScoreChange
   - RPC_AE_NewRoundStarted
   - RPC_AE_RoundEnded
+  - RPC_AE_FinishedComparingCards
+  - RPC_AE_StartComparingCards
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

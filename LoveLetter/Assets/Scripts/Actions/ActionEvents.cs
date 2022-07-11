@@ -12,6 +12,9 @@ public static class ActionEvents
     public static Action<int, PlayerStatus> PlayerStatusChange;
     public static Action<int, int> PlayerScoreChange;
     public static Action<RoundEnded> RoundEnded;
+    // baron
+    public static Action<int, int, int, int> StartComparingCards;
+    public static Action<int, int, int, int> FinishedComparingCards;
 
     // only local
     public static Action<int> DeckCardDrawn;

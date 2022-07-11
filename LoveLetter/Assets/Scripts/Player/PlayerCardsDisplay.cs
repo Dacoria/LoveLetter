@@ -44,24 +44,36 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         ActionEvents.StartShowCardEffect += OnStartShowCardEffect;
         ActionEvents.EndShowCardEffect += OnEndShowCardEffect;
         ActionEvents.DeckCardDrawn += OnDeckCardDrawn;
+        ActionEvents.StartComparingCards += OnStartComparingCards;
+        ActionEvents.FinishedComparingCards += OnFinishedComparingCards;
+        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+
 
         initCard1EndPos = Card1Display.transform.position;
         initCard2EndPos = Card2Display.transform.position;
 
         currentCard1EndPos = initCard1EndPos;
         currentCard2EndPos = initCard2EndPos;
-    }
+    }    
 
     private void OnStartShowCardEffect(int pId, CharacterType cType, int cardId, int targetCardId)
     {
-        cardIdsAlwaysShown.Add(targetCardId);
-        UpdateCardDisplay();
+        var myPlayerId = NetworkHelper.Instance.GetMyPlayerScript().PlayerId;
+        if(myPlayerId == pId)
+        {
+            cardIdsAlwaysShown.Add(targetCardId);
+            UpdateCardDisplay();
+        }            
     }
 
     private void OnEndShowCardEffect(int pId, CharacterType cType, int cardId, int targetCardId)
     {
-        cardIdsAlwaysShown.Remove(targetCardId);
-        UpdateCardDisplay();
+        var myPlayerId = NetworkHelper.Instance.GetMyPlayerScript().PlayerId;
+        if (myPlayerId == pId)
+        {
+            cardIdsAlwaysShown.Remove(targetCardId);
+            UpdateCardDisplay();
+        }
     }
     
 
@@ -85,6 +97,53 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         UpdateCardDisplay();
     }
 
+    private void OnStartComparingCards(int pIdInitiator, int cIdInitiator, int pIdTarget, int cIdTarget)
+    {
+        if (IsThisCardAndMyselfInvolvedInCompare(pIdInitiator, pIdTarget))
+        { 
+            cardIdsAlwaysShown.Add(cIdInitiator);
+            cardIdsAlwaysShown.Add(cIdTarget);
+            UpdateCardDisplay();
+        }        
+    }    
+
+    private void OnFinishedComparingCards(int pIdInitiator, int cIdInitiator, int pIdTarget, int cIdTarget)
+    {
+        if (IsThisCardAndMyselfInvolvedInCompare(pIdInitiator, pIdTarget))
+        {
+            cardIdsAlwaysShown.Remove(cIdInitiator);
+            cardIdsAlwaysShown.Remove(cIdTarget);
+            UpdateCardDisplay();
+        }
+    }
+
+    private bool IsThisCardAndMyselfInvolvedInCompare(int pIdInitiator, int pIdTarget)
+    {
+        var myPlayerId = NetworkHelper.Instance.GetMyPlayerScript().PlayerId;
+        var isMyPlayerInvolvedInCompare = myPlayerId == pIdInitiator || myPlayerId == pIdTarget;
+        var isThisCardDisplayInvolvedInCompare = playerScript.PlayerId == pIdInitiator || playerScript.PlayerId == pIdTarget;
+
+        return isMyPlayerInvolvedInCompare && isThisCardDisplayInvolvedInCompare;
+    }
+
+    private void OnNewPlayerTurn(int p1)
+    {
+        // blijkbaar beurt nog niet voorbij -> discard dan maar + tonen aan iedereen
+        if(playerScript.PlayerStatus == PlayerStatus.Intercepted)
+        {
+            var cardsOfInterceptedPlayer = Deck.instance.Cards.Where(x => x?.PlayerId == playerScript.PlayerId);
+            foreach(var card in cardsOfInterceptedPlayer)
+            {
+                if(!cardIdsAlwaysShown.Any(x => x == card.Id))
+                {
+                    cardIdsAlwaysShown.Add(card.Id);
+                }                
+            }
+
+            UpdateCardDisplay();
+        }        
+    }
+
     private bool gameEnded;
 
     private void OnRoundEnded(RoundEnded roundEnded)
@@ -103,12 +162,18 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
         ActionEvents.StartShowCardEffect -= OnStartShowCardEffect;
         ActionEvents.EndShowCardEffect -= OnEndShowCardEffect;
         ActionEvents.DeckCardDrawn -= OnDeckCardDrawn;
-    }    
+        ActionEvents.StartComparingCards -= OnStartComparingCards;
+        ActionEvents.FinishedComparingCards -= OnFinishedComparingCards;
+        ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
+    }
 
     public override void UpdateCardDisplay()
     {
         if (Deck.instance.Cards != null)
         {
+            Card1Sprite.color = playerScript.PlayerStatus == PlayerStatus.Intercepted ? new Color(0.5f, 0.5f, 0.5f) : new Color(1, 1, 1);
+            Card2Sprite.color = playerScript.PlayerStatus == PlayerStatus.Intercepted ? new Color(0.5f, 0.5f, 0.5f) : new Color(1, 1, 1);
+
             var card1 = playerScript.CurrentCard1();
             var card2 = playerScript.CurrentCard2();
 
@@ -150,7 +215,6 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
                 InitCardToDiscardPile(Card2Display, Card2Sprite);
             }
 
-
             Card1Display.Card = card1;
             Card2Display.Card = card2;
 
@@ -176,8 +240,6 @@ public class PlayerCardsDisplay : UpdateCardDisplayMonoBehaviourAbstract
             {
                 Card2Display.LerpMovement.StartMovement(Card2Display.transform.position, currentCard2EndPos);
             }
-
-
         }
         else
         {

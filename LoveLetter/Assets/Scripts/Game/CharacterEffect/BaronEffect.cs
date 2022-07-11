@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Linq;
 
 public class BaronEffect : CharacterEffect
@@ -36,9 +37,22 @@ public class BaronEffect : CharacterEffect
         return Deck.instance.Cards.First(x => x?.PlayerId.GetPlayer() == player && x.Id != cardId);
     }
 
+    private string optionSelectedPlayer;
+
     public void ChoosePlayer(string optionSelectedPlayer)
     {
-        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);        
+        this.optionSelectedPlayer = optionSelectedPlayer;
+        Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". Comparing cards with each other...");
+
+        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
+        NetworkActionEvents.instance.StartComparingCards(currentPlayer.PlayerId, currentCardId, currentCardOtherPlayer.PlayerId, currentCardOtherPlayer.Id);
+
+        MonoHelper.Instance.DoCharacterChoice(currentPlayer, CardsCompared, "Finished?", new List<string> { "Yes"}, CharacterType, currentCardId);
+    }
+
+    public void CardsCompared(string res)
+    {
+        var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
         var otherPoints = DeckSettings.GetCharacterSettings(currentCardOtherPlayer.Character.Type).Points;
 
         var yourOtherCard = GetOtherCard(currentPlayer, currentCardId);
@@ -46,20 +60,21 @@ public class BaronEffect : CharacterEffect
 
         if (yourPoints == otherPoints)
         {
-            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". The ranks are the same! Nothing happens");
+            Textt.ActionSync("The ranks are the same! Nothing happens");
         }
         else if (yourPoints > otherPoints)
         {
-            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". " + currentPlayer.PlayerName + " has a higher rank. " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is out of the round");
+            Textt.ActionSync(currentPlayer.PlayerName + " has a higher rank. " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " is out of the round");
             currentCardOtherPlayer.PlayerId.GetPlayer().PlayerStatus = PlayerStatus.Intercepted;
-            
+
         }
         else if (yourPoints < otherPoints)
         {
-            Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". " + currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " has a higher rank. " + currentPlayer.PlayerName + " is out of the round");
-            currentPlayer.PlayerStatus = PlayerStatus.Intercepted;            
+            Textt.ActionSync(currentCardOtherPlayer.PlayerId.GetPlayer().PlayerName + " has a higher rank. " + currentPlayer.PlayerName + " is out of the round");
+            currentPlayer.PlayerStatus = PlayerStatus.Intercepted;
         }
 
+        NetworkActionEvents.instance.FinishedComparingCards(currentPlayer.PlayerId, currentCardId, currentCardOtherPlayer.PlayerId, currentCardOtherPlayer.Id);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }

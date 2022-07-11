@@ -75,7 +75,8 @@ public class PrinceEffect : CharacterEffect
         }
         else
         {
-            Textt.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + ". No other cards left");
+            Deck.instance.PlayerDrawsCardFromExcludePileSync(playerOfCard.PlayerId);
+            Textt.ActionSync(optionSelectedPlayer + " discarded card " + currentCardPlayer.Character.Type + "  + got a new card");
         }
 
         NetworkActionEvents.instance.CardDiscarded(currentCardPlayer.Id);

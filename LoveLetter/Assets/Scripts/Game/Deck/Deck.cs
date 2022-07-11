@@ -39,6 +39,24 @@ public class Deck : MonoBehaviour
         ActionEvents.CardSynced?.Invoke();
     }
 
+    public void PlayerDrawsCardFromExcludePileSync(int playerId)
+    {
+        var cardToDeal = instance.Cards.First(x => x.Status == CardStatus.Excluded);
+
+        cardToDeal.Status = CardStatus.InPlayerHand;
+        cardToDeal.PlayerId = playerId;
+        cardToDeal.IndexOfCardInHand = 1;
+
+        var otherCardOfPlayer = Cards.FirstOrDefault(x => x.PlayerId == playerId);
+        if (otherCardOfPlayer != null && otherCardOfPlayer.IndexOfCardInHand == 1)
+        {
+            cardToDeal.IndexOfCardInHand = 2;
+        }
+
+        SyncCard(cardToDeal);
+        ActionEvents.CardSynced?.Invoke();
+    }
+
     public void SetPlayerId(int cardId, int playerId)
     {
         var card = Cards.Single(x => x.Id == cardId);

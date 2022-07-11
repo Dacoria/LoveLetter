@@ -59,6 +59,10 @@ public partial class GameManager : MonoBehaviour
     private void OnRoundEnded(RoundEnded roundEnded)
     {
         RoundEnded = true;
+        if(!roundEnded.PlayerScores.Any())
+        {
+            return; // via knop uitgezet; niet afgemaakt
+        }
 
         var players = NetworkHelper.Instance.GetPlayers();
         var roseLimitToWin = MonoHelper.Instance.GetRoseCountToWinGame(players.Count());
@@ -66,12 +70,12 @@ public partial class GameManager : MonoBehaviour
 
         if(largestScore >= roseLimitToWin)
         {
-            MonoHelper.Instance.ShowOkDiaglogMessage("Game Ended", "Winner(s) of the Game:" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.PlayerScorePoints == largestScore).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + ".The princess has found her partner(s)!", true);
+            MonoHelper.Instance.ShowOkDiaglogMessage("Game Ended", "Winner(s) of the Game:" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.PlayerScorePoints == largestScore).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + ". The princess has found her partner(s)!", true);
             ActionEvents.GameEnded?.Invoke();
         }
         else
         {
-            MonoHelper.Instance.ShowOkDiaglogMessage("Round Ended", "Winner(s) of the Round:" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.WonRound).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + "!Go to menu to start a new round.", true);
+            MonoHelper.Instance.ShowOkDiaglogMessage("Round Ended", "Winner(s) of the Round:" + string.Join(" & ", roundEnded.PlayerScores.Where(x => x.WonRound).Select(x => x.PlayerId.GetPlayer().PlayerName).ToList()) + "! Go to menu for a new round.", true);
         }
     }
 

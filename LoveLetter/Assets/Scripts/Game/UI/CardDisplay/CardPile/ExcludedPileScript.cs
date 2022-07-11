@@ -29,7 +29,10 @@ public class ExcludedPileScript : UpdateCardDisplayMonoBehaviourAbstract, IOnCar
     private void OnRoundEnded(RoundEnded roundEnded)
     {
         var deckExclusions = Deck.instance.Cards.Where(x => x.Status == CardStatus.Excluded);
-        Card1Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(Deck.instance.Cards.First(x => x.Status == CardStatus.Excluded).Character.Type);        
+        if(deckExclusions.Any())
+        {
+            Card1Sprite.sprite = MonoHelper.Instance.GetCharacterSprite(deckExclusions.First().Character.Type);
+        }
     }
 
     public override void UpdateCardDisplay()

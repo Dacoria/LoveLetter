@@ -114,4 +114,26 @@ public class NetworkActionEvents: MonoBehaviour
     {
         ActionEvents.CardsSwitched?.Invoke(cardid1, cardid2);
     }
+
+    public void StartComparingCards (int playerId, int cardId, int otherPlayerId, int otherCardId)
+    {
+        photonView.RPC("RPC_AE_StartComparingCards", RpcTarget.All, playerId, cardId, otherPlayerId, otherCardId);
+    }
+
+    [PunRPC]
+    public void RPC_AE_StartComparingCards(int playerId, int cardId, int otherPlayerId, int otherCardId)
+    {
+        ActionEvents.StartComparingCards?.Invoke(playerId, cardId, otherPlayerId, otherCardId);
+    }
+
+    public void FinishedComparingCards(int playerId, int cardId, int otherPlayerId, int otherCardId)
+    {
+        photonView.RPC("RPC_AE_FinishedComparingCards", RpcTarget.All, playerId, cardId, otherPlayerId, otherCardId);
+    }
+
+    [PunRPC]
+    public void RPC_AE_FinishedComparingCards(int playerId, int cardId, int otherPlayerId, int otherCardId)
+    {
+        ActionEvents.FinishedComparingCards?.Invoke(playerId, cardId, otherPlayerId, otherCardId);
+    }
 }

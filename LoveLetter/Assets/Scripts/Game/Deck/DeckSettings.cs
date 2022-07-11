@@ -10,10 +10,13 @@ public static class DeckSettings
         foreach (CharacterType characterType in Enum.GetValues(typeof(CharacterType)))
         {
             var charSettings = GetCharacterSettings(characterType);
-            for (int i = 0; i < charSettings.CountInDeck; i++)
+            if (charSettings != null)
             {
-                var newChar = CreateNewCharacter(characterType);
-                characters.Add(newChar);
+                for (int i = 0; i < charSettings.CountInDeck; i++)
+                {
+                    var newChar = CreateNewCharacter(characterType);
+                    characters.Add(newChar);
+                }
             }
         }
 

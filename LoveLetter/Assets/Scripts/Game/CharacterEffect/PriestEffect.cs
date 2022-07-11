@@ -41,7 +41,11 @@ public class PriestEffect : CharacterEffect
 
         ActionEvents.StartShowCardEffect(currentPlayer.PlayerId, CharacterType, currentCardId, watchedCardId);
         Textt.ActionSync("Priest watches the card of " + optionSelectedPlayer);
-        Textt.ActionLocal("Card in hand of " + optionSelectedPlayer + " is " + currentCardOtherPlayer.Character.Type);
+        if(currentPlayer.PlayerId == NetworkHelper.Instance.GetMyPlayerScript().PlayerId)
+        {
+            // voor AI deze check
+            Textt.ActionLocal("Card in hand of " + optionSelectedPlayer + " is " + currentCardOtherPlayer.Character.Type);
+        }
 
         MonoHelper.Instance.DoCharacterChoice(currentPlayer, CardWatched, "Finished watching?", new List<string> { "Yes" }, CharacterType, currentCardId);
     }
