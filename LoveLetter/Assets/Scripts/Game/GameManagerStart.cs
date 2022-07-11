@@ -44,7 +44,7 @@ public partial class GameManager : MonoBehaviour
         if (playersMatch && sameSize)
         {
             CurrentPlayerId = currentPlayerId;
-            ActionEvents.NewPlayerTurn?.Invoke(currentPlayerId);
+            ActionEvents.NewPlayerTurn?.Invoke(currentPlayerId); // local; want OnNewRoundStarted is al via sync gegaan; status bekend
             return;
         }
         else

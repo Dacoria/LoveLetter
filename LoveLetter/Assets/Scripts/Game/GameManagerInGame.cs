@@ -58,43 +58,48 @@ public partial class GameManager : MonoBehaviour
     private IEnumerator NextTurnInXSec(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        NextTurn();
+        TryNextTurn();
     }
 
-    private void NextTurn()
+    private void TryNextTurn()
     {
         if (!IsEndOfRound())
         {
-            NextPlayer();
+            NextTurn();
         }
         else
         {
-            RoundEnded = true;
-            var winners = CheckWinners();
-            
-            foreach (var winnerPId in winners)
-            {
-                winnerPId.Key.GetPlayer().Score += winnerPId.Value; // wordt gesynct automagisch na een change                
-            }
-
-            var roundEnded = new RoundEnded { PlayerScores = new List<PlayerScore>() };
-            foreach (var player in NetworkHelper.Instance.GetPlayers())
-            {
-                roundEnded.PlayerScores.Add(
-                        new PlayerScore
-                        {
-                            PlayerId = player.PlayerId,
-                            PlayerScorePoints = player.Score,
-                            WonRound = winners.Keys.Contains(player.PlayerId)
-                        }
-                    );
-            }
-
-            NetworkActionEvents.instance.RoundEnded(roundEnded);
+            DoEndOfRound();
         }
     }
 
-    private void NextPlayer()
+    private void DoEndOfRound()
+    {
+        RoundEnded = true;
+        var winners = CheckWinners();
+
+        foreach (var winnerPId in winners)
+        {
+            winnerPId.Key.GetPlayer().Score += winnerPId.Value; // wordt gesynct automagisch na een change                
+        }
+
+        var roundEnded = new RoundEnded { PlayerScores = new List<PlayerScore>() };
+        foreach (var player in NetworkHelper.Instance.GetPlayers())
+        {
+            roundEnded.PlayerScores.Add(
+                    new PlayerScore
+                    {
+                        PlayerId = player.PlayerId,
+                        PlayerScorePoints = player.Score,
+                        WonRound = winners.Keys.Contains(player.PlayerId)
+                    }
+                );
+        }
+
+        NetworkActionEvents.instance.RoundEnded(roundEnded);
+    }
+
+    private void NextTurn()
     {
         do
         {
