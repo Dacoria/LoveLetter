@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SpawnPlayers : MonoBehaviour
 {
@@ -54,7 +55,8 @@ public class SpawnPlayers : MonoBehaviour
             name = PhotonNetwork.NickName;
         }
 
-        object[] myCustomInitData = new List<object> { name, isAi }.ToArray();
+        var counterId = NetworkHelper.Instance.GetPlayers().Count(); // aantal spawned Playerobject (inclusief jijzelf)
+        object[] myCustomInitData = new List<object> { name, isAi, counterId }.ToArray();
         var player = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector2(0,0), Quaternion.identity, 0, myCustomInitData);        
     }
 }

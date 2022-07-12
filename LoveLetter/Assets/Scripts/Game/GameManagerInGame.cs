@@ -49,10 +49,16 @@ public partial class GameManager : MonoBehaviour
 
     public void CardEffectPlayed(int cardId, int playerId)
     {
+        StartCoroutine(ProcessCardEffectPlayedAfterXSeconds(cardId, playerId, 1.5f));
+    }
+
+    public IEnumerator ProcessCardEffectPlayedAfterXSeconds(int cardId, int playerId, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
         Deck.instance.DiscardCardSync(cardId, cardIsPlayed: true);
         NetworkActionEvents.instance.EndCharacterEffect(playerId, cardId.GetCard().Character.Type, cardId);
 
-        StartCoroutine(NextTurnInXSec(3));
+        StartCoroutine(NextTurnInXSec(2.5f));
     }
 
     private IEnumerator NextTurnInXSec(float seconds)

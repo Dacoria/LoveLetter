@@ -76,14 +76,16 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     {
         object[] instantiationData = info.photonView.InstantiationData;
         var name = instantiationData[0].ToString();
+        IsAi = bool.Parse(instantiationData[1].ToString());
+        var hosterCounterId = int.Parse(instantiationData[2].ToString());
+
         CounterId = NetworkHelper.Instance.GetPlayers().Count(); // aantal spawned Playerobject (inclusief jijzelf)
-        IsAi = bool.Parse(instantiationData[1].ToString());   
 
         Debug.Log("OnPhotonInstantiate: " + CounterId);
 
         if (PhotonNetwork.OfflineMode || IsAi)
         {
-            PlayerId = CounterId + 1000; // forceert dat het anders is dat het photonId
+            PlayerId = hosterCounterId + 1000; // forceert dat het anders is dat het photonId
         }
         else
         {
