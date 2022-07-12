@@ -74,7 +74,7 @@ public class BaronEffect : CharacterEffect
             currentPlayer.PlayerStatus = PlayerStatus.Intercepted;
         }
 
-        NetworkActionEvents.instance.FinishedComparingCards(currentPlayer.PlayerId, currentCardId, currentCardOtherPlayer.PlayerId, currentCardOtherPlayer.Id);
+        NetworkActionEvents.instance.FinishedComparingCards(currentPlayer.PlayerId, yourOtherCard.Id, currentCardOtherPlayer.PlayerId, currentCardOtherPlayer.Id);
         GameManager.instance.CardEffectPlayed(currentCardId, currentPlayer.PlayerId);
     }
 }
