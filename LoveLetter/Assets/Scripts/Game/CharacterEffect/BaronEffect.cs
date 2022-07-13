@@ -44,8 +44,10 @@ public class BaronEffect : CharacterEffect
         this.optionSelectedPlayer = optionSelectedPlayer;
         Textt.ActionSync("Baron picks " + optionSelectedPlayer + ". Comparing cards with each other...");
 
+        var yourOtherCard = GetOtherCard(currentPlayer, currentCardId);
         var currentCardOtherPlayer = Deck.instance.Cards.Single(x => x?.PlayerId.GetPlayer()?.PlayerName == optionSelectedPlayer);
-        NetworkActionEvents.instance.StartComparingCards(currentPlayer.PlayerId, currentCardId, currentCardOtherPlayer.PlayerId, currentCardOtherPlayer.Id);
+
+        NetworkActionEvents.instance.StartComparingCards(currentPlayer.PlayerId, yourOtherCard.Id, currentCardOtherPlayer.PlayerId, currentCardOtherPlayer.Id);
 
         MonoHelper.Instance.DoCharacterChoice(currentPlayer, CardsCompared, "Finished?", new List<string> { "Yes"}, CharacterType, currentCardId);
     }
